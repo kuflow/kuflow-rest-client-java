@@ -1,0 +1,27 @@
+# Ignore all dot files except
+.*
+!.editorconfig
+!.gitattributes
+!.gitignore
+
+
+######################
+# Maven
+######################
+target/
+*.bak
+
+######################
+# Maven Wrapper
+######################
+!.mvn
+
+######################
+# Intellij Idea
+######################
+*.iml
+
+######################
+# Visual Studio Code
+######################
+.vscode/

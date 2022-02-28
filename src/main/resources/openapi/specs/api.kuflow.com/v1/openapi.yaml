@@ -1,0 +1,1083 @@
+openapi: 3.0.3
+
+info:
+  title: KuFlow Public API
+  version: 1.0.0
+  termsOfService: 'https://kuflow.com/legal'
+  contact:
+    email: kuflow@kuflow.com
+  description: |
+    # Introduction
+    This document contains the KuFlow REST API reference. This API is a fundamental part in the integration of external systems with KuFlow and is used, among others, by the different implementations of the Workers that connect to our network.
+
+    # API Versioning
+
+    A versioning strategy allows our clients to continue using the existing REST API and migrate their applications to the newer API when they are ready.
+
+    The scheme followed is a simplification of *Semver* where only MAJOR versions are differentiated from MINOR or PATCH versions, i.e. a version number of only two levels is used. With this approach, you only have to migrate your applications if you want to upgrade to a MAJOR version of the KuFlow API. In case you want to upgrade to a MINOR version, you can do so without any incompatibility issues.
+
+    The versioning of the api is done through the URI Path, that is, the version number is included in the URI Path. The URL structure would be as follows:
+
+    ```bash
+    https://{endpoint}/vMAJOR.MINOR/{api-path}
+    ```
+
+    # Idempotency
+
+    The API is designed to support idempotency in order to achieve a correct resilience in the implementation of its clients. The way to achieve this is very simple, in the methods that create resources, you simply have to specify a UUID in the input data and the API will respond by creating or returning the resource if it previously existed. With this mechanism, your systems can implement retry logic without worrying about performing data tradeoffs.
+
+    # OpenAPI Specification
+
+    This API is documented in OpenAPI format. This file allows you to create REST clients with the technology of your choice automatically. In our code repositories you can find an example of this automation using Feign for JAVA.
+
+externalDocs:
+  description: Find out more about KuFlow
+  url: 'https://kuflow.com'
+
+servers:
+  - url: 'https://api.kuflow.com/v1'
+    description: Live environment
+  - url: 'https://api.sandbox.kuflow.com/v1'
+    description: Sandbox environment
+
+security:
+  - BasicAuth: []
+
+tags:
+  - name: process
+    description: Operations about process
+    externalDocs:
+      description: Find out more about our processes.
+      url: 'https://kuflow.com'
+  - name: task
+    description: Operations about task.
+    externalDocs:
+      description: Find out more about our task.
+      url: 'https://kuflow.com'
+  - name: webhook
+    description: Operations that Kuflow invokes towards external systems.
+  - name: authentication
+    description: Operations for handling authentication tokens.
+
+x-tagGroups:
+  - name: General
+    tags:
+      - process
+      - task
+  - name: Notification
+    tags:
+      - webhook
+  - name: Authentication management
+    tags:
+      - authentication
+
+paths:
+  /authentications:
+    post:
+      summary: Create an authentication for the current principal
+      operationId: createAuthentication
+      tags:
+        - authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Authentication'
+      responses:
+        '200':
+          description: Authentication Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Authentication'
+        default:
+          $ref: '#/components/responses/DefaultError'
+
+  /processes:
+    get:
+      summary: Find all accessible Processes
+      description: List all the Processes that have been created and the the credentials has access.
+      operationId: findProcesses
+      tags:
+        - process
+      parameters:
+        - $ref: '#/components/parameters/SizeQueryParam'
+        - $ref: '#/components/parameters/PageQueryParam'
+      responses:
+        '200':
+          description: Processes found paginated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessPage'
+        default:
+          $ref: '#/components/responses/DefaultError'
+    post:
+      summary: Create a new process
+      description: |
+        Creates a process. The process is kept waiting until the start command is issued. This option has direct correspondence to the action of starting a process in the Kuflow GUI.
+
+        If you want the method to be idempotent, please specify the `id` field in the request body.
+      operationId: createProcess
+      tags:
+        - process
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Process'
+      responses:
+        '200':
+          description: Process already created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Process'
+        '201':
+          description: Process created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Process'
+        default:
+          $ref: '#/components/responses/DefaultError'
+
+  /processes/{id}:
+    get:
+      summary: Get a Process by ID
+      description: Returns the requested Process when has access to do it.
+      operationId: retrieveProcess
+      tags:
+        - process
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Process'
+        default:
+          $ref: '#/components/responses/DefaultError'
+
+  /processes/{id}/~actions/start:
+    post:
+      summary: Start a Process
+      description: |
+        Start a Process. The state of Process is setted to running.
+
+        If you are already in this state, no action is taken.
+      operationId: actionsStartProcess
+      tags:
+        - process
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      responses:
+        '200':
+          description: Process started
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Process'
+        default:
+          $ref: '#/components/responses/DefaultError'
+
+  /processes/{id}/~actions/complete:
+    post:
+      summary: Complete a Process
+      description: |
+        Complete a Process. The state of Process is setted to completed.
+
+        If you are already in this state, no action is taken.
+      operationId: actionsCompleteProcess
+      tags:
+        - process
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      responses:
+        '200':
+          description: Process completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Process'
+        default:
+          $ref: '#/components/responses/DefaultError'
+
+  /tasks:
+    get:
+      summary: Find all accessible Taks
+      description: List all Tasks that have been created and the the credentials has access.
+      operationId: findTasks
+      tags:
+        - task
+      parameters:
+        - $ref: '#/components/parameters/SizeQueryParam'
+        - $ref: '#/components/parameters/PageQueryParam'
+        - name: processId
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              format: uuid
+        - name: state
+          in: query
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/TaskState'
+
+      responses:
+        '200':
+          description: Tasks found paginated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskPage'
+        default:
+          $ref: '#/components/responses/DefaultError'
+    post:
+      summary: Create a new Task in the selected Process
+      description: |
+        Create a Task and optionally fill its elements
+
+        If you want the method to be idempotent, please specify the `id` field in the request body.
+      operationId: createTask
+      tags:
+        - task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+      responses:
+        '200':
+          description: Task already created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '201':
+          description: Task created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        default:
+          $ref: '#/components/responses/DefaultError'
+
+  /tasks/{id}:
+    get:
+      summary: Get a task given it ID
+      description: Allow to get a task by ID.
+      operationId: retrieveTask
+      tags:
+        - task
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      responses:
+        '200':
+          description: Task requested
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+
+  /tasks/{id}/~actions/claim:
+    post:
+      summary: Claim a task
+      description: Allow to claim a task.
+      operationId: actionsClaimTask
+      tags:
+        - task
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      responses:
+        '200':
+          description: Task claimed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        default:
+          $ref: '#/components/responses/DefaultError'
+
+  /tasks/{id}/~actions/assign:
+    post:
+      summary: Assign a task
+      description: Allow to assing a task to a user or application. Only one option will be necessary.
+      operationId: actionsAssignTask
+      tags:
+        - task
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignTaskCommand'
+      responses:
+        '200':
+          description: Task assigned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        default:
+          $ref: '#/components/responses/DefaultError'
+
+  /tasks/{id}/~actions/complete-element-decision:
+    post:
+      summary: Complete an element decision
+      description: |
+        Allow to complete an element decision.
+
+        If the element already exists (the ID referenced in the body corresponds to an existing one), it updates it.
+      operationId: actionsCompleteTaskElementDecision
+      tags:
+        - task
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ElementValueDecision'
+      responses:
+        '200':
+          description: Task with element filled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        default:
+          $ref: '#/components/responses/DefaultError'
+
+  /tasks/{id}/~actions/complete-element-form:
+    post:
+      summary: Complete an element form
+      description: |
+        Allow to complete an element form.
+
+        If the element already exists (the ID referenced in the body corresponds to an existing one), it updates it.
+      operationId: actionsCompleteTaskElementForm
+      tags:
+        - task
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ElementValueForm'
+      responses:
+        '200':
+          description: Task with element filled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+
+  /tasks/{id}/~actions/complete-element-field:
+    post:
+      summary: Complete an element form field
+      description: |
+        Allow to complete an element field.
+
+        If the element already exists (the ID referenced in the body corresponds to an existing one), it updates it.
+      operationId: actionsCompleteTaskElementField
+      tags:
+        - task
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ElementValueField'
+      responses:
+        '200':
+          description: Task with element filled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+
+  /tasks/{id}/~actions/complete-element-document:
+    post:
+      summary: Complete an element document
+      description: |
+        Allow to complete an element document.
+
+        If the element already exists (the ID referenced in the body corresponds to an existing one), it updates it.
+      operationId: actionsCompleteTaskElementDocument
+      tags:
+        - task
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                json:
+                  $ref: '#/components/schemas/ElementValueDocument'
+                file:
+                  type: string
+                  format: binary
+              required:
+                - json
+                - file
+            encoding:
+              file:
+                contentType: image/*, application/pdf
+      responses:
+        '200':
+          description: Task with element filled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+
+  /tasks/{id}/~actions/delete-elements:
+    post:
+      summary: Delete task elements by code
+      description: Allow to delete task elements by specifying the item definition code
+      operationId: actionsDeleteTaskElements
+      tags:
+        - task
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteElementsCommand'
+      responses:
+        '200':
+          description: Task elements deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        default:
+          $ref: '#/components/responses/DefaultError'
+
+  /tasks/{id}/~actions/complete:
+    post:
+      summary: Complete a task
+      description: |
+        Allow to complete a claimed task by the principal
+      operationId: actionsCompleteTask
+      tags:
+        - task
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      responses:
+        '200':
+          description: Task completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+
+  /tasks/{id}/~actions/append-log:
+    post:
+      summary: Append a log to the task
+      description: A log entry is added to the task. If the number of log entries is reached, the oldest log entry is removed.
+      operationId: actionsAppendLog
+      tags:
+        - task
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Log'
+      responses:
+        '200':
+          description: Log entry added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+
+
+  /tasks/{id}/~actions/download-element-document:
+    get:
+      summary: Download document
+      description: Given a task, download a document from an element of document type
+      operationId: actionsDownloadTaskElementDocument
+      tags:
+        - task
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+        - name: elementValueId
+          in: query
+          description: Element Value Id to download.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Document requested
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+
+x-webhooks:
+  events:
+    post:
+      summary: Event sent
+      description: Information about a event produced in the platform
+      operationId: handleWebhookEvent
+      tags:
+        - webhook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WebhookEvent"
+      responses:
+        "200":
+          description: Return a 200 status to indicate that the data was received successfully
+
+components:
+  parameters:
+    IdPathParam:
+      name: id
+      in: path
+      description: The resource ID
+      required: true
+      schema:
+        type: string
+        format: uuid
+    SizeQueryParam:
+      name: size
+      in: query
+      description: The number of records returned within a single API call.
+      required: false
+      schema:
+        type: integer
+        default: 25
+        minimum: 0
+        maximum: 1000
+    PageQueryParam:
+      name: page
+      in: query
+      description: The page number of the current page in the returned records, 0 is the first page
+      required: false
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+
+  schemas:
+    DefaultError:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+        message:
+          type: string
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/DefaultErrorInfo'
+      required:
+        - timestamp
+        - status
+        - message
+
+    DefaultErrorInfo:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        location:
+          type: string
+        locationType:
+          type: string
+      required:
+        - code
+        - message
+
+    WebhookEventProcessStateChangedData:
+      type: object
+      properties:
+        processId:
+          type: string
+          format: uuid
+        processState:
+          $ref: '#/components/schemas/ProcessState'
+      required:
+        - processId
+        - processState
+
+    WebhookEventTaskStateChangedData:
+      type: object
+      properties:
+        processId:
+          type: string
+          format: uuid
+        taskId:
+          type: string
+          format: uuid
+        taskCode:
+          type: string
+          format: uuid
+        taskState:
+          $ref: '#/components/schemas/TaskState'
+      required:
+        - processId
+        - taskId
+        - taskCode
+        - taskState
+
+    WebhookEventProcessStateChanged:
+      description: Process Events
+      allOf:
+        - $ref: '#/components/schemas/WebhookEvent'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/WebhookEventProcessStateChangedData'
+
+    WebhookEventTaskStateChanged:
+      description: Process Events
+      allOf:
+        - $ref: '#/components/schemas/WebhookEvent'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/WebhookEventTaskStateChangedData'
+
+    WebhookType:
+      description: Type of the Event
+      type: string
+      enum:
+        - PROCESS.STATE_CHANGED
+        - TASK.STATE_CHANGED
+      x-enum-varnames:
+        - PROCESS__STATE_CHANGED
+        - TASK__STATE_CHANGED
+
+    WebhookEvent:
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          'PROCESS.STATE_CHANGED': '#/components/schemas/WebhookEventProcessStateChanged'
+          'TASK.STATE_CHANGED': '#/components/schemas/WebhookEventTaskStateChanged'
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          $ref: '#/components/schemas/WebhookType'
+        timestamp:
+          type: string
+          format: date-time
+      required:
+        - id
+        - type
+        - timestamp
+
+    AbstractAudited:
+      type: object
+      properties:
+        createdBy:
+          type: string
+          format: uuid
+          description: Who create this model
+        createdAt:
+          type: string
+          format: date-time
+          description: When this model was created
+        lastModifiedBy:
+          type: string
+          format: uuid
+          description: Who was last update this model
+        lastModifiedAt:
+          type: string
+          format: date-time
+          description: When this model type was last updated.
+
+    PageMetadata:
+      type: object
+      properties:
+        size:
+          type: integer
+          minimum: 0
+          example: 25
+        number:
+          type: integer
+          minimum: 0
+          example: 0
+        totalElements:
+          type: integer
+          format: int64
+          example: 1096
+        totalPages:
+          type: integer
+          example: 110
+      required:
+        - size
+        - number
+        - totalElements
+        - totalPages
+
+    Page:
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+      required:
+        - page
+
+    AuthenticationType:
+      type: string
+      enum:
+        - ENGINE
+
+    Authentication:
+      allOf:
+        - $ref: '#/components/schemas/AbstractAudited'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            type:
+              $ref: '#/components/schemas/AuthenticationType'
+            token:
+              type: string
+              readOnly: true
+            expiredAt:
+              type: string
+              format: date-time
+              readOnly: true
+
+    ProcessState:
+      type: string
+      enum:
+        - CREATED
+        - RUNNING
+        - COMPLETED
+        - CANCELLED
+
+    TaskState:
+      type: string
+      enum:
+        - READY
+        - CLAIMED
+        - COMPLETED
+        - CANCELLED
+
+    ElementDefinitionType:
+      type: string
+      enum:
+        - FORM
+        - DOCUMENT
+        - DECISION
+        - FIELD
+
+    ElementValueBase:
+      type: object
+      discriminator:
+        propertyName: elementDefinitionType
+        mapping:
+          'FORM': '#/components/schemas/ElementValueForm'
+          'DOCUMENT': '#/components/schemas/ElementValueDocument'
+          'DECISION': '#/components/schemas/ElementValueDecision'
+          'FIELD': '#/components/schemas/ElementValueField'
+      properties:
+        id:
+          type: string
+          format: uuid
+        elementDefinitionType:
+          $ref: '#/components/schemas/ElementDefinitionType'
+        elementDefinitionCode:
+          type: string
+        createdBy:
+          type: string
+          format: uuid
+          description: Who create this model
+        createdAt:
+          type: string
+          format: date-time
+          description: When this model was created
+        lastModifiedBy:
+          type: string
+          format: uuid
+          description: Who was last update this model
+        lastModifiedAt:
+          type: string
+          format: date-time
+          description: When this model type was last updated.
+      required:
+        - elementDefinitionType
+        - elementDefinitionCode
+
+    ElementValueForm:
+      allOf:
+        - $ref: '#/components/schemas/ElementValueBase'
+        - type: object
+          properties:
+            formValues:
+              type: object
+              additionalProperties: {}
+          required:
+            - formValues
+
+    ElementValueDocument:
+      allOf:
+        - $ref: '#/components/schemas/ElementValueBase'
+        - type: object
+          properties:
+            name:
+              type: string
+            originalName:
+              type: string
+            contentPath:
+              type: string
+            contentType:
+              type: string
+            contentLength:
+              type: integer
+              format: int64
+          required:
+            - originalName
+
+    ElementValueDecision:
+      allOf:
+        - $ref: '#/components/schemas/ElementValueBase'
+        - type: object
+          properties:
+            code:
+              type: string
+          required:
+            - code
+
+    ElementValueField:
+      allOf:
+        - $ref: '#/components/schemas/ElementValueBase'
+        - type: object
+          properties:
+            value:
+              type: string
+
+    ProcessDefinitionSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        version:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+          maxLength: 50
+          readOnly: true
+      required:
+        - id
+
+    Process:
+      allOf:
+        - $ref: '#/components/schemas/AbstractAudited'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            subject:
+              type: string
+              minLength: 1
+              maxLength: 255
+            state:
+              $ref: '#/components/schemas/ProcessState'
+            processDefinition:
+              $ref: '#/components/schemas/ProcessDefinitionSummary'
+            elementValues:
+              type: array
+              items:
+                $ref: '#/components/schemas/ElementValueBase'
+            initiator:
+              $ref: '#/components/schemas/Principal'
+          required:
+            - processDefinition
+
+    ProcessPage:
+      allOf:
+        - $ref: '#/components/schemas/Page'
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                $ref: '#/components/schemas/Process'
+          required:
+            - content
+
+    Task:
+      allOf:
+        - $ref: '#/components/schemas/AbstractAudited'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            state:
+              $ref: '#/components/schemas/TaskState'
+            taskDefinition:
+              $ref: '#/components/schemas/TasksDefinitionSummary'
+            processId:
+              type: string
+              format: uuid
+            activityToken:
+              type: string
+              description: When create a Kuflow Task backed with a Temporal.io servers, this value is required and must be setted with the context task token of Temporal.io activity
+            activityResponseVersion:
+              type: string
+              description: When create a Kuflow Task backed with a Temporal.io servers, this value is required and must be setted with the activity version response.
+            elementValues:
+              type: array
+              items:
+                $ref: '#/components/schemas/ElementValueBase'
+            logs:
+              type: array
+              items:
+                $ref: '#/components/schemas/Log'
+            owner:
+              $ref: '#/components/schemas/Principal'
+          required:
+            - taskDefinition
+            - processId
+
+    TasksDefinitionSummary:
+      type: object
+      description: In creation task, one of 'ID, VERSION or CODE' is mandatory
+      properties:
+        id:
+          type: string
+          format: uuid
+        version:
+          type: string
+          format: uuid
+        code:
+          type: string
+        name:
+          type: string
+          minLength: 1
+          maxLength: 50
+          readOnly: true
+
+    TaskPage:
+      allOf:
+        - $ref: '#/components/schemas/Page'
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                $ref: '#/components/schemas/Task'
+          required:
+            - content
+
+    LogLevel:
+      type: string
+      enum:
+        - INFO
+        - WARN
+        - ERROR
+
+    Log:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+          description: When this model was created
+        message:
+          type: string
+        level:
+          $ref: '#/components/schemas/LogLevel'
+
+    Principal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          $ref: '#/components/schemas/PrincipalType'
+        name:
+          type: string
+
+    PrincipalType:
+      type: string
+      enum:
+        - USER
+        - APPLICATION
+        - SYSTEM
+
+    DeleteElementsCommand:
+      type: object
+      properties:
+        elementDefinitionCode:
+          description: Code of task elements to delete
+          type: string
+      required:
+        - elementDefinitionCode
+
+    AssignTaskCommand:
+      type: object
+      description: Command to assign task, only one option is required.
+      properties:
+        principalId:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+
+  responses:
+    DefaultError:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DefaultError'
+
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
