@@ -19,16 +19,8 @@
   <description>KuFlow REST Client</description>
 
   <properties>
-    <maven.version>3.8.1</maven.version>
+    <maven.version>3.8.4</maven.version>
     <java.version>11</java.version>
-    <resource.delimiter>#</resource.delimiter>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
-    <maven.build.timestamp.format>yyyy-MM-dd'T'HH-mm-ss</maven.build.timestamp.format>
-    <maven.compiler.source>${java.version}</maven.compiler.source>
-    <maven.compiler.target>${java.version}</maven.compiler.target>
-    <argLine>-Djava.security.egd=file:/dev/./urandom -Xmx256m</argLine>
 
     <!-- Maven plugin dependencies -->
     <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
@@ -42,13 +34,12 @@
 
     <!-- Spring dependencies -->
     <spring-boot.version>2.6.4</spring-boot.version>
-    <!-- Spring Cloud for Boot Version 2.4.x, 2.5.x -->
-    <spring-cloud.version>2021.0.0</spring-cloud.version>
 
     <!-- Application dependencies -->
     <feign.version>11.7</feign.version>
     <feign-form.version>3.8.0</feign-form.version>
     <jsr305.version>3.0.2</jsr305.version>
+
     <wiremock.version>2.32.0</wiremock.version>
   </properties>
 
