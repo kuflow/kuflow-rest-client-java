@@ -6,15 +6,15 @@
 
 package com.kuflow.rest.client;
 
-public class KuFlowClientException extends RuntimeException {
+public class KuFlowRestClientException extends RuntimeException {
 
     private static final long serialVersionUID = -5196736077043846135L;
 
-    public KuFlowClientException(String msg) {
+    public KuFlowRestClientException(String msg) {
         super(msg);
     }
 
-    public KuFlowClientException(String msg, Throwable ex) {
+    public KuFlowRestClientException(String msg, Throwable ex) {
         super(msg, ex);
     }
 }

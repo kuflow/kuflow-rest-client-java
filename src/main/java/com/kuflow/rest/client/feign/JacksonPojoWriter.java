@@ -8,7 +8,7 @@ package com.kuflow.rest.client.feign;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kuflow.rest.client.KuFlowClientException;
+import com.kuflow.rest.client.KuFlowRestClientException;
 import feign.codec.EncodeException;
 import feign.form.multipart.AbstractWriter;
 import feign.form.multipart.Output;
@@ -42,7 +42,7 @@ public class JacksonPojoWriter extends AbstractWriter {
         try {
             data = this.objectMapper.writeValueAsString(value);
         } catch (JsonProcessingException e) {
-            throw new KuFlowClientException("Unable to marshall", e);
+            throw new KuFlowRestClientException("Unable to marshall", e);
         }
         return data;
     }

@@ -40,7 +40,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-public class KuFlowClientTest {
+public class KuFlowRestClientTest {
 
     @RegisterExtension
     private static final WireMockExtension wireMockExtension = WireMockExtension
@@ -54,13 +54,13 @@ public class KuFlowClientTest {
         WireMock.configureFor(wmRuntimeInfo.getHttpPort());
     }
 
-    private KuFlowClient kuFlowClient;
+    private KuFlowRestClient kuFlowRestClient;
 
     @BeforeEach
     public void setupTest() {
         WireMock.resetToDefault();
 
-        this.kuFlowClient = this.getKuFlowClient();
+        this.kuFlowRestClient = this.getKuFlowClient();
     }
 
     @Test
@@ -76,7 +76,7 @@ public class KuFlowClientTest {
         AuthenticationResource resource = new AuthenticationResource();
         resource.setType(AuthenticationTypeResource.ENGINE);
 
-        AuthenticationResource authentication = this.kuFlowClient.getAuthenticationApi().createAuthentication(resource);
+        AuthenticationResource authentication = this.kuFlowRestClient.getAuthenticationApi().createAuthentication(resource);
         assertThat(authentication.getToken()).isEqualTo("DUMMY_TOKEN");
         assertThat(authentication.getExpiredAt()).isEqualTo(Instant.parse("2022-03-01T08:42:48Z"));
     }
@@ -97,7 +97,7 @@ public class KuFlowClientTest {
         json.setContentType("text/plain");
         File file = this.getFile("sample.txt");
 
-        TaskResource task = this.kuFlowClient.getTaskApi().actionsCompleteTaskElementDocument(taskId, json, file);
+        TaskResource task = this.kuFlowRestClient.getTaskApi().actionsCompleteTaskElementDocument(taskId, json, file);
         assertThat(task.getId()).isNotNull();
     }
 
@@ -120,7 +120,7 @@ public class KuFlowClientTest {
         UUID taskId = UUID.randomUUID();
         UUID elementId = UUID.randomUUID();
 
-        Response response = this.kuFlowClient.getTaskApi().actionsDownloadTaskElementDocument(taskId, elementId);
+        Response response = this.kuFlowRestClient.getTaskApi().actionsDownloadTaskElementDocument(taskId, elementId);
         assertThat(response.status()).isEqualTo(200);
         assertThat(response.headers().get("Content-Type").iterator().next()).isEqualTo("text/plain");
         assertThat(response.body().length()).isEqualTo(12);
@@ -128,22 +128,22 @@ public class KuFlowClientTest {
 
     private File getFile(String file) {
         try {
-            return new File(Objects.requireNonNull(KuFlowClientTest.class.getResource("/wiremock/__files/" + file)).toURI());
+            return new File(Objects.requireNonNull(KuFlowRestClientTest.class.getResource("/wiremock/__files/" + file)).toURI());
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private KuFlowClient getKuFlowClient() {
+    private KuFlowRestClient getKuFlowClient() {
         WireMockRuntimeInfo wmRuntimeInfo = wireMockExtension.getRuntimeInfo();
         String endpoint = String.format("http://localhost:%d", wmRuntimeInfo.getHttpPort());
 
-        KuFlowClientProperties clientProperties = new KuFlowClientProperties();
+        KuFlowRestClientProperties clientProperties = new KuFlowRestClientProperties();
         clientProperties.setEndpoint(endpoint);
         clientProperties.setApplicationId(UUID.randomUUID().toString());
         clientProperties.setToken(UUID.randomUUID().toString());
         clientProperties.setLoggerLevel(Logger.Level.FULL);
 
-        return new KuFlowClient(clientProperties);
+        return new KuFlowRestClient(clientProperties);
     }
 }

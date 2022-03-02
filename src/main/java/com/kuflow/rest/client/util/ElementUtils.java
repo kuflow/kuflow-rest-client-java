@@ -6,7 +6,7 @@
 
 package com.kuflow.rest.client.util;
 
-import com.kuflow.rest.client.KuFlowClientException;
+import com.kuflow.rest.client.KuFlowRestClientException;
 import com.kuflow.rest.client.resource.ElementDefinitionTypeResource;
 import com.kuflow.rest.client.resource.ElementValueBaseResource;
 import com.kuflow.rest.client.resource.ElementValueDecisionResource;
@@ -32,9 +32,9 @@ public final class ElementUtils {
     public static <T extends ElementValueBaseResource> T getSingleValueByCode(TaskResource task, String code, Class<T> clazz) {
         List<T> elements = getValuesByCode(task, code, clazz);
         if (elements.size() > 2) {
-            throw new KuFlowClientException("There are more than one element with the same code");
+            throw new KuFlowRestClientException("There are more than one element with the same code");
         } else if (elements.isEmpty()) {
-            throw new KuFlowClientException(
+            throw new KuFlowRestClientException(
                 String.format(
                     "The element value with code %s of type %s in task with id %s not exists",
                     code,
@@ -78,9 +78,9 @@ public final class ElementUtils {
     public static <T extends ElementValueBaseResource> T copySingleValueByCode(TaskResource task, String code, Class<T> clazz) {
         List<T> elements = copyValuesByCode(task, code, clazz);
         if (elements.size() > 2) {
-            throw new KuFlowClientException("There are more than one element with the same code");
+            throw new KuFlowRestClientException("There are more than one element with the same code");
         } else if (elements.isEmpty()) {
-            throw new KuFlowClientException(
+            throw new KuFlowRestClientException(
                 String.format(
                     "The element value with code %s of type %s in task with id %s not exists",
                     code,

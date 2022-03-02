@@ -9,7 +9,7 @@ package com.kuflow.rest.client;
 import feign.Logger;
 import feign.Request;
 
-public class KuFlowClientProperties {
+public class KuFlowRestClientProperties {
 
     private String endpoint = "https://api.kuflow.com/v1";
 

@@ -24,7 +24,7 @@ import feign.jackson.JacksonEncoder;
 import feign.slf4j.Slf4jLogger;
 import java.util.concurrent.TimeUnit;
 
-public class KuFlowClient {
+public class KuFlowRestClient {
 
     private final AuthenticationApi authenticationApi;
 
@@ -32,7 +32,7 @@ public class KuFlowClient {
 
     private final TaskApi taskApi;
 
-    public KuFlowClient(KuFlowClientProperties properties) {
+    public KuFlowRestClient(KuFlowRestClientProperties properties) {
         Assert.notNull(properties, "properties is required");
         Assert.notNull(properties.getApplicationId(), "applicationId is required");
         Assert.notNull(properties.getToken(), "token is required");
