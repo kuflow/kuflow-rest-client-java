@@ -1,5 +1,4 @@
-[![GitHub](https://img.shields.io/github/license/kuflow/kuflow-rest-client-java?label=License)](https://github.com/kuflow/kuflow-rest-client-java/blob/master/LICENSE)
-[![Maven Central](https://img.shields.io/maven-central/v/com.kuflow.rest.client/kuflow-rest-client?label=Maven%20Central)](https://search.maven.org/artifact/com.kuflow.rest.client/kuflow-rest-client)
+
 
 # KuFlow REST Client Java
 
