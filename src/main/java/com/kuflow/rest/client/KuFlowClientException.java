@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.kuflow.engine.client;
+package com.kuflow.rest.client;
 
 public class KuFlowClientException extends RuntimeException {
 

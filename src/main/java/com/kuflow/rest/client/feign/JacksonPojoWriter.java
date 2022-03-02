@@ -4,11 +4,11 @@
  * All rights reserved.
  */
 
-package com.kuflow.engine.client.feign;
+package com.kuflow.rest.client.feign;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kuflow.engine.client.KuFlowClientException;
+import com.kuflow.rest.client.KuFlowClientException;
 import feign.codec.EncodeException;
 import feign.form.multipart.AbstractWriter;
 import feign.form.multipart.Output;

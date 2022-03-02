@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.kuflow.engine.client;
+package com.kuflow.rest.client;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aMultipart;
 import static com.github.tomakehurst.wiremock.client.WireMock.containing;

@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.kuflow.engine.client.feign;
+package com.kuflow.rest.client.feign;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.codec.Encoder;

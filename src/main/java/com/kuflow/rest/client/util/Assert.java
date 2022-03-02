@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.kuflow.engine.client.util;
+package com.kuflow.rest.client.util;
 
 import javax.annotation.Nullable;
 

@@ -4,9 +4,9 @@
  * All rights reserved.
  */
 
-package com.kuflow.engine.client.util;
+package com.kuflow.rest.client.util;
 
-import com.kuflow.engine.client.KuFlowClientException;
+import com.kuflow.rest.client.KuFlowClientException;
 import com.kuflow.rest.client.resource.ElementDefinitionTypeResource;
 import com.kuflow.rest.client.resource.ElementValueBaseResource;
 import com.kuflow.rest.client.resource.ElementValueDecisionResource;

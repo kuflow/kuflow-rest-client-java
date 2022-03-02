@@ -299,7 +299,7 @@
                 <dateLibrary>java8</dateLibrary>
                 <apiPackage>com.kuflow.rest.client.controller</apiPackage>
                 <modelPackage>com.kuflow.rest.client.resource</modelPackage>
-                <invokerPackage>com.kuflow.restf.client.invoker</invokerPackage>
+                <invokerPackage>com.kuflow.rest.client.invoker</invokerPackage>
                 <performBeanValidation>true</performBeanValidation>
                 <useBeanValidation>true</useBeanValidation>
                 <legacyDiscriminatorBehavior>true</legacyDiscriminatorBehavior>
