@@ -7,7 +7,7 @@ The following templates has been modified from version 5.2.1 of open-api-generat
   - To override some licence headers
 3. **api.mustache**
   - Remove extends of `ApiClient.Api `to avoid generate some utils class with the default okHttp client
-  - Add @FeignClient to use with Spring
+  - Add @FeignClient
 
 
 
