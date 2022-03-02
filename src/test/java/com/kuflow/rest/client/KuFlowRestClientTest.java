@@ -23,11 +23,11 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.common.Slf4jNotifier;
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
+import com.kuflow.rest.client.KuFlowRestClientProperties.Level;
 import com.kuflow.rest.client.resource.AuthenticationResource;
 import com.kuflow.rest.client.resource.AuthenticationTypeResource;
 import com.kuflow.rest.client.resource.ElementValueDocumentResource;
 import com.kuflow.rest.client.resource.TaskResource;
-import feign.Logger;
 import feign.Response;
 import java.io.File;
 import java.net.URISyntaxException;
@@ -142,7 +142,7 @@ public class KuFlowRestClientTest {
         clientProperties.setEndpoint(endpoint);
         clientProperties.setApplicationId(UUID.randomUUID().toString());
         clientProperties.setToken(UUID.randomUUID().toString());
-        clientProperties.setLoggerLevel(Logger.Level.FULL);
+        clientProperties.setLoggerLevel(Level.FULL);
 
         return new KuFlowRestClient(clientProperties);
     }

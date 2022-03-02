@@ -6,7 +6,6 @@
 
 package com.kuflow.rest.client;
 
-import feign.Logger;
 import feign.Request;
 
 public class KuFlowRestClientProperties {
@@ -17,7 +16,7 @@ public class KuFlowRestClientProperties {
 
     private String token;
 
-    private Logger.Level loggerLevel = Logger.Level.NONE;
+    private Level loggerLevel = Level.NONE;
 
     private long connectTimeoutMillis = new Request.Options().readTimeoutMillis();
 
@@ -47,11 +46,11 @@ public class KuFlowRestClientProperties {
         this.token = token;
     }
 
-    public Logger.Level getLoggerLevel() {
+    public Level getLoggerLevel() {
         return this.loggerLevel;
     }
 
-    public void setLoggerLevel(Logger.Level loggerLevel) {
+    public void setLoggerLevel(Level loggerLevel) {
         this.loggerLevel = loggerLevel;
     }
 
@@ -69,5 +68,27 @@ public class KuFlowRestClientProperties {
 
     public void setReadTimeoutMillis(long readTimeoutMillis) {
         this.readTimeoutMillis = readTimeoutMillis;
+    }
+
+    /**
+     * Controls the level of logging.
+     */
+    public enum Level {
+        /**
+         * No logging.
+         */
+        NONE,
+        /**
+         * Log only the request method and URL and the response status code and execution time.
+         */
+        BASIC,
+        /**
+         * Log the basic information along with request and response headers.
+         */
+        HEADERS,
+        /**
+         * Log the headers, body, and metadata for both requests and responses.
+         */
+        FULL,
     }
 }

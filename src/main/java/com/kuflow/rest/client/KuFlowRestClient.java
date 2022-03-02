@@ -17,6 +17,7 @@ import com.kuflow.rest.client.controller.TaskApi;
 import com.kuflow.rest.client.feign.KuFlowFormEncoder;
 import com.kuflow.rest.client.util.Assert;
 import feign.Feign;
+import feign.Logger;
 import feign.Request;
 import feign.auth.BasicAuthRequestInterceptor;
 import feign.jackson.JacksonDecoder;
@@ -62,13 +63,15 @@ public class KuFlowRestClient {
             false
         );
 
+        Logger.Level logLevel = Logger.Level.valueOf(properties.getLoggerLevel().name());
+
         this.authenticationApi =
             Feign
                 .builder()
                 .encoder(encoder)
                 .decoder(decoder)
                 .logger(new Slf4jLogger(AuthenticationApi.class))
-                .logLevel(properties.getLoggerLevel())
+                .logLevel(logLevel)
                 .options(options)
                 .requestInterceptor(authRequestInterceptor)
                 .target(AuthenticationApi.class, properties.getEndpoint());
@@ -79,7 +82,7 @@ public class KuFlowRestClient {
                 .encoder(encoder)
                 .decoder(decoder)
                 .logger(new Slf4jLogger(ProcessApi.class))
-                .logLevel(properties.getLoggerLevel())
+                .logLevel(logLevel)
                 .options(options)
                 .requestInterceptor(authRequestInterceptor)
                 .target(ProcessApi.class, properties.getEndpoint());
@@ -90,7 +93,7 @@ public class KuFlowRestClient {
                 .encoder(encoder)
                 .decoder(decoder)
                 .logger(new Slf4jLogger(TaskApi.class))
-                .logLevel(properties.getLoggerLevel())
+                .logLevel(logLevel)
                 .options(options)
                 .requestInterceptor(authRequestInterceptor)
                 .target(TaskApi.class, properties.getEndpoint());
