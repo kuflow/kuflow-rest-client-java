@@ -7,6 +7,7 @@
 package com.kuflow.rest.client;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
@@ -27,11 +28,30 @@ import java.util.concurrent.TimeUnit;
 
 public class KuFlowRestClient {
 
+    private static final ObjectMapper objectMapper;
+
+    static {
+        objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new Jdk8Module());
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
+
     private final AuthenticationApi authenticationApi;
 
     private final ProcessApi processApi;
 
     private final TaskApi taskApi;
+
+    public static <T> T fromJson(String json, Class<T> clazz) {
+        try {
+            return KuFlowRestClient.objectMapper.readValue(json, clazz);
+        } catch (JsonProcessingException e) {
+            throw new KuFlowRestClientException("Parsing error", e);
+        }
+    }
 
     public KuFlowRestClient(KuFlowRestClientProperties properties) {
         Assert.notNull(properties, "properties is required");
@@ -40,15 +60,8 @@ public class KuFlowRestClient {
         Assert.notNull(properties.getEndpoint(), "endpoint is required");
         Assert.notNull(properties.getLoggerLevel(), "loggerLevel is required");
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new Jdk8Module());
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-        KuFlowFormEncoder encoder = new KuFlowFormEncoder(objectMapper, new JacksonEncoder(objectMapper));
-        JacksonDecoder decoder = new JacksonDecoder(objectMapper);
+        KuFlowFormEncoder encoder = new KuFlowFormEncoder(KuFlowRestClient.objectMapper, new JacksonEncoder(KuFlowRestClient.objectMapper));
+        JacksonDecoder decoder = new JacksonDecoder(KuFlowRestClient.objectMapper);
 
         BasicAuthRequestInterceptor authRequestInterceptor = new BasicAuthRequestInterceptor(
             properties.getApplicationId(),

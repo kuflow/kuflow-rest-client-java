@@ -37,8 +37,6 @@ externalDocs:
 servers:
   - url: 'https://api.kuflow.com/v1'
     description: Live environment
-  - url: 'https://api.sandbox.kuflow.com/v1'
-    description: Sandbox environment
 
 security:
   - BasicAuth: []
@@ -647,7 +645,6 @@ components:
           format: uuid
         taskCode:
           type: string
-          format: uuid
         taskState:
           $ref: '#/components/schemas/TaskState'
       required:
@@ -664,6 +661,8 @@ components:
           properties:
             data:
               $ref: '#/components/schemas/WebhookEventProcessStateChangedData'
+          required:
+            - data
 
     WebhookEventTaskStateChanged:
       description: Process Events
@@ -673,6 +672,8 @@ components:
           properties:
             data:
               $ref: '#/components/schemas/WebhookEventTaskStateChangedData'
+          required:
+            - data
 
     WebhookType:
       description: Type of the Event
