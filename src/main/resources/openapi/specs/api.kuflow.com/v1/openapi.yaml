@@ -205,6 +205,29 @@ paths:
         default:
           $ref: '#/components/responses/DefaultError'
 
+  /processes/{id}/~actions/cancel:
+    post:
+      summary: Cancel a Process
+      description: |
+        Cancel a Process. The state of Process is setted to canceled.
+        All the active tasks will be marked as canceled too.
+
+        If you are already in this state, no action is taken.
+      operationId: actionsCancelProcess
+      tags:
+        - process
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      responses:
+        '200':
+          description: Process cancelled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Process'
+        default:
+          $ref: '#/components/responses/DefaultError'
+
   /tasks:
     get:
       summary: Find all accessible Taks
