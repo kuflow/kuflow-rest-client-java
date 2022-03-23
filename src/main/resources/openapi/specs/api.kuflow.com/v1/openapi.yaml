@@ -829,6 +829,18 @@ components:
         - DECISION
         - FIELD
 
+    ElementValue:
+      type: object
+      properties:
+        valid:
+          type: boolean
+          default: true
+        value:
+          oneOf:
+            - type: string
+            - type: number
+            - type: object
+
     ElementValueBase:
       type: object
       discriminator:
@@ -990,9 +1002,17 @@ components:
               type: string
               description: When create a Kuflow Task backed with a Temporal.io servers, this value is required and must be setted with the activity version response.
             elementValues:
-              type: array
-              items:
-                $ref: '#/components/schemas/ElementValueBase'
+              type: object
+              additionalProperties:
+                oneOf:
+                  - $ref: '#/components/schemas/ElementValue'
+                  - type: array
+                    items:
+                      $ref: '#/components/schemas/ElementValue'
+                  - $ref: '#/components/schemas/ElementValueDocument'
+                  - type: array
+                    items:
+                      $ref: '#/components/schemas/ElementValueDocument'
             logs:
               type: array
               items:

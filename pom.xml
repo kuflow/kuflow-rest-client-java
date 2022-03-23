@@ -286,9 +286,13 @@
               <supportingFilesToGenerate>StringUtil.java,EncodingUtils.java</supportingFilesToGenerate>
               <typeMappings>
                 <typeMapping>OffsetDateTime=Instant</typeMapping>
+                <typeMapping>OneOfElementValuearrayElementValueDocumentarrayResource=ElementValuesResource</typeMapping>
+                <typeMapping>OneOfstringnumberobjectResource=ElementValueItemResource</typeMapping>
               </typeMappings>
               <importMappings>
                 <importMapping>java.time.OffsetDateTime=java.time.Instant</importMapping>
+                <importMapping>OneOfElementValuearrayElementValueDocumentarrayResource=com.kuflow.rest.client.resource.ElementValuesResource</importMapping>
+                <importMapping>OneOfstringnumberobjectResource=com.kuflow.rest.client.resource.ElementValueItemResource</importMapping>
               </importMappings>
               <globalProperties>
                 <!-- No skip models defined as the form parameters in "requestBody", ie: multipart/form-data -->
