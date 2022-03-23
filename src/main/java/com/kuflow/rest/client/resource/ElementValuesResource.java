@@ -65,7 +65,9 @@ public class ElementValuesResource {
             throw new NullPointerException("Some value is required");
         }
 
-        return new ElementValuesResource(Arrays.asList(values));
+        List<Object> asList = CastUtils.cast(Arrays.asList(values));
+
+        return new ElementValuesResource(asList);
     }
 
     public static ElementValuesResource of(String value) {
@@ -105,8 +107,6 @@ public class ElementValuesResource {
             elementValueResource.value(ElementValueItemResource.of((Integer) value));
         } else if (value instanceof Double) {
             elementValueResource.value(ElementValueItemResource.of((Double) value));
-            // } else if (value instanceof ElementValueResource) {
-            //     elementValueResource = (ElementValueResource) value;
         } else {
             throw new UnsupportedOperationException("Unkown type");
         }

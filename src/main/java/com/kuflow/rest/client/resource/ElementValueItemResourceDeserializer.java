@@ -34,8 +34,6 @@ public class ElementValueItemResourceDeserializer extends StdDeserializer<Elemen
             return ElementValueItemResource.of(node.asDouble());
         } else if (node.isIntegralNumber()) {
             return ElementValueItemResource.of(node.asInt());
-        } else if (node.isObject()) {
-            // return ElementValueItemResource.of(node.asInt());
         } else if (node.isEmpty()) {
             return null;
         }
