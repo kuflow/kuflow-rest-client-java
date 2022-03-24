@@ -264,7 +264,8 @@ paths:
     post:
       summary: Create a new Task in the selected Process
       description: |
-        Create a Task and optionally fill its elements
+        Create a Task and optionally fill its elements. We can fill in any type of element except documents.
+        If you want to add document type elements, then use the appropriate API method.
 
         If you want the method to be idempotent, please specify the `id` field in the request body.
       operationId: createTask
@@ -276,6 +277,10 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Task'
+            examples:
+              caca:
+                summary: Aadsad asdasdasd
+                value: {"id":"497f6eca-6276-4993-bfeb-53cbbbba6f08","taskDefinition":{"code":"string"},"processId":"9e0ad09b-5150-48c0-aded-707587048fd9","activityToken":"string","activityResponseVersion":"string","elementValues":{"element_code_1":{"value":"string"},"element_code_2":{"valid":false,"value":1111},"element_code_3":[{"value":"aaaaaa"},{"value":12.25}],"element_code_4":{"value":{"form_field_1":"string","form_field_2":"string"}}}}
       responses:
         '200':
           description: Task already created
@@ -353,14 +358,15 @@ paths:
         default:
           $ref: '#/components/responses/DefaultError'
 
-  /tasks/{id}/~actions/complete-element-decision:
+  /tasks/{id}/~actions/save-element:
     post:
-      summary: Complete an element decision
+      summary: Save an element
       description: |
-        Allow to complete an element decision.
+        Allow to save an element that is not a document i.e., a field, a decision or form. If you want to add documents, use the appropriate API method.
 
-        If the element already exists (the ID referenced in the body corresponds to an existing one), it updates it.
-      operationId: actionsCompleteTaskElementDecision
+        If values already exist for the provided element code, it replaces them with the new ones, otherwise it creates them.
+        To remove an element, use the appropriate API method.
+      operationId: actionsSaveTaskElement
       tags:
         - task
       parameters:
@@ -370,7 +376,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ElementValueDecision'
+              $ref: '#/components/schemas/ElementValueEnvelope'
       responses:
         '200':
           description: Task with element filled
@@ -381,64 +387,13 @@ paths:
         default:
           $ref: '#/components/responses/DefaultError'
 
-  /tasks/{id}/~actions/complete-element-form:
+  /tasks/{id}/~actions/save-element-document:
     post:
-      summary: Complete an element form
+      summary: Save an element document
       description: |
-        Allow to complete an element form.
+        Allow to save an element document.
 
-        If the element already exists (the ID referenced in the body corresponds to an existing one), it updates it.
-      operationId: actionsCompleteTaskElementForm
-      tags:
-        - task
-      parameters:
-        - $ref: '#/components/parameters/IdPathParam'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ElementValueForm'
-      responses:
-        '200':
-          description: Task with element filled
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Task'
-
-  /tasks/{id}/~actions/complete-element-field:
-    post:
-      summary: Complete an element form field
-      description: |
-        Allow to complete an element field.
-
-        If the element already exists (the ID referenced in the body corresponds to an existing one), it updates it.
-      operationId: actionsCompleteTaskElementField
-      tags:
-        - task
-      parameters:
-        - $ref: '#/components/parameters/IdPathParam'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ElementValueField'
-      responses:
-        '200':
-          description: Task with element filled
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Task'
-
-  /tasks/{id}/~actions/complete-element-document:
-    post:
-      summary: Complete an element document
-      description: |
-        Allow to complete an element document.
-
+        If it is a multiple element, and the provided identifier does not exist, the document will be added to the element.
         If the element already exists (the ID referenced in the body corresponds to an existing one), it updates it.
       operationId: actionsCompleteTaskElementDocument
       tags:
@@ -471,11 +426,39 @@ paths:
               schema:
                 $ref: '#/components/schemas/Task'
 
-  /tasks/{id}/~actions/delete-elements:
+  /tasks/{id}/~actions/delete-element:
     post:
       summary: Delete task elements by code
       description: Allow to delete task elements by specifying the item definition code
-      operationId: actionsDeleteTaskElements
+      operationId: actionsDeleteElement
+      tags:
+        - task
+      parameters:
+        - $ref: '#/components/parameters/IdPathParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteElementsCommand'
+      responses:
+        '200':
+          description: Task elements deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        default:
+          $ref: '#/components/responses/DefaultError'
+
+  /tasks/{id}/~actions/delete-document:
+    post:
+      summary: Delete a document by id
+      description: |
+        Allow to delete a specific document from a document type element.
+
+        If it is a multiple item, it will only delete the specified document. If it is a single element, in addition to the document, it will also delete the element.
+      operationId: actionsDeleteDocument
       tags:
         - task
       parameters:
@@ -829,6 +812,18 @@ components:
         - DECISION
         - FIELD
 
+    ElementValueEnvelope:
+      type: object
+      properties:
+        code:
+          type: string
+        value:
+          oneOf:
+            - $ref: '#/components/schemas/ElementValue'
+            - type: array
+              items:
+                $ref: '#/components/schemas/ElementValue'
+
     ElementValue:
       type: object
       properties:
@@ -841,90 +836,25 @@ components:
             - type: number
             - type: object
 
-    ElementValueBase:
+    ElementValueDocument:
       type: object
-      discriminator:
-        propertyName: elementDefinitionType
-        mapping:
-          'FORM': '#/components/schemas/ElementValueForm'
-          'DOCUMENT': '#/components/schemas/ElementValueDocument'
-          'DECISION': '#/components/schemas/ElementValueDecision'
-          'FIELD': '#/components/schemas/ElementValueField'
       properties:
         id:
           type: string
           format: uuid
-        elementDefinitionType:
-          $ref: '#/components/schemas/ElementDefinitionType'
         elementDefinitionCode:
           type: string
-        createdBy:
+        name:
           type: string
-          format: uuid
-          description: Who create this model
-        createdAt:
+        contentPath:
           type: string
-          format: date-time
-          description: When this model was created
-        lastModifiedBy:
+        contentType:
           type: string
-          format: uuid
-          description: Who was last update this model
-        lastModifiedAt:
-          type: string
-          format: date-time
-          description: When this model type was last updated.
+        contentLength:
+          type: integer
+          format: int64
       required:
-        - elementDefinitionType
         - elementDefinitionCode
-
-    ElementValueForm:
-      allOf:
-        - $ref: '#/components/schemas/ElementValueBase'
-        - type: object
-          properties:
-            formValues:
-              type: object
-              additionalProperties: {}
-          required:
-            - formValues
-
-    ElementValueDocument:
-      allOf:
-        - $ref: '#/components/schemas/ElementValueBase'
-        - type: object
-          properties:
-            name:
-              type: string
-            originalName:
-              type: string
-            contentPath:
-              type: string
-            contentType:
-              type: string
-            contentLength:
-              type: integer
-              format: int64
-          required:
-            - originalName
-
-    ElementValueDecision:
-      allOf:
-        - $ref: '#/components/schemas/ElementValueBase'
-        - type: object
-          properties:
-            code:
-              type: string
-          required:
-            - code
-
-    ElementValueField:
-      allOf:
-        - $ref: '#/components/schemas/ElementValueBase'
-        - type: object
-          properties:
-            value:
-              type: string
 
     ProcessDefinitionSummary:
       type: object
@@ -962,7 +892,7 @@ components:
             elementValues:
               type: array
               items:
-                $ref: '#/components/schemas/ElementValueBase'
+                $ref: '#/components/schemas/ElementValueEnvelope'
             initiator:
               $ref: '#/components/schemas/Principal'
           required:

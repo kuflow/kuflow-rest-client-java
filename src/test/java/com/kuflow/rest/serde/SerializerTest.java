@@ -75,10 +75,12 @@ public class SerializerTest {
             System.out.println(json);
             assertThat(json)
                 .isEqualTo(
-                    "{\"name\":\"name\",\"originalName\":null,\"contentPath\":\"contentPath\",\"contentType\":null," +
-                    "\"contentLength\":10748,\"id\":\"145fd460-5e52-4160-a0e4-64fd1c9ef380\",\"elementDefinitionType\":null," +
-                    "\"elementDefinitionCode\":null,\"createdBy\":null,\"createdAt\":null,\"lastModifiedBy\":null," +
-                    "\"lastModifiedAt\":null}"
+                    "{\"id\":\"145fd460-5e52-4160-a0e4-64fd1c9ef380\"," +
+                    "\"elementDefinitionCode\":\"DOC\"," +
+                    "\"name\":\"name\"," +
+                    "\"contentPath\":\"contentPath\"," +
+                    "\"contentType\":null," +
+                    "\"contentLength\":10748}"
                 );
         }
 

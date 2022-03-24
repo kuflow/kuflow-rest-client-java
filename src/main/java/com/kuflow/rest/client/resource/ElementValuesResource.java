@@ -32,7 +32,7 @@ public class ElementValuesResource {
 
     ElementValuesResource(List<Object> values) {
         if (values == null) {
-            throw new NullPointerException("Some value is required");
+            throw new IllegalArgumentException("Some value is required");
         }
 
         if (!values.isEmpty()) {
@@ -41,7 +41,7 @@ public class ElementValuesResource {
                 .filter(v -> !((v instanceof ElementValueResource) || (v instanceof ElementValueDocumentResource)))
                 .findAny()
                 .ifPresent(v -> {
-                    throw new UnsupportedOperationException("Items object type is unsupported");
+                    throw new IllegalArgumentException("Items object type is unsupported");
                 });
         }
 
@@ -54,7 +54,7 @@ public class ElementValuesResource {
 
     public static ElementValuesResource of(ElementValueDocumentResource value) {
         if (value == null) {
-            throw new NullPointerException("Some value is required");
+            throw new IllegalArgumentException("Some value is required");
         }
 
         return new ElementValuesResource(value);
@@ -62,7 +62,7 @@ public class ElementValuesResource {
 
     public static ElementValuesResource of(ElementValueDocumentResource... values) {
         if (values == null) {
-            throw new NullPointerException("Some value is required");
+            throw new IllegalArgumentException("Some value is required");
         }
 
         List<Object> asList = CastUtils.cast(Arrays.asList(values));
@@ -96,9 +96,25 @@ public class ElementValuesResource {
 
     private static <T> ElementValuesResource toElementValuesResource(Object value) {
         if (value == null) {
-            throw new NullPointerException("Some value is required");
+            throw new IllegalArgumentException("Some value is required");
         }
 
+        ElementValueResource elementValueResource = toElementValueResource(value);
+
+        return new ElementValuesResource(elementValueResource);
+    }
+
+    private static ElementValuesResource toElementValuesResource(Object... values) {
+        if (values == null) {
+            throw new IllegalArgumentException("Some value is required");
+        }
+
+        List<Object> elementValues = Stream.of(values).map(ElementValuesResource::toElementValueResource).collect(Collectors.toList());
+
+        return new ElementValuesResource(elementValues);
+    }
+
+    private static ElementValueResource toElementValueResource(Object value) {
         ElementValueResource elementValueResource = new ElementValueResource();
 
         if (value instanceof String) {
@@ -108,37 +124,10 @@ public class ElementValuesResource {
         } else if (value instanceof Double) {
             elementValueResource.value(ElementValueItemResource.of((Double) value));
         } else {
-            throw new UnsupportedOperationException("Unkown type");
+            throw new IllegalArgumentException(String.format("Unkown type %s", value.getClass().getName()));
         }
 
-        return new ElementValuesResource(elementValueResource);
-    }
-
-    private static ElementValuesResource toElementValuesResource(Object... values) {
-        if (values == null) {
-            throw new NullPointerException("Some value is required");
-        }
-
-        List<Object> elementValues = Stream
-            .of(values)
-            .map(v -> {
-                ElementValueResource elementValueResource = new ElementValueResource();
-
-                if (v instanceof String) {
-                    elementValueResource.value(ElementValueItemResource.of((String) v));
-                } else if (v instanceof Integer) {
-                    elementValueResource.value(ElementValueItemResource.of((Integer) v));
-                } else if (v instanceof Double) {
-                    elementValueResource.value(ElementValueItemResource.of((Double) v));
-                } else {
-                    throw new UnsupportedOperationException("Unkown type");
-                }
-
-                return elementValueResource;
-            })
-            .collect(Collectors.toList());
-
-        return new ElementValuesResource(elementValues);
+        return elementValueResource;
     }
 
     public ElementValueResource getValue() {
