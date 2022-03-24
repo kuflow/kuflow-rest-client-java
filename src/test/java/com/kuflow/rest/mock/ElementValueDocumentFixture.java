@@ -14,8 +14,8 @@ public class ElementValueDocumentFixture {
     public static ElementValueDocumentResource getElementValueDocument0() {
         ElementValueDocumentResource elementValueDocumentResource = new ElementValueDocumentResource();
         elementValueDocumentResource.setId(UUID.fromString("145fd460-5e52-4160-a0e4-64fd1c9ef380"));
-        elementValueDocumentResource.setElementDefinitionCode("DOC");
         elementValueDocumentResource.setContentLength(10748L);
+        elementValueDocumentResource.setContentType("application/pdf");
         elementValueDocumentResource.setContentPath("contentPath");
         elementValueDocumentResource.setName("name");
 

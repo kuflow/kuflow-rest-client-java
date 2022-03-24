@@ -286,14 +286,14 @@
               <supportingFilesToGenerate>StringUtil.java,EncodingUtils.java</supportingFilesToGenerate>
               <typeMappings>
                 <typeMapping>OffsetDateTime=Instant</typeMapping>
-                <typeMapping>OneOfElementValuearrayElementValueDocumentarrayResource=ElementValuesResource</typeMapping>
-                <typeMapping>OneOfElementValuearrayResource=ElementValuesResource</typeMapping>
+                <typeMapping>OneOfElementValuearrayElementValueDocumentarrayResource=ElementValueWrapperResource</typeMapping>
+                <typeMapping>OneOfElementValuearrayResource=ElementValueWrapperResource</typeMapping>
                 <typeMapping>OneOfstringnumberobjectResource=ElementValueItemResource</typeMapping>
               </typeMappings>
               <importMappings>
                 <importMapping>java.time.OffsetDateTime=java.time.Instant</importMapping>
-                <importMapping>OneOfElementValuearrayElementValueDocumentarrayResource=com.kuflow.rest.client.resource.ElementValuesResource</importMapping>
-                <typeMapping>OneOfElementValuearrayResource=com.kuflow.rest.client.resource.ElementValuesResource</typeMapping>
+                <importMapping>OneOfElementValuearrayElementValueDocumentarrayResource=com.kuflow.rest.client.resource.ElementValueWrapperResource</importMapping>
+                <typeMapping>OneOfElementValuearrayResource=com.kuflow.rest.client.resource.ElementValueWrapperResource</typeMapping>
                 <importMapping>OneOfstringnumberobjectResource=com.kuflow.rest.client.resource.ElementValueItemResource</importMapping>
               </importMappings>
               <globalProperties>

@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kuflow.rest.client.resource.ElementValuesResource;
+import com.kuflow.rest.client.resource.ElementValueWrapperResource;
 import com.kuflow.rest.mock.ElementValueDocumentFixture;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.DisplayName;
@@ -25,26 +25,26 @@ public class SerializerTest {
         ObjectMapper mapper = new ObjectMapper();
 
         {
-            ElementValuesResource elementValuesResource = ElementValuesResource.of("aString");
+            ElementValueWrapperResource elementValuesResource = ElementValueWrapperResource.of("aString");
             String json = mapper.writeValueAsString(elementValuesResource);
             assertThat(json).isEqualTo("{\"valid\":true,\"value\":\"aString\"}");
         }
 
         {
-            ElementValuesResource elementValuesResource = ElementValuesResource.of("aString");
+            ElementValueWrapperResource elementValuesResource = ElementValueWrapperResource.of("aString");
             elementValuesResource.valid(false);
             String json = mapper.writeValueAsString(elementValuesResource);
             assertThat(json).isEqualTo("{\"valid\":false,\"value\":\"aString\"}");
         }
 
         {
-            ElementValuesResource elementValuesResource = ElementValuesResource.of(123);
+            ElementValueWrapperResource elementValuesResource = ElementValueWrapperResource.of(123);
             String json = mapper.writeValueAsString(elementValuesResource);
             assertThat(json).isEqualTo("{\"valid\":true,\"value\":123}");
         }
 
         {
-            ElementValuesResource elementValuesResource = ElementValuesResource.of(123.123);
+            ElementValueWrapperResource elementValuesResource = ElementValueWrapperResource.of(123.123);
             String json = mapper.writeValueAsString(elementValuesResource);
             assertThat(json).isEqualTo("{\"valid\":true,\"value\":123.123}");
         }
@@ -56,7 +56,7 @@ public class SerializerTest {
         ObjectMapper mapper = new ObjectMapper();
 
         {
-            ElementValuesResource elementValuesResource = ElementValuesResource.of("one", "two");
+            ElementValueWrapperResource elementValuesResource = ElementValueWrapperResource.of("one", "two");
             String json = mapper.writeValueAsString(elementValuesResource);
             System.out.println(json);
             assertThat(json).isEqualTo("[{\"valid\":true,\"value\":\"one\"},{\"valid\":true,\"value\":\"two\"}]");
@@ -69,23 +69,22 @@ public class SerializerTest {
         ObjectMapper mapper = new ObjectMapper();
 
         {
-            ElementValuesResource elementValuesResource = ElementValuesResource.of(ElementValueDocumentFixture.getElementValueDocument0());
+            ElementValueWrapperResource elementValuesResource = ElementValueWrapperResource.of(ElementValueDocumentFixture.getElementValueDocument0());
 
             String json = mapper.writeValueAsString(elementValuesResource);
             System.out.println(json);
             assertThat(json)
                 .isEqualTo(
                     "{\"id\":\"145fd460-5e52-4160-a0e4-64fd1c9ef380\"," +
-                    "\"elementDefinitionCode\":\"DOC\"," +
                     "\"name\":\"name\"," +
                     "\"contentPath\":\"contentPath\"," +
-                    "\"contentType\":null," +
+                    "\"contentType\":\"application/pdf\"," +
                     "\"contentLength\":10748}"
                 );
         }
 
         {
-            ElementValuesResource elementValuesResource = ElementValuesResource.of(
+            ElementValueWrapperResource elementValuesResource = ElementValueWrapperResource.of(
                 ElementValueDocumentFixture.getElementValueDocument0(),
                 ElementValueDocumentFixture.getElementValueDocument0(),
                 ElementValueDocumentFixture.getElementValueDocument0()

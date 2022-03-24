@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kuflow.rest.client.resource.ElementValuesResource;
+import com.kuflow.rest.client.resource.ElementValueWrapperResource;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -25,12 +25,12 @@ public class DeserializerTest {
 
         {
             String json = "null";
-            ElementValuesResource readValue = mapper.readValue(json, ElementValuesResource.class);
+            ElementValueWrapperResource readValue = mapper.readValue(json, ElementValueWrapperResource.class);
             assertThat(readValue).isNull();
         }
         {
             String json = "{}";
-            ElementValuesResource readValue = mapper.readValue(json, ElementValuesResource.class);
+            ElementValueWrapperResource readValue = mapper.readValue(json, ElementValueWrapperResource.class);
             assertThat(readValue).isNull();
         }
     }
@@ -42,7 +42,7 @@ public class DeserializerTest {
 
         {
             String json = "{\"value\": \"aString\"}";
-            ElementValuesResource readValue = mapper.readValue(json, ElementValuesResource.class);
+            ElementValueWrapperResource readValue = mapper.readValue(json, ElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.isValid()).isTrue();
             assertThat(readValue.getValueAsString()).isEqualTo("aString");
@@ -51,7 +51,7 @@ public class DeserializerTest {
 
         {
             String json = "{\"valid\": false, \"value\": \"aString\"}";
-            ElementValuesResource readValue = mapper.readValue(json, ElementValuesResource.class);
+            ElementValueWrapperResource readValue = mapper.readValue(json, ElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.isValid()).isFalse();
             assertThat(readValue.getValueAsString()).isEqualTo("aString");
@@ -65,7 +65,7 @@ public class DeserializerTest {
 
         {
             String json = "{\"value\": 123}";
-            ElementValuesResource readValue = mapper.readValue(json, ElementValuesResource.class);
+            ElementValueWrapperResource readValue = mapper.readValue(json, ElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThatExceptionOfType(ClassCastException.class).isThrownBy(() -> readValue.getValueAsString());
             assertThat(readValue.getValueAsInteger()).isEqualTo(123);
@@ -73,7 +73,7 @@ public class DeserializerTest {
 
         {
             String json = "{\"valid\": false, \"value\": 123.123}";
-            ElementValuesResource readValue = mapper.readValue(json, ElementValuesResource.class);
+            ElementValueWrapperResource readValue = mapper.readValue(json, ElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThatExceptionOfType(ClassCastException.class).isThrownBy(() -> readValue.getValueAsString());
             assertThat(readValue.getValueAsDouble()).isEqualTo(123.123d);
@@ -87,13 +87,13 @@ public class DeserializerTest {
 
         {
             String json = "[]";
-            ElementValuesResource readValue = mapper.readValue(json, ElementValuesResource.class);
+            ElementValueWrapperResource readValue = mapper.readValue(json, ElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
         }
 
         {
             String json = "[{\"value\": \"aString\"}]";
-            ElementValuesResource readValue = mapper.readValue(json, ElementValuesResource.class);
+            ElementValueWrapperResource readValue = mapper.readValue(json, ElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValuesAsString().size()).isEqualTo(1);
             assertThat(readValue.getValuesAsString().get(0)).isEqualTo("aString");
@@ -101,7 +101,7 @@ public class DeserializerTest {
 
         {
             String json = "[{\"value\": \"one\"},{\"value\": \"two\"},{\"value\": \"three\"}]";
-            ElementValuesResource readValue = mapper.readValue(json, ElementValuesResource.class);
+            ElementValueWrapperResource readValue = mapper.readValue(json, ElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValuesAsString().size()).isEqualTo(3);
             assertThat(readValue.getValuesAsString().get(2)).isEqualTo("three");
@@ -109,7 +109,7 @@ public class DeserializerTest {
 
         {
             String json = "[{\"value\": 1},{\"value\": 2},{\"value\": 3}]";
-            ElementValuesResource readValue = mapper.readValue(json, ElementValuesResource.class);
+            ElementValueWrapperResource readValue = mapper.readValue(json, ElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThatExceptionOfType(ClassCastException.class).isThrownBy(() -> readValue.getValuesAsString());
             assertThat(readValue.getValuesAsInteger().size()).isEqualTo(3);
@@ -118,7 +118,7 @@ public class DeserializerTest {
 
         {
             String json = "[{\"valid\": false, \"value\": 1.1}, {\"valid\": false, \"value\": 2.2}, {\"valid\": false, \"value\": 3.3}]";
-            ElementValuesResource readValue = mapper.readValue(json, ElementValuesResource.class);
+            ElementValueWrapperResource readValue = mapper.readValue(json, ElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThatExceptionOfType(ClassCastException.class).isThrownBy(() -> readValue.getValuesAsString());
             assertThat(readValue.getValuesAsDouble().size()).isEqualTo(3);
@@ -133,7 +133,7 @@ public class DeserializerTest {
 
         {
             String json = "[{\"value\": \"aString\"}]";
-            ElementValuesResource readValue = mapper.readValue(json, ElementValuesResource.class);
+            ElementValueWrapperResource readValue = mapper.readValue(json, ElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValuesAsString()).contains("aString");
             assertThatExceptionOfType(ClassCastException.class).isThrownBy(() -> readValue.getValuesAsInteger());
@@ -141,7 +141,7 @@ public class DeserializerTest {
 
         {
             String json = "[{\"valid\": false, \"value\": \"aString\"}]";
-            ElementValuesResource readValue = mapper.readValue(json, ElementValuesResource.class);
+            ElementValueWrapperResource readValue = mapper.readValue(json, ElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValues().get(0).getValid()).isFalse();
         }

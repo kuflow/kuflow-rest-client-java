@@ -19,26 +19,30 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.github.tomakehurst.wiremock.client.WireMock;
-import com.github.tomakehurst.wiremock.common.Slf4jNotifier;
-import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
-import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.kuflow.rest.client.KuFlowRestClientProperties.Level;
 import com.kuflow.rest.client.resource.AuthenticationResource;
 import com.kuflow.rest.client.resource.AuthenticationTypeResource;
-import com.kuflow.rest.client.resource.ElementValueDocumentResource;
+import com.kuflow.rest.client.resource.SaveElementDocumentCommandResource;
 import com.kuflow.rest.client.resource.TaskResource;
-import feign.Response;
+
 import java.io.File;
 import java.net.URISyntaxException;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
+
+import com.github.tomakehurst.wiremock.client.WireMock;
+import com.github.tomakehurst.wiremock.common.Slf4jNotifier;
+import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
+import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+
+import feign.Response;
 
 public class KuFlowRestClientTest {
 
@@ -92,12 +96,11 @@ public class KuFlowRestClientTest {
         );
 
         UUID taskId = UUID.randomUUID();
-        ElementValueDocumentResource json = new ElementValueDocumentResource();
-        json.setName("sample.txt");
-        json.setContentType("text/plain");
+        SaveElementDocumentCommandResource json = new SaveElementDocumentCommandResource();
+        json.setCode("DOC");
         File file = this.getFile("sample.txt");
 
-        TaskResource task = this.kuFlowRestClient.getTaskApi().actionsCompleteTaskElementDocument(taskId, json, file);
+        TaskResource task = this.kuFlowRestClient.getTaskApi().actionsSaveElementDocument(taskId, json, file);
         assertThat(task.getId()).isNotNull();
     }
 
@@ -120,7 +123,7 @@ public class KuFlowRestClientTest {
         UUID taskId = UUID.randomUUID();
         UUID elementId = UUID.randomUUID();
 
-        Response response = this.kuFlowRestClient.getTaskApi().actionsDownloadTaskElementDocument(taskId, elementId);
+        Response response = this.kuFlowRestClient.getTaskApi().actionsDownloadElementDocument(taskId, elementId);
         assertThat(response.status()).isEqualTo(200);
         assertThat(response.headers().get("Content-Type").iterator().next()).isEqualTo("text/plain");
         assertThat(response.body().length()).isEqualTo(12);

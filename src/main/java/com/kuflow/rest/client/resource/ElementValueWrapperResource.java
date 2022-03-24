@@ -15,22 +15,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@JsonDeserialize(using = ElementValuesResourceDeserializer.class)
-@JsonSerialize(using = ElementValuesResourceSerializer.class)
-public class ElementValuesResource {
+@JsonDeserialize(using = ElementValueWrapperResourceDeserializer.class)
+@JsonSerialize(using = ElementValueWrapperResourceSerializer.class)
+public class ElementValueWrapperResource {
 
     // Only can be: ElementValueResource || ElementValueDocumentResource || List<ElementValueResource> || List<ElementValueDocumentResource>
     private Object value;
 
-    ElementValuesResource(ElementValueResource value) {
+    ElementValueWrapperResource(ElementValueResource value) {
         this.value = value;
     }
 
-    ElementValuesResource(ElementValueDocumentResource value) {
+    ElementValueWrapperResource(ElementValueDocumentResource value) {
         this.value = value;
     }
 
-    ElementValuesResource(List<Object> values) {
+    ElementValueWrapperResource(List<Object> values) {
         if (values == null) {
             throw new IllegalArgumentException("Some value is required");
         }
@@ -52,66 +52,66 @@ public class ElementValuesResource {
         return this.value;
     }
 
-    public static ElementValuesResource of(ElementValueDocumentResource value) {
+    public static ElementValueWrapperResource of(ElementValueDocumentResource value) {
         if (value == null) {
             throw new IllegalArgumentException("Some value is required");
         }
 
-        return new ElementValuesResource(value);
+        return new ElementValueWrapperResource(value);
     }
 
-    public static ElementValuesResource of(ElementValueDocumentResource... values) {
+    public static ElementValueWrapperResource of(ElementValueDocumentResource... values) {
         if (values == null) {
             throw new IllegalArgumentException("Some value is required");
         }
 
         List<Object> asList = CastUtils.cast(Arrays.asList(values));
 
-        return new ElementValuesResource(asList);
+        return new ElementValueWrapperResource(asList);
     }
 
-    public static ElementValuesResource of(String value) {
+    public static ElementValueWrapperResource of(String value) {
         return toElementValuesResource(value);
     }
 
-    public static ElementValuesResource of(String... values) {
+    public static ElementValueWrapperResource of(String... values) {
         return toElementValuesResource(CastUtils.cast(values));
     }
 
-    public static ElementValuesResource of(Integer value) {
+    public static ElementValueWrapperResource of(Integer value) {
         return toElementValuesResource(value);
     }
 
-    public static ElementValuesResource of(Integer... values) {
+    public static ElementValueWrapperResource of(Integer... values) {
         return toElementValuesResource(CastUtils.cast(values));
     }
 
-    public static ElementValuesResource of(Double value) {
+    public static ElementValueWrapperResource of(Double value) {
         return toElementValuesResource(value);
     }
 
-    public static ElementValuesResource of(Double... values) {
+    public static ElementValueWrapperResource of(Double... values) {
         return toElementValuesResource(CastUtils.cast(values));
     }
 
-    private static <T> ElementValuesResource toElementValuesResource(Object value) {
+    private static <T> ElementValueWrapperResource toElementValuesResource(Object value) {
         if (value == null) {
             throw new IllegalArgumentException("Some value is required");
         }
 
         ElementValueResource elementValueResource = toElementValueResource(value);
 
-        return new ElementValuesResource(elementValueResource);
+        return new ElementValueWrapperResource(elementValueResource);
     }
 
-    private static ElementValuesResource toElementValuesResource(Object... values) {
+    private static ElementValueWrapperResource toElementValuesResource(Object... values) {
         if (values == null) {
             throw new IllegalArgumentException("Some value is required");
         }
 
-        List<Object> elementValues = Stream.of(values).map(ElementValuesResource::toElementValueResource).collect(Collectors.toList());
+        List<Object> elementValues = Stream.of(values).map(ElementValueWrapperResource::toElementValueResource).collect(Collectors.toList());
 
-        return new ElementValuesResource(elementValues);
+        return new ElementValueWrapperResource(elementValues);
     }
 
     private static ElementValueResource toElementValueResource(Object value) {
@@ -234,7 +234,7 @@ public class ElementValuesResource {
         return elementValueResource.getValid();
     }
 
-    public ElementValuesResource valid(Boolean value) {
+    public ElementValueWrapperResource valid(Boolean value) {
         if (this.value == null) {
             throw new UnsupportedOperationException();
         }

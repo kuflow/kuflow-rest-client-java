@@ -12,18 +12,18 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import java.io.IOException;
 import java.util.Collection;
 
-public class ElementValuesResourceSerializer extends StdSerializer<ElementValuesResource> {
+public class ElementValueWrapperResourceSerializer extends StdSerializer<ElementValueWrapperResource> {
 
-    protected ElementValuesResourceSerializer(Class<ElementValuesResource> t) {
+    protected ElementValueWrapperResourceSerializer(Class<ElementValueWrapperResource> t) {
         super(t);
     }
 
-    protected ElementValuesResourceSerializer() {
+    protected ElementValueWrapperResourceSerializer() {
         this(null);
     }
 
     @Override
-    public void serialize(ElementValuesResource source, JsonGenerator jsonGenerator, SerializerProvider provider) throws IOException {
+    public void serialize(ElementValueWrapperResource source, JsonGenerator jsonGenerator, SerializerProvider provider) throws IOException {
         if (source == null) {
             return;
         }

@@ -16,20 +16,20 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.io.IOException;
 import java.util.List;
 
-public class ElementValuesResourceDeserializer extends StdDeserializer<ElementValuesResource> {
+public class ElementValueWrapperResourceDeserializer extends StdDeserializer<ElementValueWrapperResource> {
 
     private static final TypeReference<List<ElementValueResource>> LIST_TYPE = new TypeReference<List<ElementValueResource>>() {};
 
-    public ElementValuesResourceDeserializer() {
+    public ElementValueWrapperResourceDeserializer() {
         this(null);
     }
 
-    public ElementValuesResourceDeserializer(Class<?> vc) {
+    public ElementValueWrapperResourceDeserializer(Class<?> vc) {
         super(vc);
     }
 
     @Override
-    public ElementValuesResource deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException, JacksonException {
+    public ElementValueWrapperResource deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException, JacksonException {
         JsonToken currentToken = jsonParser.getCurrentToken();
 
         if (currentToken == JsonToken.START_OBJECT) {
@@ -38,14 +38,14 @@ public class ElementValuesResourceDeserializer extends StdDeserializer<ElementVa
                 return null;
             }
 
-            return new ElementValuesResource(elementValueResource);
+            return new ElementValueWrapperResource(elementValueResource);
         } else if (currentToken == JsonToken.START_ARRAY) {
             List<Object> elementsValueResource = jsonParser.readValueAs(LIST_TYPE);
-            return new ElementValuesResource(elementsValueResource);
+            return new ElementValueWrapperResource(elementsValueResource);
         } else if (currentToken == JsonToken.VALUE_NULL) {
             return null;
         }
 
-        throw new JsonMappingException(jsonParser, String.format("Unable to deserialize a %s", ElementValuesResource.class.getName()));
+        throw new JsonMappingException(jsonParser, String.format("Unable to deserialize a %s", ElementValueWrapperResource.class.getName()));
     }
 }
