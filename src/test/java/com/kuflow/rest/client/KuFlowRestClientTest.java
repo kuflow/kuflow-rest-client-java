@@ -85,7 +85,7 @@ public class KuFlowRestClientTest {
     @DisplayName("GIVEN a multipart request WHEN invoque a method THEN the json and the files are sent and response is parsed correctly")
     public void givenAMultipartRequestWhenInvoqueAMethodThenTheJsonAndTheFilesAreSentAndResponseIsParsedCorrectly() {
         givenThat(
-            post(urlMatching("/tasks/([a-z0-9\\-]+)/~actions/complete-element-document"))
+            post(urlMatching("/tasks/([a-z0-9\\-]+)/~actions/save-element-document"))
                 .withMultipartRequestBody(aMultipart().withName("json").withHeader("Content-Type", containing("application/json")))
                 .withMultipartRequestBody(aMultipart().withName("file").withHeader("Content-Type", containing("text/plain")))
                 .willReturn(ok().withBodyFile("task-api.ok.json"))
@@ -107,7 +107,7 @@ public class KuFlowRestClientTest {
 
         givenThat(
             get(urlMatching("/tasks/([a-z0-9\\-]+)/~actions/download-element-document\\?.*"))
-                .withQueryParam("elementValueId", matching("[a-z0-9\\-]+"))
+                .withQueryParam("documentId", matching("[a-z0-9\\-]+"))
                 .willReturn(
                     ok()
                         .withHeader("Content-Type", "text/plain")
