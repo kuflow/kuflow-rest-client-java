@@ -19,30 +19,26 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.github.tomakehurst.wiremock.client.WireMock;
+import com.github.tomakehurst.wiremock.common.Slf4jNotifier;
+import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
+import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.kuflow.rest.client.KuFlowRestClientProperties.Level;
 import com.kuflow.rest.client.resource.AuthenticationResource;
 import com.kuflow.rest.client.resource.AuthenticationTypeResource;
 import com.kuflow.rest.client.resource.SaveElementDocumentCommandResource;
 import com.kuflow.rest.client.resource.TaskResource;
-
+import feign.Response;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
-
-import com.github.tomakehurst.wiremock.client.WireMock;
-import com.github.tomakehurst.wiremock.common.Slf4jNotifier;
-import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
-import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
-
-import feign.Response;
 
 public class KuFlowRestClientTest {
 

@@ -109,7 +109,10 @@ public class ElementValueWrapperResource {
             throw new IllegalArgumentException("Some value is required");
         }
 
-        List<Object> elementValues = Stream.of(values).map(ElementValueWrapperResource::toElementValueResource).collect(Collectors.toList());
+        List<Object> elementValues = Stream
+            .of(values)
+            .map(ElementValueWrapperResource::toElementValueResource)
+            .collect(Collectors.toList());
 
         return new ElementValueWrapperResource(elementValues);
     }

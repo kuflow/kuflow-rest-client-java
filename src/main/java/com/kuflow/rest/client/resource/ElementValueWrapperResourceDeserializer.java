@@ -29,7 +29,8 @@ public class ElementValueWrapperResourceDeserializer extends StdDeserializer<Ele
     }
 
     @Override
-    public ElementValueWrapperResource deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException, JacksonException {
+    public ElementValueWrapperResource deserialize(JsonParser jsonParser, DeserializationContext ctxt)
+        throws IOException, JacksonException {
         JsonToken currentToken = jsonParser.getCurrentToken();
 
         if (currentToken == JsonToken.START_OBJECT) {
@@ -46,6 +47,9 @@ public class ElementValueWrapperResourceDeserializer extends StdDeserializer<Ele
             return null;
         }
 
-        throw new JsonMappingException(jsonParser, String.format("Unable to deserialize a %s", ElementValueWrapperResource.class.getName()));
+        throw new JsonMappingException(
+            jsonParser,
+            String.format("Unable to deserialize a %s", ElementValueWrapperResource.class.getName())
+        );
     }
 }

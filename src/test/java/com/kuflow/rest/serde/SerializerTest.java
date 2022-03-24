@@ -69,7 +69,9 @@ public class SerializerTest {
         ObjectMapper mapper = new ObjectMapper();
 
         {
-            ElementValueWrapperResource elementValuesResource = ElementValueWrapperResource.of(ElementValueDocumentFixture.getElementValueDocument0());
+            ElementValueWrapperResource elementValuesResource = ElementValueWrapperResource.of(
+                ElementValueDocumentFixture.getElementValueDocument0()
+            );
 
             String json = mapper.writeValueAsString(elementValuesResource);
             System.out.println(json);
