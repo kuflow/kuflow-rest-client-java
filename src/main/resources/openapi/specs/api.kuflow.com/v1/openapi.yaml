@@ -114,7 +114,7 @@ paths:
     post:
       summary: Create a new process
       description: |
-        Creates a process. The process is kept waiting until the start command is issued. This option has direct correspondence to the action of starting a process in the Kuflow GUI.
+        Creates a process. This option has direct correspondence to the action of starting a process in the Kuflow GUI.
 
         If you want the method to be idempotent, please specify the `id` field in the request body.
       operationId: createProcess
@@ -154,28 +154,6 @@ paths:
       responses:
         "200":
           description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Process"
-        default:
-          $ref: "#/components/responses/DefaultError"
-
-  /processes/{id}/~actions/start:
-    post:
-      summary: Start a Process
-      description: |
-        Start a Process. The state of Process is setted to running.
-
-        If you are already in this state, no action is taken.
-      operationId: actionsStartProcess
-      tags:
-        - process
-      parameters:
-        - $ref: "#/components/parameters/IdPathParam"
-      responses:
-        "200":
-          description: Process started
           content:
             application/json:
               schema:
