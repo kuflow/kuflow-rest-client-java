@@ -230,7 +230,7 @@ public class TaskElementValueWrapperResource {
         return values.stream().map(m -> m.getValue().getValueAsMap()).collect(Collectors.toList());
     }
 
-    public Boolean isValid() {
+    public Boolean getValid() {
         if (this.value == null) {
             return null;
         }

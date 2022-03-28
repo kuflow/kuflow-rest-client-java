@@ -86,7 +86,7 @@ public class ProcessElementValueWrapperResource {
         return elementValueResource.getValue().getValueAsDouble();
     }
 
-    public Boolean isValid() {
+    public Boolean getValid() {
         if (this.value == null) {
             return null;
         }

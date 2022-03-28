@@ -44,7 +44,7 @@ public class ProcessElementDeserializerTest {
             String json = "{\"value\": \"aString\"}";
             ProcessElementValueWrapperResource readValue = mapper.readValue(json, ProcessElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
-            assertThat(readValue.isValid()).isTrue();
+            assertThat(readValue.getValid()).isTrue();
             assertThat(readValue.getValueAsString()).isEqualTo("aString");
             assertThatExceptionOfType(NumberFormatException.class).isThrownBy(() -> readValue.getValueAsDouble());
         }
@@ -53,7 +53,7 @@ public class ProcessElementDeserializerTest {
             String json = "{\"valid\": false, \"value\": \"aString\"}";
             ProcessElementValueWrapperResource readValue = mapper.readValue(json, ProcessElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
-            assertThat(readValue.isValid()).isFalse();
+            assertThat(readValue.getValid()).isFalse();
             assertThat(readValue.getValueAsString()).isEqualTo("aString");
             assertThatExceptionOfType(NumberFormatException.class).isThrownBy(() -> readValue.getValueAsDouble());
         }
@@ -76,7 +76,7 @@ public class ProcessElementDeserializerTest {
             String json = "{\"valid\": false, \"value\": 123.123}";
             ProcessElementValueWrapperResource readValue = mapper.readValue(json, ProcessElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
-            assertThat(readValue.isValid()).isFalse();
+            assertThat(readValue.getValid()).isFalse();
             assertThat(readValue.getValueAsString()).isEqualTo("123.123");
             assertThat(readValue.getValueAsDouble()).isEqualTo(123.123);
         }
