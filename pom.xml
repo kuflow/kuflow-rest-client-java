@@ -286,15 +286,23 @@
               <supportingFilesToGenerate>StringUtil.java,EncodingUtils.java</supportingFilesToGenerate>
               <typeMappings>
                 <typeMapping>OffsetDateTime=Instant</typeMapping>
-                <typeMapping>OneOfElementValuearrayElementValueDocumentarrayResource=ElementValueWrapperResource</typeMapping>
-                <typeMapping>OneOfElementValuearrayResource=ElementValueWrapperResource</typeMapping>
-                <typeMapping>OneOfstringnumberobjectResource=ElementValueItemResource</typeMapping>
+                <!-- Task Elements -->
+                <typeMapping>OneOfTaskElementValuearrayElementValueDocumentarrayResource=TaskElementValueWrapperResource</typeMapping>
+                <typeMapping>OneOfTaskElementValuearrayResource=TaskElementValueWrapperResource</typeMapping>
+                <typeMapping>OneOfstringnumberobjectResource=TaskElementValueItemResource</typeMapping>
+                <!-- Process Elements -->
+                <typeMapping>OneOfProcessElementValueResource=ProcessElementValueWrapperResource</typeMapping>
+                <typeMapping>OneOfstringnumberResource=ProcessElementValueItemResource</typeMapping>
               </typeMappings>
               <importMappings>
                 <importMapping>java.time.OffsetDateTime=java.time.Instant</importMapping>
-                <importMapping>OneOfElementValuearrayElementValueDocumentarrayResource=com.kuflow.rest.client.resource.ElementValueWrapperResource</importMapping>
-                <typeMapping>OneOfElementValuearrayResource=com.kuflow.rest.client.resource.ElementValueWrapperResource</typeMapping>
-                <importMapping>OneOfstringnumberobjectResource=com.kuflow.rest.client.resource.ElementValueItemResource</importMapping>
+                <!-- Task Elements -->
+                <importMapping>OneOfTaskElementValuearrayElementValueDocumentarrayResource=com.kuflow.rest.client.resource.TaskElementValueWrapperResource</importMapping>
+                <typeMapping>OneOfTaskElementValuearrayResource=com.kuflow.rest.client.resource.TaskElementValueWrapperResource</typeMapping>
+                <importMapping>OneOfstringnumberobjectResource=com.kuflow.rest.client.resource.TaskElementValueItemResource</importMapping>
+                <!-- Process Elements -->
+                <typeMapping>OneOfProcessElementValueResource=com.kuflow.rest.client.resource.ProcessElementValueWrapperResource</typeMapping>
+                <typeMapping>OneOfstringnumberResource=com.kuflow.rest.client.resource.ProcessElementValueItemResource</typeMapping>
               </importMappings>
               <globalProperties>
                 <!-- No skip models defined as the form parameters in "requestBody", ie: multipart/form-data -->
