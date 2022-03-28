@@ -18,6 +18,8 @@ import java.util.Map;
 
 public class TaskElementValueItemResourceDeserializer extends StdDeserializer<TaskElementValueItemResource> {
 
+    private static final long serialVersionUID = 6419968088062208795L;
+
     private static final TypeReference<Map<String, Object>> FORM_TYPE = new TypeReference<Map<String, Object>>() {};
 
     public TaskElementValueItemResourceDeserializer() {

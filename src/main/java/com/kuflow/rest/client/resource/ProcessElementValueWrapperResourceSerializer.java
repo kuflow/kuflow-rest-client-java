@@ -13,6 +13,8 @@ import java.io.IOException;
 
 public class ProcessElementValueWrapperResourceSerializer extends StdSerializer<ProcessElementValueWrapperResource> {
 
+    private static final long serialVersionUID = 7098375548656535817L;
+
     protected ProcessElementValueWrapperResourceSerializer(Class<ProcessElementValueWrapperResource> t) {
         super(t);
     }

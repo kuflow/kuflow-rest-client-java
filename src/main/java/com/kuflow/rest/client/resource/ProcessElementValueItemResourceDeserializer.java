@@ -16,6 +16,8 @@ import java.io.IOException;
 
 public class ProcessElementValueItemResourceDeserializer extends StdDeserializer<ProcessElementValueItemResource> {
 
+    private static final long serialVersionUID = 4359409658609767631L;
+
     public ProcessElementValueItemResourceDeserializer() {
         this(null);
     }

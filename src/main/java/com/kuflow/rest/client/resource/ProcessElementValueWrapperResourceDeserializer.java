@@ -16,6 +16,8 @@ import java.io.IOException;
 
 public class ProcessElementValueWrapperResourceDeserializer extends StdDeserializer<ProcessElementValueWrapperResource> {
 
+    private static final long serialVersionUID = -2061344403033830505L;
+
     public ProcessElementValueWrapperResourceDeserializer() {
         this(null);
     }

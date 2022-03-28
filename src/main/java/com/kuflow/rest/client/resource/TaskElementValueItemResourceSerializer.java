@@ -13,6 +13,8 @@ import java.io.IOException;
 
 public class TaskElementValueItemResourceSerializer extends StdSerializer<TaskElementValueItemResource> {
 
+    private static final long serialVersionUID = -8147113248371190505L;
+
     protected TaskElementValueItemResourceSerializer(Class<TaskElementValueItemResource> t) {
         super(t);
     }

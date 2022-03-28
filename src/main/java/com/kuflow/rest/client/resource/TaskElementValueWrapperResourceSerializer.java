@@ -14,6 +14,8 @@ import java.util.Collection;
 
 public class TaskElementValueWrapperResourceSerializer extends StdSerializer<TaskElementValueWrapperResource> {
 
+    private static final long serialVersionUID = 3863160175259457550L;
+
     protected TaskElementValueWrapperResourceSerializer(Class<TaskElementValueWrapperResource> t) {
         super(t);
     }

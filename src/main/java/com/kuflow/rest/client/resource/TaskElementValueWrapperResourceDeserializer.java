@@ -18,6 +18,8 @@ import java.util.List;
 
 public class TaskElementValueWrapperResourceDeserializer extends StdDeserializer<TaskElementValueWrapperResource> {
 
+    private static final long serialVersionUID = 731376553939083705L;
+
     private static final TypeReference<List<TaskElementValueResource>> LIST_TYPE = new TypeReference<List<TaskElementValueResource>>() {};
 
     public TaskElementValueWrapperResourceDeserializer() {
