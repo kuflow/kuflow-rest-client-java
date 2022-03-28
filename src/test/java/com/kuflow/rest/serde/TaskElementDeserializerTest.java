@@ -125,7 +125,6 @@ public class TaskElementDeserializerTest {
             String json = "[{\"value\": \"aString\"}]";
             TaskElementValueWrapperResource readValue = mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
-            readValue.getValid();
             assertThat(readValue.getValuesAsString().size()).isEqualTo(1);
             assertThat(readValue.getValuesAsString().get(0)).isEqualTo("aString");
         }

@@ -9,6 +9,7 @@ package com.kuflow.rest.client.resource;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.kuflow.rest.client.util.CastUtils;
+import java.io.Serializable;
 import java.util.Map;
 
 @JsonSerialize(using = TaskElementValueItemResourceSerializer.class)
@@ -29,7 +30,7 @@ public class TaskElementValueItemResource {
         return new TaskElementValueItemResource(value);
     }
 
-    static TaskElementValueItemResource of(Map<String, Object> value) {
+    static TaskElementValueItemResource of(Map<String, Serializable> value) {
         return new TaskElementValueItemResource(value);
     }
 
@@ -61,7 +62,7 @@ public class TaskElementValueItemResource {
         return Double.valueOf(this.value.toString());
     }
 
-    Map<String, Object> getValueAsMap() {
+    Map<String, Serializable> getValueAsMap() {
         if (this.value == null) {
             return null;
         }

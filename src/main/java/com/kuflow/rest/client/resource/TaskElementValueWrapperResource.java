@@ -9,6 +9,7 @@ package com.kuflow.rest.client.resource;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.kuflow.rest.client.util.CastUtils;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -70,11 +71,11 @@ public class TaskElementValueWrapperResource {
         return toElementValuesResource(CastUtils.cast(values));
     }
 
-    public static TaskElementValueWrapperResource of(Map<String, Object> value) {
+    public static TaskElementValueWrapperResource of(Map<String, Serializable> value) {
         return toElementValuesResource(value);
     }
 
-    public static TaskElementValueWrapperResource of(List<Map<String, Object>> values) {
+    public static TaskElementValueWrapperResource of(List<Map<String, Serializable>> values) {
         return toElementValuesResource(values.toArray());
     }
 
@@ -127,7 +128,7 @@ public class TaskElementValueWrapperResource {
         } else if (value instanceof Double) {
             elementValueResource.value(TaskElementValueItemResource.of((Double) value));
         } else if (value instanceof Map) {
-            Map<String, Object> valueMap = CastUtils.cast(value);
+            Map<String, Serializable> valueMap = CastUtils.cast(value);
             elementValueResource.value(TaskElementValueItemResource.of(valueMap));
         } else {
             throw new IllegalArgumentException(String.format("Unkown type %s", value.getClass().getName()));
@@ -210,7 +211,7 @@ public class TaskElementValueWrapperResource {
         return values.stream().map(m -> m.getValue().getValueAsDouble()).collect(Collectors.toList());
     }
 
-    public Map<String, Object> getValueAsMap() {
+    public Map<String, Serializable> getValueAsMap() {
         if (this.value == null) {
             return null;
         }
@@ -220,7 +221,7 @@ public class TaskElementValueWrapperResource {
         return elementValueResource.getValue().getValueAsMap();
     }
 
-    public List<Map<String, Object>> getValuesAsMap() {
+    public List<Map<String, Serializable>> getValuesAsMap() {
         if (this.value == null) {
             return Collections.emptyList();
         }
@@ -236,8 +237,7 @@ public class TaskElementValueWrapperResource {
         }
 
         if (this.value instanceof Collection) {
-            List<TaskElementValueResource> values = CastUtils.cast(this.value);
-            return values.stream().allMatch(v -> v.getValid());
+            throw new UnsupportedOperationException("Task element value is an array, you must get valid for each element of the array");
         }
 
         TaskElementValueResource elementValueResource = (TaskElementValueResource) this.value;

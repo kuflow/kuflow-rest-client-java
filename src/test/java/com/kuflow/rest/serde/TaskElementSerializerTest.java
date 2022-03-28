@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kuflow.rest.client.resource.TaskElementValueWrapperResource;
 import com.kuflow.rest.mock.ElementValueDocumentFixture;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
@@ -97,7 +98,7 @@ public class TaskElementSerializerTest {
         ObjectMapper mapper = new ObjectMapper();
 
         {
-            Map<String, Object> form = Map.of("key1", "value", "key2", 12);
+            Map<String, Serializable> form = Map.of("key1", "value", "key2", 12);
             TaskElementValueWrapperResource elementValuesResource = TaskElementValueWrapperResource.of(form);
             String json = mapper.writeValueAsString(elementValuesResource);
             assertThat(json).contains("\"key1\":\"value\"");
@@ -106,7 +107,7 @@ public class TaskElementSerializerTest {
         }
 
         {
-            Map<String, Object> form = Map.of("key1", "value", "key2", 12);
+            Map<String, Serializable> form = Map.of("key1", "value", "key2", 12);
             TaskElementValueWrapperResource elementValuesResource = TaskElementValueWrapperResource.of(List.of(form, form));
             String json = mapper.writeValueAsString(elementValuesResource);
             assertThat(StringUtils.countMatches(json, "key1")).isEqualTo(2);

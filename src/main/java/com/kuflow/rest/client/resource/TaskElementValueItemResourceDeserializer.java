@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Map;
 
 public class TaskElementValueItemResourceDeserializer extends StdDeserializer<TaskElementValueItemResource> {
@@ -36,7 +37,7 @@ public class TaskElementValueItemResourceDeserializer extends StdDeserializer<Ta
         JsonToken currentToken = jsonParser.getCurrentToken();
 
         if (currentToken == JsonToken.START_OBJECT) {
-            Map<String, Object> form = jsonParser.readValueAs(FORM_TYPE);
+            Map<String, Serializable> form = jsonParser.readValueAs(FORM_TYPE);
             return TaskElementValueItemResource.of(form);
         } else if (currentToken == JsonToken.VALUE_STRING) {
             return TaskElementValueItemResource.of(jsonParser.getText());
