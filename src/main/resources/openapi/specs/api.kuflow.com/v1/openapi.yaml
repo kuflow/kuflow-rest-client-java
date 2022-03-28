@@ -811,7 +811,6 @@ components:
     ProcessState:
       type: string
       enum:
-        - CREATED
         - RUNNING
         - COMPLETED
         - CANCELLED
