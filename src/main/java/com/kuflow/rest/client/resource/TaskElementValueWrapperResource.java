@@ -55,6 +55,14 @@ public class TaskElementValueWrapperResource {
         return this.value;
     }
 
+    public static TaskElementValueWrapperResource of(TaskElementValueResource value) {
+        return new TaskElementValueWrapperResource(value);
+    }
+
+    public static TaskElementValueWrapperResource of(TaskElementValueResource... value) {
+        return new TaskElementValueWrapperResource(Arrays.asList((Object[]) value));
+    }
+
     public static TaskElementValueWrapperResource of(String value) {
         return toElementValuesResource(value);
     }
@@ -237,12 +245,26 @@ public class TaskElementValueWrapperResource {
         }
 
         if (this.value instanceof Collection) {
-            throw new UnsupportedOperationException("Task element value is an array, you must get valid for each element of the array");
+            List<TaskElementValueResource> values = CastUtils.cast(this.value);
+            return values.stream().filter(v -> Boolean.FALSE.equals(v.getValid())).findAny().isEmpty();
         }
 
         TaskElementValueResource elementValueResource = (TaskElementValueResource) this.value;
 
         return elementValueResource.getValid();
+    }
+
+    public Boolean getValidAt(int index) {
+        if (this.value == null) {
+            return null;
+        }
+
+        if (!(this.value instanceof Collection)) {
+            throw new UnsupportedOperationException("Task element value not is an array, did you mean getValid()");
+        }
+
+        List<TaskElementValueResource> values = CastUtils.cast(this.value);
+        return values.get(index).getValid();
     }
 
     public TaskElementValueWrapperResource valid(Boolean value) {
@@ -251,11 +273,26 @@ public class TaskElementValueWrapperResource {
         }
 
         if (this.value instanceof Collection) {
-            throw new UnsupportedOperationException("Task element value is an array, you must set valid for each element of the array");
+            throw new UnsupportedOperationException("Task element value is an array, did you mean validAt()");
         }
 
         TaskElementValueResource elementValueResource = (TaskElementValueResource) this.value;
         elementValueResource.setValid(value);
+
+        return this;
+    }
+
+    public TaskElementValueWrapperResource validAt(int index, Boolean value) {
+        if (this.value == null) {
+            throw new NullPointerException();
+        }
+
+        if (!(this.value instanceof Collection)) {
+            throw new UnsupportedOperationException("Task element value not is an array, did you mean valid()");
+        }
+
+        List<TaskElementValueResource> values = CastUtils.cast(this.value);
+        values.get(index).setValid(value);
 
         return this;
     }

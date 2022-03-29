@@ -19,11 +19,11 @@ public class ProcessElementValueItemResource {
         this.value = value;
     }
 
-    static ProcessElementValueItemResource of(String value) {
+    public static ProcessElementValueItemResource of(String value) {
         return new ProcessElementValueItemResource(value);
     }
 
-    static ProcessElementValueItemResource of(Double value) {
+    public static ProcessElementValueItemResource of(Double value) {
         return new ProcessElementValueItemResource(value);
     }
 

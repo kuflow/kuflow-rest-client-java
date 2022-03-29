@@ -24,6 +24,10 @@ public class ProcessElementValueWrapperResource {
         return this.value;
     }
 
+    public static ProcessElementValueWrapperResource of(ProcessElementValueResource value) {
+        return new ProcessElementValueWrapperResource(value);
+    }
+
     public static ProcessElementValueWrapperResource of(String value) {
         return toProcessElementWrapperResource(value);
     }

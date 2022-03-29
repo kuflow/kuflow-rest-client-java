@@ -22,15 +22,15 @@ public class TaskElementValueItemResource {
         this.value = value;
     }
 
-    static TaskElementValueItemResource of(String value) {
+    public static TaskElementValueItemResource of(String value) {
         return new TaskElementValueItemResource(value);
     }
 
-    static TaskElementValueItemResource of(Double value) {
+    public static TaskElementValueItemResource of(Double value) {
         return new TaskElementValueItemResource(value);
     }
 
-    static TaskElementValueItemResource of(Map<String, Serializable> value) {
+    public static TaskElementValueItemResource of(Map<String, Serializable> value) {
         return new TaskElementValueItemResource(value);
     }
 
