@@ -13,6 +13,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kuflow.rest.client.resource.TaskElementValueWrapperResource;
+import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -111,6 +112,19 @@ public class TaskElementDeserializerTest {
     }
 
     @Test
+    @DisplayName("GIVEN json with document value WHEN deserialize THEN binding object")
+    public void givenJsonWithDocumentValueWhenDeserializeThenBindingObject() throws JsonMappingException, JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+
+        {
+            String json =
+                "{\"id\":\"30b33063-a1b4-4d07-a789-c5593893eb54\",\"name\":\"document-accent-o-xxx1.pdf\",\"contentPath\":\"tenants/f46ed181-f124-4e85-95be-ceecaf168b4b/2022/03/30/922f6c3d-0b27-4555-a852-e554dc52b4c7\",\"contentType\":\"application/pdf;charset=UTF-8\",\"contentLength\":16}";
+            TaskElementValueWrapperResource readValue = mapper.readValue(json, TaskElementValueWrapperResource.class);
+            assertThat(readValue).isNotNull();
+        }
+    }
+
+    @Test
     @DisplayName("GIVEN json with array value WHEN deserialize THEN binding object")
     public void givenJsonWithArrayValueWhenDeserializeThenBindingObject() throws JsonMappingException, JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
@@ -118,7 +132,7 @@ public class TaskElementDeserializerTest {
         {
             String json = "[]";
             TaskElementValueWrapperResource readValue = mapper.readValue(json, TaskElementValueWrapperResource.class);
-            assertThat(readValue).isNotNull();
+            assertThat(readValue).isNull();
         }
 
         {
@@ -151,6 +165,22 @@ public class TaskElementDeserializerTest {
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValuesAsDouble().size()).isEqualTo(3);
             assertThat(readValue.getValuesAsDouble().get(0)).isEqualTo(1.1);
+        }
+    }
+
+    @Test
+    @DisplayName("GIVEN json with array document WHEN deserialize THEN binding object")
+    public void givenJsonWithArrayDocumentWhenDeserializeThenBindingObject() throws JsonMappingException, JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+
+        {
+            String element =
+                "{\"id\":\"30b33063-a1b4-4d07-a789-c5593893eb54\",\"name\":\"document-accent-o-xxx1.pdf\",\"contentPath\":\"tenants/f46ed181-f124-4e85-95be-ceecaf168b4b/2022/03/30/922f6c3d-0b27-4555-a852-e554dc52b4c7\",\"contentType\":\"application/pdf;charset=UTF-8\",\"contentLength\":16}";
+            String json = "[" + element + "," + element + "]";
+            TaskElementValueWrapperResource readValue = mapper.readValue(json, TaskElementValueWrapperResource.class);
+            assertThat(readValue).isNotNull();
+            assertThat(readValue.getValuesAsDocument().size()).isEqualTo(2);
+            assertThat(readValue.getValuesAsDocument().get(0).getId()).isEqualTo(UUID.fromString("30b33063-a1b4-4d07-a789-c5593893eb54"));
         }
     }
 }

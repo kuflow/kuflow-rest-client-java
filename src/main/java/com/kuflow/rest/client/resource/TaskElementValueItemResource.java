@@ -38,7 +38,7 @@ public class TaskElementValueItemResource {
         return this.value;
     }
 
-    String getValueAsString() {
+    public String getValueAsString() {
         if (this.value == null) {
             return null;
         }
@@ -50,7 +50,7 @@ public class TaskElementValueItemResource {
         return String.valueOf(this.value);
     }
 
-    Double getValueAsDouble() {
+    public Double getValueAsDouble() {
         if (this.value == null) {
             return null;
         }
@@ -62,7 +62,7 @@ public class TaskElementValueItemResource {
         return Double.valueOf(this.value.toString());
     }
 
-    Map<String, Serializable> getValueAsMap() {
+    public Map<String, Serializable> getValueAsMap() {
         if (this.value == null) {
             return null;
         }

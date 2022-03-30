@@ -31,7 +31,7 @@ public class ProcessElementValueItemResource {
         return this.value;
     }
 
-    String getValueAsString() {
+    public String getValueAsString() {
         if (this.value == null) {
             return null;
         }
@@ -43,7 +43,7 @@ public class ProcessElementValueItemResource {
         return String.valueOf(this.value);
     }
 
-    Double getValueAsDouble() {
+    public Double getValueAsDouble() {
         if (this.value == null) {
             return null;
         }

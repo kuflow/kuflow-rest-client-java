@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 @JsonSerialize(using = TaskElementValueWrapperResourceSerializer.class)
 public class TaskElementValueWrapperResource {
 
-    // Only can be: ElementValueResource || ElementValueDocumentResource || List<ElementValueResource> || List<ElementValueDocumentResource>
+    // Only can be: TaskElementValueResource || ElementValueDocumentResource || List<TaskElementValueResource> || List<ElementValueDocumentResource>
     private Object value;
 
     TaskElementValueWrapperResource(TaskElementValueResource value) {
@@ -44,7 +44,7 @@ public class TaskElementValueWrapperResource {
                 .filter(v -> !((v instanceof TaskElementValueResource) || (v instanceof ElementValueDocumentResource)))
                 .findAny()
                 .ifPresent(v -> {
-                    throw new IllegalArgumentException("Items object type is unsupported");
+                    throw new IllegalArgumentException(String.format("Items object type: '%s' is unsupported", v.getClass()));
                 });
         }
 

@@ -385,7 +385,7 @@ paths:
       description: |
         Allow to save an element document.
 
-        If it is a multiple element, and the provided identifier does not exist, the document will be added to the element.
+        If it is a multiple element, and the Id referenced in the body does not exist or is empty, the document will be added to the element.
         If the element already exists (the Id referenced in the body corresponds to an existing one), it updates it.
       operationId: actionsSaveElementDocument
       tags:
@@ -865,6 +865,9 @@ components:
     SaveElementDocumentCommand:
       type: object
       properties:
+        id:
+          type: string
+          format: uuid
         code:
           type: string
         valid:
