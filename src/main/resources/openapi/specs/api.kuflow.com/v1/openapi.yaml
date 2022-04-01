@@ -2,7 +2,7 @@ openapi: 3.0.3
 
 info:
   title: KuFlow Public API
-  version: "1.0.0"
+  version: "1.0"
   termsOfService: "https://kuflow.com/legal"
   contact:
     email: kuflow@kuflow.com
@@ -35,7 +35,7 @@ externalDocs:
   url: "https://kuflow.com"
 
 servers:
-  - url: "https://api.kuflow.com/v1"
+  - url: "https://api.kuflow.com/v1.0"
     description: Live environment
 
 security:
