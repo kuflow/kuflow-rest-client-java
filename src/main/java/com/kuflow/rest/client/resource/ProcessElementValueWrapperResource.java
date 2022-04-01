@@ -36,6 +36,10 @@ public class ProcessElementValueWrapperResource {
         return toProcessElementWrapperResource(value);
     }
 
+    public static ProcessElementValueWrapperResource of(Instant value) {
+        return toProcessElementWrapperResource(value);
+    }
+    
     private static <T> ProcessElementValueWrapperResource toProcessElementWrapperResource(Object value) {
         if (value == null) {
             throw new IllegalArgumentException("Some value is required");
