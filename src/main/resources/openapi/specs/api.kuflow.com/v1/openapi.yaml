@@ -1071,6 +1071,7 @@ components:
         documentId:
           description: Document Id to delete
           type: string
+          format: uuid
       required:
         - documentId
 
