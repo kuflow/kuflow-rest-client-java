@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.kuflow.rest.client.util.CastUtils;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -79,6 +80,14 @@ public class TaskElementValueWrapperResource {
         return toElementValuesResource(CastUtils.cast(values));
     }
 
+    public static TaskElementValueWrapperResource of(LocalDate value) {
+        return toElementValuesResource(value);
+    }
+
+    public static TaskElementValueWrapperResource of(LocalDate... values) {
+        return toElementValuesResource(CastUtils.cast(values));
+    }
+
     public static TaskElementValueWrapperResource of(Map<String, Serializable> value) {
         return toElementValuesResource(value);
     }
@@ -135,6 +144,8 @@ public class TaskElementValueWrapperResource {
             elementValueResource.value(TaskElementValueItemResource.of((String) value));
         } else if (value instanceof Double) {
             elementValueResource.value(TaskElementValueItemResource.of((Double) value));
+        } else if (value instanceof LocalDate) {
+            elementValueResource.value(TaskElementValueItemResource.of((LocalDate) value));
         } else if (value instanceof Map) {
             Map<String, Serializable> valueMap = CastUtils.cast(value);
             elementValueResource.value(TaskElementValueItemResource.of(valueMap));
@@ -155,7 +166,7 @@ public class TaskElementValueWrapperResource {
         return elementValueResource;
     }
 
-    public List<TaskElementValueResource> getValues() {
+    public List<TaskElementValueResource> getValueList() {
         if (this.value == null) {
             return Collections.emptyList();
         }
@@ -171,7 +182,7 @@ public class TaskElementValueWrapperResource {
         return (ElementValueDocumentResource) this.value;
     }
 
-    public List<ElementValueDocumentResource> getValuesAsDocument() {
+    public List<ElementValueDocumentResource> getValueAsDocumentList() {
         if (this.value == null) {
             return Collections.emptyList();
         }
@@ -189,7 +200,7 @@ public class TaskElementValueWrapperResource {
         return elementValueResource.getValue().getValueAsString();
     }
 
-    public List<String> getValuesAsString() {
+    public List<String> getValueAsStringList() {
         if (this.value == null) {
             return Collections.emptyList();
         }
@@ -209,7 +220,7 @@ public class TaskElementValueWrapperResource {
         return elementValueResource.getValue().getValueAsDouble();
     }
 
-    public List<Double> getValuesAsDouble() {
+    public List<Double> getValueAsDoubleList() {
         if (this.value == null) {
             return Collections.emptyList();
         }
@@ -217,6 +228,26 @@ public class TaskElementValueWrapperResource {
         List<TaskElementValueResource> values = CastUtils.cast(this.value);
 
         return values.stream().map(m -> m.getValue().getValueAsDouble()).collect(Collectors.toList());
+    }
+
+    public LocalDate getValueAsLocalDate() {
+        if (this.value == null) {
+            return null;
+        }
+
+        TaskElementValueResource elementValueResource = (TaskElementValueResource) this.value;
+
+        return elementValueResource.getValue().getValueAsLocalDate();
+    }
+
+    public List<LocalDate> getValueAsLocalDateList() {
+        if (this.value == null) {
+            return Collections.emptyList();
+        }
+
+        List<TaskElementValueResource> values = CastUtils.cast(this.value);
+
+        return values.stream().map(m -> m.getValue().getValueAsLocalDate()).collect(Collectors.toList());
     }
 
     public Map<String, Serializable> getValueAsMap() {
@@ -229,7 +260,7 @@ public class TaskElementValueWrapperResource {
         return elementValueResource.getValue().getValueAsMap();
     }
 
-    public List<Map<String, Serializable>> getValuesAsMap() {
+    public List<Map<String, Serializable>> getValueAsMapList() {
         if (this.value == null) {
             return Collections.emptyList();
         }

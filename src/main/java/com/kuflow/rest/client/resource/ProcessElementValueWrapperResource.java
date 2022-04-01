@@ -8,6 +8,7 @@ package com.kuflow.rest.client.resource;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.time.LocalDate;
 
 @JsonDeserialize(using = ProcessElementValueWrapperResourceDeserializer.class)
 @JsonSerialize(using = ProcessElementValueWrapperResourceSerializer.class)
@@ -36,10 +37,10 @@ public class ProcessElementValueWrapperResource {
         return toProcessElementWrapperResource(value);
     }
 
-    public static ProcessElementValueWrapperResource of(Instant value) {
+    public static ProcessElementValueWrapperResource of(LocalDate value) {
         return toProcessElementWrapperResource(value);
     }
-    
+
     private static <T> ProcessElementValueWrapperResource toProcessElementWrapperResource(Object value) {
         if (value == null) {
             throw new IllegalArgumentException("Some value is required");
@@ -57,6 +58,8 @@ public class ProcessElementValueWrapperResource {
             elementValueResource.value(ProcessElementValueItemResource.of((String) value));
         } else if (value instanceof Double) {
             elementValueResource.value(ProcessElementValueItemResource.of((Double) value));
+        } else if (value instanceof LocalDate) {
+            elementValueResource.value(ProcessElementValueItemResource.of((LocalDate) value));
         } else {
             throw new IllegalArgumentException(String.format("Unkown type %s", value.getClass().getName()));
         }
@@ -92,6 +95,16 @@ public class ProcessElementValueWrapperResource {
         ProcessElementValueResource elementValueResource = (ProcessElementValueResource) this.value;
 
         return elementValueResource.getValue().getValueAsDouble();
+    }
+
+    public LocalDate getValueAsLocalDate() {
+        if (this.value == null) {
+            return null;
+        }
+
+        ProcessElementValueResource elementValueResource = (ProcessElementValueResource) this.value;
+
+        return elementValueResource.getValue().getValueAsLocalDate();
     }
 
     public Boolean getValid() {

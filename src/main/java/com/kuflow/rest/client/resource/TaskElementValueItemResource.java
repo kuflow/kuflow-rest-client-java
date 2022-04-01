@@ -10,6 +10,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.kuflow.rest.client.util.CastUtils;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 @JsonSerialize(using = TaskElementValueItemResourceSerializer.class)
@@ -28,6 +30,10 @@ public class TaskElementValueItemResource {
 
     public static TaskElementValueItemResource of(Double value) {
         return new TaskElementValueItemResource(value);
+    }
+
+    public static TaskElementValueItemResource of(LocalDate value) {
+        return new TaskElementValueItemResource((value != null) ? value.toString() : null);
     }
 
     public static TaskElementValueItemResource of(Map<String, Serializable> value) {
@@ -68,5 +74,13 @@ public class TaskElementValueItemResource {
         }
 
         return CastUtils.cast(this.value);
+    }
+
+    public LocalDate getValueAsLocalDate() {
+        if (this.value == null) {
+            return null;
+        }
+
+        return LocalDate.parse((String) this.value, DateTimeFormatter.ISO_LOCAL_DATE);
     }
 }

@@ -8,6 +8,8 @@ package com.kuflow.rest.client.resource;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @JsonSerialize(using = ProcessElementValueItemResourceSerializer.class)
 @JsonDeserialize(using = ProcessElementValueItemResourceDeserializer.class)
@@ -25,6 +27,10 @@ public class ProcessElementValueItemResource {
 
     public static ProcessElementValueItemResource of(Double value) {
         return new ProcessElementValueItemResource(value);
+    }
+
+    public static ProcessElementValueItemResource of(LocalDate value) {
+        return new ProcessElementValueItemResource((value != null) ? value.toString() : null);
     }
 
     Object getRawValue() {
@@ -53,5 +59,13 @@ public class ProcessElementValueItemResource {
         }
 
         return Double.valueOf(this.value.toString());
+    }
+
+    public LocalDate getValueAsLocalDate() {
+        if (this.value == null) {
+            return null;
+        }
+
+        return LocalDate.parse((String) this.value, DateTimeFormatter.ISO_LOCAL_DATE);
     }
 }
