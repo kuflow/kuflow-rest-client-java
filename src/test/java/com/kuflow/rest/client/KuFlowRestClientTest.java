@@ -26,7 +26,7 @@ import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.kuflow.rest.client.KuFlowRestClientProperties.Level;
 import com.kuflow.rest.client.resource.AuthenticationResource;
 import com.kuflow.rest.client.resource.AuthenticationTypeResource;
-import com.kuflow.rest.client.resource.ElementValueDocumentResource;
+import com.kuflow.rest.client.resource.SaveElementDocumentCommandResource;
 import com.kuflow.rest.client.resource.TaskResource;
 import feign.Response;
 import java.io.File;
@@ -85,19 +85,18 @@ public class KuFlowRestClientTest {
     @DisplayName("GIVEN a multipart request WHEN invoque a method THEN the json and the files are sent and response is parsed correctly")
     public void givenAMultipartRequestWhenInvoqueAMethodThenTheJsonAndTheFilesAreSentAndResponseIsParsedCorrectly() {
         givenThat(
-            post(urlMatching("/tasks/([a-z0-9\\-]+)/~actions/complete-element-document"))
+            post(urlMatching("/tasks/([a-z0-9\\-]+)/~actions/save-element-document"))
                 .withMultipartRequestBody(aMultipart().withName("json").withHeader("Content-Type", containing("application/json")))
                 .withMultipartRequestBody(aMultipart().withName("file").withHeader("Content-Type", containing("text/plain")))
                 .willReturn(ok().withBodyFile("task-api.ok.json"))
         );
 
         UUID taskId = UUID.randomUUID();
-        ElementValueDocumentResource json = new ElementValueDocumentResource();
-        json.setName("sample.txt");
-        json.setContentType("text/plain");
+        SaveElementDocumentCommandResource json = new SaveElementDocumentCommandResource();
+        json.setCode("DOC");
         File file = this.getFile("sample.txt");
 
-        TaskResource task = this.kuFlowRestClient.getTaskApi().actionsCompleteTaskElementDocument(taskId, json, file);
+        TaskResource task = this.kuFlowRestClient.getTaskApi().actionsSaveElementDocument(taskId, json, file);
         assertThat(task.getId()).isNotNull();
     }
 
@@ -108,7 +107,7 @@ public class KuFlowRestClientTest {
 
         givenThat(
             get(urlMatching("/tasks/([a-z0-9\\-]+)/~actions/download-element-document\\?.*"))
-                .withQueryParam("elementValueId", matching("[a-z0-9\\-]+"))
+                .withQueryParam("documentId", matching("[a-z0-9\\-]+"))
                 .willReturn(
                     ok()
                         .withHeader("Content-Type", "text/plain")
@@ -120,7 +119,7 @@ public class KuFlowRestClientTest {
         UUID taskId = UUID.randomUUID();
         UUID elementId = UUID.randomUUID();
 
-        Response response = this.kuFlowRestClient.getTaskApi().actionsDownloadTaskElementDocument(taskId, elementId);
+        Response response = this.kuFlowRestClient.getTaskApi().actionsDownloadElementDocument(taskId, elementId);
         assertThat(response.status()).isEqualTo(200);
         assertThat(response.headers().get("Content-Type").iterator().next()).isEqualTo("text/plain");
         assertThat(response.body().length()).isEqualTo(12);

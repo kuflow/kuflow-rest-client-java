@@ -2,8 +2,8 @@ openapi: 3.0.3
 
 info:
   title: KuFlow Public API
-  version: 1.0.0
-  termsOfService: 'https://kuflow.com/legal'
+  version: "1.0"
+  termsOfService: "https://kuflow.com/legal"
   contact:
     email: kuflow@kuflow.com
   description: |
@@ -32,10 +32,10 @@ info:
 
 externalDocs:
   description: Find out more about KuFlow
-  url: 'https://kuflow.com'
+  url: "https://kuflow.com"
 
 servers:
-  - url: 'https://api.kuflow.com/v1'
+  - url: "https://api.kuflow.com/v1.0"
     description: Live environment
 
 security:
@@ -46,12 +46,12 @@ tags:
     description: Operations about process
     externalDocs:
       description: Find out more about our processes.
-      url: 'https://kuflow.com'
+      url: "https://kuflow.com"
   - name: task
     description: Operations about task.
     externalDocs:
       description: Find out more about our task.
-      url: 'https://kuflow.com'
+      url: "https://kuflow.com"
   - name: webhook
     description: Operations that Kuflow invokes towards external systems.
   - name: authentication
@@ -81,16 +81,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Authentication'
+              $ref: "#/components/schemas/Authentication"
       responses:
-        '200':
+        "200":
           description: Authentication Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Authentication'
+                $ref: "#/components/schemas/Authentication"
         default:
-          $ref: '#/components/responses/DefaultError'
+          $ref: "#/components/responses/DefaultError"
 
   /processes:
     get:
@@ -100,21 +100,21 @@ paths:
       tags:
         - process
       parameters:
-        - $ref: '#/components/parameters/SizeQueryParam'
-        - $ref: '#/components/parameters/PageQueryParam'
+        - $ref: "#/components/parameters/SizeQueryParam"
+        - $ref: "#/components/parameters/PageQueryParam"
       responses:
-        '200':
+        "200":
           description: Processes found paginated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProcessPage'
+                $ref: "#/components/schemas/ProcessPage"
         default:
-          $ref: '#/components/responses/DefaultError'
+          $ref: "#/components/responses/DefaultError"
     post:
       summary: Create a new process
       description: |
-        Creates a process. The process is kept waiting until the start command is issued. This option has direct correspondence to the action of starting a process in the Kuflow GUI.
+        Creates a process. This option has direct correspondence to the action of starting a process in the Kuflow GUI.
 
         If you want the method to be idempotent, please specify the `id` field in the request body.
       operationId: createProcess
@@ -125,63 +125,41 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Process'
+              $ref: "#/components/schemas/Process"
       responses:
-        '200':
+        "200":
           description: Process already created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Process'
-        '201':
+                $ref: "#/components/schemas/Process"
+        "201":
           description: Process created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Process'
+                $ref: "#/components/schemas/Process"
         default:
-          $ref: '#/components/responses/DefaultError'
+          $ref: "#/components/responses/DefaultError"
 
   /processes/{id}:
     get:
-      summary: Get a Process by ID
+      summary: Get a Process by Id
       description: Returns the requested Process when has access to do it.
       operationId: retrieveProcess
       tags:
         - process
       parameters:
-        - $ref: '#/components/parameters/IdPathParam'
+        - $ref: "#/components/parameters/IdPathParam"
       responses:
-        '200':
+        "200":
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Process'
+                $ref: "#/components/schemas/Process"
         default:
-          $ref: '#/components/responses/DefaultError'
-
-  /processes/{id}/~actions/start:
-    post:
-      summary: Start a Process
-      description: |
-        Start a Process. The state of Process is setted to running.
-
-        If you are already in this state, no action is taken.
-      operationId: actionsStartProcess
-      tags:
-        - process
-      parameters:
-        - $ref: '#/components/parameters/IdPathParam'
-      responses:
-        '200':
-          description: Process started
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Process'
-        default:
-          $ref: '#/components/responses/DefaultError'
+          $ref: "#/components/responses/DefaultError"
 
   /processes/{id}/~actions/complete:
     post:
@@ -194,16 +172,16 @@ paths:
       tags:
         - process
       parameters:
-        - $ref: '#/components/parameters/IdPathParam'
+        - $ref: "#/components/parameters/IdPathParam"
       responses:
-        '200':
+        "200":
           description: Process completed
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Process'
+                $ref: "#/components/schemas/Process"
         default:
-          $ref: '#/components/responses/DefaultError'
+          $ref: "#/components/responses/DefaultError"
 
   /processes/{id}/~actions/cancel:
     post:
@@ -217,16 +195,16 @@ paths:
       tags:
         - process
       parameters:
-        - $ref: '#/components/parameters/IdPathParam'
+        - $ref: "#/components/parameters/IdPathParam"
       responses:
-        '200':
+        "200":
           description: Process cancelled
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Process'
+                $ref: "#/components/schemas/Process"
         default:
-          $ref: '#/components/responses/DefaultError'
+          $ref: "#/components/responses/DefaultError"
 
   /tasks:
     get:
@@ -236,8 +214,8 @@ paths:
       tags:
         - task
       parameters:
-        - $ref: '#/components/parameters/SizeQueryParam'
-        - $ref: '#/components/parameters/PageQueryParam'
+        - $ref: "#/components/parameters/SizeQueryParam"
+        - $ref: "#/components/parameters/PageQueryParam"
         - name: processId
           in: query
           schema:
@@ -250,21 +228,22 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/components/schemas/TaskState'
+              $ref: "#/components/schemas/TaskState"
 
       responses:
-        '200':
+        "200":
           description: Tasks found paginated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TaskPage'
+                $ref: "#/components/schemas/TaskPage"
         default:
-          $ref: '#/components/responses/DefaultError'
+          $ref: "#/components/responses/DefaultError"
     post:
       summary: Create a new Task in the selected Process
       description: |
-        Create a Task and optionally fill its elements
+        Create a Task and optionally fill its elements. We can fill in any type of element except documents.
+        If you want to add document type elements, then use the appropriate API method.
 
         If you want the method to be idempotent, please specify the `id` field in the request body.
       operationId: createTask
@@ -275,39 +254,57 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Task'
+              $ref: "#/components/schemas/Task"
+            examples:
+              example-one:
+                summary: task with elemennts
+                value:
+                  {
+                    "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                    "taskDefinition": { "code": "string" },
+                    "processId": "9e0ad09b-5150-48c0-aded-707587048fd9",
+                    "activityToken": "string",
+                    "activityResponseVersion": "string",
+                    "elementValues":
+                      {
+                        "element_code_1": { "value": "string" },
+                        "element_code_2": { "valid": false, "value": 1111 },
+                        "element_code_3": [{ "value": "string" }, { "value": "string" }],
+                        "element_code_4": { "value": { "form_field_1": "string", "form_field_2": "string" } },
+                      },
+                  }
       responses:
-        '200':
+        "200":
           description: Task already created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Task'
-        '201':
+                $ref: "#/components/schemas/Task"
+        "201":
           description: Task created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Task'
+                $ref: "#/components/schemas/Task"
         default:
-          $ref: '#/components/responses/DefaultError'
+          $ref: "#/components/responses/DefaultError"
 
   /tasks/{id}:
     get:
-      summary: Get a task given it ID
-      description: Allow to get a task by ID.
+      summary: Get a task given it Id
+      description: Allow to get a task by Id.
       operationId: retrieveTask
       tags:
         - task
       parameters:
-        - $ref: '#/components/parameters/IdPathParam'
+        - $ref: "#/components/parameters/IdPathParam"
       responses:
-        '200':
+        "200":
           description: Task requested
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Task'
+                $ref: "#/components/schemas/Task"
 
   /tasks/{id}/~actions/claim:
     post:
@@ -317,16 +314,16 @@ paths:
       tags:
         - task
       parameters:
-        - $ref: '#/components/parameters/IdPathParam'
+        - $ref: "#/components/parameters/IdPathParam"
       responses:
-        '200':
+        "200":
           description: Task claimed
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Task'
+                $ref: "#/components/schemas/Task"
         default:
-          $ref: '#/components/responses/DefaultError'
+          $ref: "#/components/responses/DefaultError"
 
   /tasks/{id}/~actions/assign:
     post:
@@ -336,115 +333,65 @@ paths:
       tags:
         - task
       parameters:
-        - $ref: '#/components/parameters/IdPathParam'
+        - $ref: "#/components/parameters/IdPathParam"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AssignTaskCommand'
+              $ref: "#/components/schemas/AssignTaskCommand"
       responses:
-        '200':
+        "200":
           description: Task assigned
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Task'
+                $ref: "#/components/schemas/Task"
         default:
-          $ref: '#/components/responses/DefaultError'
+          $ref: "#/components/responses/DefaultError"
 
-  /tasks/{id}/~actions/complete-element-decision:
+  /tasks/{id}/~actions/save-element:
     post:
-      summary: Complete an element decision
+      summary: Save an element
       description: |
-        Allow to complete an element decision.
+        Allow to save an element that is not a document i.e., a field, a decision or form. If you want to add documents, use the appropriate API method.
 
-        If the element already exists (the ID referenced in the body corresponds to an existing one), it updates it.
-      operationId: actionsCompleteTaskElementDecision
+        If values already exist for the provided element code, it replaces them with the new ones, otherwise it creates them.
+        To remove an element, use the appropriate API method.
+      operationId: actionsSaveElement
       tags:
         - task
       parameters:
-        - $ref: '#/components/parameters/IdPathParam'
+        - $ref: "#/components/parameters/IdPathParam"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ElementValueDecision'
+              $ref: "#/components/schemas/ElementValueOrArrayValue"
       responses:
-        '200':
+        "200":
           description: Task with element filled
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Task'
+                $ref: "#/components/schemas/Task"
         default:
-          $ref: '#/components/responses/DefaultError'
+          $ref: "#/components/responses/DefaultError"
 
-  /tasks/{id}/~actions/complete-element-form:
+  /tasks/{id}/~actions/save-element-document:
     post:
-      summary: Complete an element form
+      summary: Save an element document
       description: |
-        Allow to complete an element form.
+        Allow to save an element document.
 
-        If the element already exists (the ID referenced in the body corresponds to an existing one), it updates it.
-      operationId: actionsCompleteTaskElementForm
+        If it is a multiple element, and the Id referenced in the body does not exist or is empty, the document will be added to the element.
+        If the element already exists (the Id referenced in the body corresponds to an existing one), it updates it.
+      operationId: actionsSaveElementDocument
       tags:
         - task
       parameters:
-        - $ref: '#/components/parameters/IdPathParam'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ElementValueForm'
-      responses:
-        '200':
-          description: Task with element filled
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Task'
-
-  /tasks/{id}/~actions/complete-element-field:
-    post:
-      summary: Complete an element form field
-      description: |
-        Allow to complete an element field.
-
-        If the element already exists (the ID referenced in the body corresponds to an existing one), it updates it.
-      operationId: actionsCompleteTaskElementField
-      tags:
-        - task
-      parameters:
-        - $ref: '#/components/parameters/IdPathParam'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ElementValueField'
-      responses:
-        '200':
-          description: Task with element filled
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Task'
-
-  /tasks/{id}/~actions/complete-element-document:
-    post:
-      summary: Complete an element document
-      description: |
-        Allow to complete an element document.
-
-        If the element already exists (the ID referenced in the body corresponds to an existing one), it updates it.
-      operationId: actionsCompleteTaskElementDocument
-      tags:
-        - task
-      parameters:
-        - $ref: '#/components/parameters/IdPathParam'
+        - $ref: "#/components/parameters/IdPathParam"
       requestBody:
         required: true
         content:
@@ -453,7 +400,7 @@ paths:
               type: object
               properties:
                 json:
-                  $ref: '#/components/schemas/ElementValueDocument'
+                  $ref: "#/components/schemas/SaveElementDocumentCommand"
                 file:
                   type: string
                   format: binary
@@ -464,37 +411,68 @@ paths:
               file:
                 contentType: image/*, application/pdf
       responses:
-        '200':
+        "200":
           description: Task with element filled
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Task'
+                $ref: "#/components/schemas/Task"
 
-  /tasks/{id}/~actions/delete-elements:
+  /tasks/{id}/~actions/delete-element:
     post:
-      summary: Delete task elements by code
-      description: Allow to delete task elements by specifying the item definition code
-      operationId: actionsDeleteTaskElements
+      summary: Delete an element by code
+      description: |
+        Allow to delete task element by specifying the item definition code.
+
+        Remove all the element values.
+      operationId: actionsDeleteElement
       tags:
         - task
       parameters:
-        - $ref: '#/components/parameters/IdPathParam'
+        - $ref: "#/components/parameters/IdPathParam"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DeleteElementsCommand'
+              $ref: "#/components/schemas/DeleteElementCommand"
       responses:
-        '200':
+        "200":
           description: Task elements deleted
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Task'
+                $ref: "#/components/schemas/Task"
         default:
-          $ref: '#/components/responses/DefaultError'
+          $ref: "#/components/responses/DefaultError"
+
+  /tasks/{id}/~actions/delete-element-document:
+    post:
+      summary: Delete an element document value
+      description: |
+        Allow to delete a specific document from an element of document type using its id.
+
+        Note: If it is a multiple item, it will only delete the specified document. If it is a single element, in addition to the document, it will also delete the element.
+      operationId: actionsDeleteDocument
+      tags:
+        - task
+      parameters:
+        - $ref: "#/components/parameters/IdPathParam"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteElementDocumentCommand"
+      responses:
+        "200":
+          description: Task elements deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+        default:
+          $ref: "#/components/responses/DefaultError"
 
   /tasks/{id}/~actions/complete:
     post:
@@ -505,14 +483,14 @@ paths:
       tags:
         - task
       parameters:
-        - $ref: '#/components/parameters/IdPathParam'
+        - $ref: "#/components/parameters/IdPathParam"
       responses:
-        '200':
+        "200":
           description: Task completed
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Task'
+                $ref: "#/components/schemas/Task"
 
   /tasks/{id}/~actions/append-log:
     post:
@@ -522,43 +500,42 @@ paths:
       tags:
         - task
       parameters:
-        - $ref: '#/components/parameters/IdPathParam'
+        - $ref: "#/components/parameters/IdPathParam"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Log'
+              $ref: "#/components/schemas/Log"
       responses:
-        '200':
+        "200":
           description: Log entry added
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Task'
-
+                $ref: "#/components/schemas/Task"
 
   /tasks/{id}/~actions/download-element-document:
     get:
       summary: Download document
       description: Given a task, download a document from an element of document type
-      operationId: actionsDownloadTaskElementDocument
+      operationId: actionsDownloadElementDocument
       tags:
         - task
       parameters:
-        - $ref: '#/components/parameters/IdPathParam'
-        - name: elementValueId
+        - $ref: "#/components/parameters/IdPathParam"
+        - name: documentId
           in: query
-          description: Element Value Id to download.
+          description: Document Id to download.
           required: true
           schema:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: Document requested
           content:
-            '*/*':
+            "*/*":
               schema:
                 type: string
                 format: binary
@@ -585,7 +562,7 @@ components:
     IdPathParam:
       name: id
       in: path
-      description: The resource ID
+      description: The resource Id
       required: true
       schema:
         type: string
@@ -624,7 +601,7 @@ components:
         errors:
           type: array
           items:
-            $ref: '#/components/schemas/DefaultErrorInfo'
+            $ref: "#/components/schemas/DefaultErrorInfo"
       required:
         - timestamp
         - status
@@ -652,7 +629,7 @@ components:
           type: string
           format: uuid
         processState:
-          $ref: '#/components/schemas/ProcessState'
+          $ref: "#/components/schemas/ProcessState"
       required:
         - processId
         - processState
@@ -669,7 +646,7 @@ components:
         taskCode:
           type: string
         taskState:
-          $ref: '#/components/schemas/TaskState'
+          $ref: "#/components/schemas/TaskState"
       required:
         - processId
         - taskId
@@ -679,22 +656,22 @@ components:
     WebhookEventProcessStateChanged:
       description: Process Events
       allOf:
-        - $ref: '#/components/schemas/WebhookEvent'
+        - $ref: "#/components/schemas/WebhookEvent"
         - type: object
           properties:
             data:
-              $ref: '#/components/schemas/WebhookEventProcessStateChangedData'
+              $ref: "#/components/schemas/WebhookEventProcessStateChangedData"
           required:
             - data
 
     WebhookEventTaskStateChanged:
       description: Process Events
       allOf:
-        - $ref: '#/components/schemas/WebhookEvent'
+        - $ref: "#/components/schemas/WebhookEvent"
         - type: object
           properties:
             data:
-              $ref: '#/components/schemas/WebhookEventTaskStateChangedData'
+              $ref: "#/components/schemas/WebhookEventTaskStateChangedData"
           required:
             - data
 
@@ -713,14 +690,14 @@ components:
       discriminator:
         propertyName: type
         mapping:
-          'PROCESS.STATE_CHANGED': '#/components/schemas/WebhookEventProcessStateChanged'
-          'TASK.STATE_CHANGED': '#/components/schemas/WebhookEventTaskStateChanged'
+          "PROCESS.STATE_CHANGED": "#/components/schemas/WebhookEventProcessStateChanged"
+          "TASK.STATE_CHANGED": "#/components/schemas/WebhookEventTaskStateChanged"
       properties:
         id:
           type: string
           format: uuid
         type:
-          $ref: '#/components/schemas/WebhookType'
+          $ref: "#/components/schemas/WebhookType"
         timestamp:
           type: string
           format: date-time
@@ -736,18 +713,22 @@ components:
           type: string
           format: uuid
           description: Who create this model
+          readOnly: true
         createdAt:
           type: string
           format: date-time
           description: When this model was created
+          readOnly: true
         lastModifiedBy:
           type: string
           format: uuid
           description: Who was last update this model
+          readOnly: true
         lastModifiedAt:
           type: string
           format: date-time
           description: When this model type was last updated.
+          readOnly: true
 
     PageMetadata:
       type: object
@@ -777,7 +758,7 @@ components:
       type: object
       properties:
         page:
-          $ref: '#/components/schemas/PageMetadata'
+          $ref: "#/components/schemas/PageMetadata"
       required:
         - page
 
@@ -788,7 +769,7 @@ components:
 
     Authentication:
       allOf:
-        - $ref: '#/components/schemas/AbstractAudited'
+        - $ref: "#/components/schemas/AbstractAudited"
         - type: object
           properties:
             id:
@@ -796,7 +777,7 @@ components:
               format: uuid
               readOnly: true
             type:
-              $ref: '#/components/schemas/AuthenticationType'
+              $ref: "#/components/schemas/AuthenticationType"
             token:
               type: string
               readOnly: true
@@ -808,7 +789,6 @@ components:
     ProcessState:
       type: string
       enum:
-        - CREATED
         - RUNNING
         - COMPLETED
         - CANCELLED
@@ -829,90 +809,70 @@ components:
         - DECISION
         - FIELD
 
-    ElementValueBase:
+    ElementValueOrArrayValue:
       type: object
-      discriminator:
-        propertyName: elementDefinitionType
-        mapping:
-          'FORM': '#/components/schemas/ElementValueForm'
-          'DOCUMENT': '#/components/schemas/ElementValueDocument'
-          'DECISION': '#/components/schemas/ElementValueDecision'
-          'FIELD': '#/components/schemas/ElementValueField'
+      properties:
+        code:
+          type: string
+        value:
+          oneOf:
+            - $ref: "#/components/schemas/TaskElementValue"
+            - type: array
+              items:
+                $ref: "#/components/schemas/TaskElementValue"
+      required:
+        - code
+
+    ProcessElementValue:
+      type: object
+      properties:
+        valid:
+          type: boolean
+          default: true
+        value:
+          oneOf:
+            - type: string
+            - type: number
+
+    TaskElementValue:
+      type: object
+      properties:
+        valid:
+          type: boolean
+          default: true
+        value:
+          oneOf:
+            - type: string
+            - type: number
+            - type: object
+
+    ElementValueDocument:
+      type: object
       properties:
         id:
           type: string
           format: uuid
-        elementDefinitionType:
-          $ref: '#/components/schemas/ElementDefinitionType'
-        elementDefinitionCode:
+        name:
           type: string
-        createdBy:
+        contentPath:
+          type: string
+        contentType:
+          type: string
+        contentLength:
+          type: integer
+          format: int64
+
+    SaveElementDocumentCommand:
+      type: object
+      properties:
+        id:
           type: string
           format: uuid
-          description: Who create this model
-        createdAt:
+        code:
           type: string
-          format: date-time
-          description: When this model was created
-        lastModifiedBy:
-          type: string
-          format: uuid
-          description: Who was last update this model
-        lastModifiedAt:
-          type: string
-          format: date-time
-          description: When this model type was last updated.
-      required:
-        - elementDefinitionType
-        - elementDefinitionCode
-
-    ElementValueForm:
-      allOf:
-        - $ref: '#/components/schemas/ElementValueBase'
-        - type: object
-          properties:
-            formValues:
-              type: object
-              additionalProperties: {}
-          required:
-            - formValues
-
-    ElementValueDocument:
-      allOf:
-        - $ref: '#/components/schemas/ElementValueBase'
-        - type: object
-          properties:
-            name:
-              type: string
-            originalName:
-              type: string
-            contentPath:
-              type: string
-            contentType:
-              type: string
-            contentLength:
-              type: integer
-              format: int64
-          required:
-            - originalName
-
-    ElementValueDecision:
-      allOf:
-        - $ref: '#/components/schemas/ElementValueBase'
-        - type: object
-          properties:
-            code:
-              type: string
-          required:
-            - code
-
-    ElementValueField:
-      allOf:
-        - $ref: '#/components/schemas/ElementValueBase'
-        - type: object
-          properties:
-            value:
-              type: string
+        valid:
+          type: boolean
+          default: true
 
     ProcessDefinitionSummary:
       type: object
@@ -933,7 +893,7 @@ components:
 
     Process:
       allOf:
-        - $ref: '#/components/schemas/AbstractAudited'
+        - $ref: "#/components/schemas/AbstractAudited"
         - type: object
           properties:
             id:
@@ -944,42 +904,49 @@ components:
               minLength: 1
               maxLength: 255
             state:
-              $ref: '#/components/schemas/ProcessState'
+              readOnly: true
+              allOf:
+                - $ref: "#/components/schemas/ProcessState"
             processDefinition:
-              $ref: '#/components/schemas/ProcessDefinitionSummary'
+              $ref: "#/components/schemas/ProcessDefinitionSummary"
             elementValues:
-              type: array
-              items:
-                $ref: '#/components/schemas/ElementValueBase'
+              type: object
+              additionalProperties:
+                oneOf:
+                  - $ref: "#/components/schemas/ProcessElementValue"
             initiator:
-              $ref: '#/components/schemas/Principal'
+              readOnly: true
+              allOf:
+                - $ref: "#/components/schemas/Principal"
           required:
             - processDefinition
 
     ProcessPage:
       allOf:
-        - $ref: '#/components/schemas/Page'
+        - $ref: "#/components/schemas/Page"
         - type: object
           properties:
             content:
               type: array
               items:
-                $ref: '#/components/schemas/Process'
+                $ref: "#/components/schemas/Process"
           required:
             - content
 
     Task:
       allOf:
-        - $ref: '#/components/schemas/AbstractAudited'
+        - $ref: "#/components/schemas/AbstractAudited"
         - type: object
           properties:
             id:
               type: string
               format: uuid
             state:
-              $ref: '#/components/schemas/TaskState'
+              readOnly: true
+              allOf:
+                - $ref: "#/components/schemas/TaskState"
             taskDefinition:
-              $ref: '#/components/schemas/TasksDefinitionSummary'
+              $ref: "#/components/schemas/TasksDefinitionSummary"
             processId:
               type: string
               format: uuid
@@ -990,22 +957,34 @@ components:
               type: string
               description: When create a Kuflow Task backed with a Temporal.io servers, this value is required and must be setted with the activity version response.
             elementValues:
-              type: array
-              items:
-                $ref: '#/components/schemas/ElementValueBase'
+              type: object
+              description: A ElementValueDocument or an array of ElementValueDocument is not allowed in any type of requests
+              additionalProperties:
+                oneOf:
+                  - $ref: "#/components/schemas/TaskElementValue"
+                  - type: array
+                    items:
+                      $ref: "#/components/schemas/TaskElementValue"
+                  - $ref: "#/components/schemas/ElementValueDocument"
+                  - type: array
+                    items:
+                      $ref: "#/components/schemas/ElementValueDocument"
             logs:
               type: array
+              readOnly: true
               items:
-                $ref: '#/components/schemas/Log'
+                $ref: "#/components/schemas/Log"
             owner:
-              $ref: '#/components/schemas/Principal'
+              readOnly: true
+              allOf:
+                - $ref: "#/components/schemas/Principal"
           required:
             - taskDefinition
             - processId
 
     TasksDefinitionSummary:
       type: object
-      description: In creation task, one of 'ID, VERSION or CODE' is mandatory
+      description: In creation task, one of 'id, version or code' is mandatory
       properties:
         id:
           type: string
@@ -1023,13 +1002,13 @@ components:
 
     TaskPage:
       allOf:
-        - $ref: '#/components/schemas/Page'
+        - $ref: "#/components/schemas/Page"
         - type: object
           properties:
             content:
               type: array
               items:
-                $ref: '#/components/schemas/Task'
+                $ref: "#/components/schemas/Task"
           required:
             - content
 
@@ -1050,10 +1029,14 @@ components:
           type: string
           format: date-time
           description: When this model was created
+          readOnly: true
         message:
           type: string
         level:
-          $ref: '#/components/schemas/LogLevel'
+          $ref: "#/components/schemas/LogLevel"
+      required:
+        - message
+        - level
 
     Principal:
       type: object
@@ -1062,7 +1045,7 @@ components:
           type: string
           format: uuid
         type:
-          $ref: '#/components/schemas/PrincipalType'
+          $ref: "#/components/schemas/PrincipalType"
         name:
           type: string
 
@@ -1073,14 +1056,23 @@ components:
         - APPLICATION
         - SYSTEM
 
-    DeleteElementsCommand:
+    DeleteElementCommand:
       type: object
       properties:
-        elementDefinitionCode:
-          description: Code of task elements to delete
+        code:
+          description: Code of task element to delete
           type: string
       required:
-        - elementDefinitionCode
+        - code
+
+    DeleteElementDocumentCommand:
+      type: object
+      properties:
+        documentId:
+          description: Document Id to delete
+          type: string
+      required:
+        - documentId
 
     AssignTaskCommand:
       type: object
@@ -1099,7 +1091,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/DefaultError'
+            $ref: "#/components/schemas/DefaultError"
 
   securitySchemes:
     BasicAuth:
