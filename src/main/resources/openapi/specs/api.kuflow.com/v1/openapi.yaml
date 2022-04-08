@@ -801,14 +801,6 @@ components:
         - COMPLETED
         - CANCELLED
 
-    ElementDefinitionType:
-      type: string
-      enum:
-        - FORM
-        - DOCUMENT
-        - DECISION
-        - FIELD
-
     ElementValueOrArrayValue:
       type: object
       properties:
