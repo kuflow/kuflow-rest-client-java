@@ -244,6 +244,7 @@ paths:
       description: |
         Create a Task and optionally fill its elements. We can fill in any type of element except documents.
         If you want to add document type elements, then use the appropriate API method.
+        If you pass a valid owner then the task will be claimed for it.
 
         If you want the method to be idempotent, please specify the `id` field in the request body.
       operationId: createTask
@@ -257,7 +258,7 @@ paths:
               $ref: "#/components/schemas/Task"
             examples:
               example-one:
-                summary: task with elemennts
+                summary: task with elements
                 value:
                   {
                     "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
@@ -967,7 +968,6 @@ components:
               items:
                 $ref: "#/components/schemas/Log"
             owner:
-              readOnly: true
               allOf:
                 - $ref: "#/components/schemas/Principal"
           required:
