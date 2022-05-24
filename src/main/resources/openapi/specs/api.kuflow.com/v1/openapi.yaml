@@ -272,6 +272,8 @@ paths:
                         "element_code_2": { "valid": false, "value": 1111 },
                         "element_code_3": [{ "value": "string" }, { "value": "string" }],
                         "element_code_4": { "value": { "form_field_1": "string", "form_field_2": "string" } },
+                        "element_code_5": { "value": { "documentId": "string", name: "", contentPath: "", contentType: "", contentLength: "" } },
+                        "element_code_6": [{ "value": { "value": { "documentId": "string", name: "", contentPath: "", contentType: "", contentLength: "" } }}],
                       },
                   }
       responses:
@@ -329,7 +331,7 @@ paths:
   /tasks/{id}/~actions/assign:
     post:
       summary: Assign a task
-      description: Allow to assing a task to a user or application. Only one option will be necessary.
+      description: Allow to assign a task to a user or application. Only one option will be necessary.
       operationId: actionsAssignTask
       tags:
         - task
@@ -369,7 +371,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ElementValueOrArrayValue"
+              $ref: "#/components/schemas/TaskElementValueOrArrayValue"
       responses:
         "200":
           description: Task with element filled
@@ -531,7 +533,6 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
       responses:
         "200":
           description: Document requested
@@ -802,7 +803,18 @@ components:
         - COMPLETED
         - CANCELLED
 
-    ElementValueOrArrayValue:
+    ProcessElementValue:
+      type: object
+      properties:
+        valid:
+          type: boolean
+          default: true
+        value:
+          oneOf:
+            - type: string
+            - type: number
+
+    TaskElementValueOrArrayValue:
       type: object
       properties:
         code:
@@ -816,17 +828,6 @@ components:
       required:
         - code
 
-    ProcessElementValue:
-      type: object
-      properties:
-        valid:
-          type: boolean
-          default: true
-        value:
-          oneOf:
-            - type: string
-            - type: number
-
     TaskElementValue:
       type: object
       properties:
@@ -837,14 +838,14 @@ components:
           oneOf:
             - type: string
             - type: number
+            - $ref: "#/components/schemas/TaskElementValueDocument"
             - type: object
 
-    ElementValueDocument:
+    TaskElementValueDocument:
       type: object
       properties:
         id:
           type: string
-          format: uuid
         name:
           type: string
         contentPath:
@@ -945,23 +946,19 @@ components:
               format: uuid
             activityToken:
               type: string
-              description: When create a Kuflow Task backed with a Temporal.io servers, this value is required and must be setted with the context task token of Temporal.io activity
+              description: When create a Kuflow Task backed with a Temporal.io servers, this value is required and must be set with the context task token of Temporal.io activity
             activityResponseVersion:
               type: string
-              description: When create a Kuflow Task backed with a Temporal.io servers, this value is required and must be setted with the activity version response.
+              description: When create a Kuflow Task backed with a Temporal.io servers, this value is required and must be set with the activity version response.
             elementValues:
               type: object
-              description: A ElementValueDocument or an array of ElementValueDocument is not allowed in any type of requests
+              description: An ElementValueDocument or an array of ElementValueDocument is not allowed in any type of requests
               additionalProperties:
                 oneOf:
                   - $ref: "#/components/schemas/TaskElementValue"
                   - type: array
                     items:
                       $ref: "#/components/schemas/TaskElementValue"
-                  - $ref: "#/components/schemas/ElementValueDocument"
-                  - type: array
-                    items:
-                      $ref: "#/components/schemas/ElementValueDocument"
             logs:
               type: array
               readOnly: true
@@ -1063,7 +1060,6 @@ components:
         documentId:
           description: Document Id to delete
           type: string
-          format: uuid
       required:
         - documentId
 

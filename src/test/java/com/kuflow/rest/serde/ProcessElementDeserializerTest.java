@@ -9,7 +9,6 @@ package com.kuflow.rest.serde;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
@@ -24,7 +23,7 @@ public class ProcessElementDeserializerTest {
 
     @Test
     @DisplayName("GIVEN json with null or empty object value WHEN deserialize THEN binding to null")
-    public void givenJsonWithNullOrEmptyObjectValueWhenDeserializeThenBindingToNull() throws JsonMappingException, JsonProcessingException {
+    public void givenJsonWithNullOrEmptyObjectValueWhenDeserializeThenBindingToNull() throws Exception {
         {
             String json = "null";
             ProcessElementValueWrapperResource readValue = this.mapper.readValue(json, ProcessElementValueWrapperResource.class);
@@ -39,14 +38,14 @@ public class ProcessElementDeserializerTest {
 
     @Test
     @DisplayName("GIVEN json with string value WHEN deserialize THEN binding object")
-    public void givenJsonWithStringValueWhenDeserializeThenBindingObject() throws JsonMappingException, JsonProcessingException {
+    public void givenJsonWithStringValueWhenDeserializeThenBindingObject() throws Exception {
         {
             String json = "{\"value\": \"aString\"}";
             ProcessElementValueWrapperResource readValue = this.mapper.readValue(json, ProcessElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValid()).isTrue();
             assertThat(readValue.getValueAsString()).isEqualTo("aString");
-            assertThatExceptionOfType(NumberFormatException.class).isThrownBy(() -> readValue.getValueAsDouble());
+            assertThatExceptionOfType(NumberFormatException.class).isThrownBy(readValue::getValueAsDouble);
         }
 
         {
@@ -55,13 +54,13 @@ public class ProcessElementDeserializerTest {
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValid()).isFalse();
             assertThat(readValue.getValueAsString()).isEqualTo("aString");
-            assertThatExceptionOfType(NumberFormatException.class).isThrownBy(() -> readValue.getValueAsDouble());
+            assertThatExceptionOfType(NumberFormatException.class).isThrownBy(readValue::getValueAsDouble);
         }
     }
 
     @Test
     @DisplayName("GIVEN json with number value WHEN deserialize THEN binding object")
-    public void givenJsonWithNumberValueWhenDeserializeThenBindingObject() throws JsonMappingException, JsonProcessingException {
+    public void givenJsonWithNumberValueWhenDeserializeThenBindingObject() throws Exception {
         {
             String json = "{\"value\": 123}";
             ProcessElementValueWrapperResource readValue = this.mapper.readValue(json, ProcessElementValueWrapperResource.class);
@@ -82,7 +81,7 @@ public class ProcessElementDeserializerTest {
 
     @Test
     @DisplayName("GIVEN json with number value WHEN deserialize THEN binding object")
-    public void givenJsonWithLocalDateValueWhenDeserializeThenBindingObject() throws JsonMappingException, JsonProcessingException {
+    public void givenJsonWithLocalDateValueWhenDeserializeThenBindingObject() throws Exception {
         {
             String json = "{\"value\": \"2022-01-01\"}";
             ProcessElementValueWrapperResource readValue = this.mapper.readValue(json, ProcessElementValueWrapperResource.class);
@@ -93,7 +92,7 @@ public class ProcessElementDeserializerTest {
 
     @Test
     @DisplayName("GIVEN json with array value WHEN deserialize THEN throw exception")
-    public void givenJsonWithArrayValueWhenDeserializeThenThrowException() throws JsonMappingException, JsonProcessingException {
+    public void givenJsonWithArrayValueWhenDeserializeThenThrowException() {
         {
             String json = "[]";
             assertThatExceptionOfType(JsonMappingException.class)

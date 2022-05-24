@@ -9,8 +9,6 @@ package com.kuflow.rest.serde;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.kuflow.rest.client.resource.TaskElementValueWrapperResource;
@@ -29,13 +27,13 @@ public class TaskElementSerializerTest {
 
     @Test
     @DisplayName("GIVEN a null value WHEN instance a task element THEN throws a illegal argument")
-    public void gibenAnullValueWhenInstanceAtaskElementTheThrowsAIllegalArgument() throws JsonMappingException, JsonProcessingException {
+    public void givenANullValueWhenInstanceATaskElementTheThrowsAIllegalArgument() {
         assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> TaskElementValueWrapperResource.of((String) null));
     }
 
     @Test
     @DisplayName("GIVEN element with simple value WHEN serialize THEN json")
-    public void givenTaskElementWithSimpleValueWhenSerializeThenJson() throws JsonMappingException, JsonProcessingException {
+    public void givenTaskElementWithSimpleValueWhenSerializeThenJson() throws Exception {
         {
             TaskElementValueWrapperResource elementValuesResource = TaskElementValueWrapperResource.of("aString");
             String json = this.mapper.writeValueAsString(elementValuesResource);
@@ -75,8 +73,20 @@ public class TaskElementSerializerTest {
     }
 
     @Test
+    @DisplayName("GIVEN element with simple value WHEN serialize and no one value is read THEN the tree node is used")
+    public void givenElementWithSimpleValueWhenSerializeAndNoOneValueIsReadThenTheTreeNodeIsUsed() throws Exception {
+        {
+            String jsonExpected = "{\"valid\":true,\"value\":\"aString\"}";
+            TaskElementValueWrapperResource readValue = this.mapper.readValue(jsonExpected, TaskElementValueWrapperResource.class);
+
+            String jsonActual = this.mapper.writeValueAsString(readValue);
+            assertThat(jsonActual).isEqualTo(jsonExpected);
+        }
+    }
+
+    @Test
     @DisplayName("GIVEN element with document value WHEN serialize THEN json")
-    public void givenTaskElementWithDocumentValueWhenSerializeThenJson() throws JsonMappingException, JsonProcessingException {
+    public void givenTaskElementWithDocumentValueWhenSerializeThenJson() throws Exception {
         {
             TaskElementValueWrapperResource elementValuesResource = TaskElementValueWrapperResource.of(
                 ElementValueDocumentFixture.getElementValueDocument0()
@@ -85,11 +95,8 @@ public class TaskElementSerializerTest {
             String json = this.mapper.writeValueAsString(elementValuesResource);
             assertThat(json)
                 .isEqualTo(
-                    "{\"id\":\"145fd460-5e52-4160-a0e4-64fd1c9ef380\"," +
-                    "\"name\":\"name\"," +
-                    "\"contentPath\":\"contentPath\"," +
-                    "\"contentType\":\"application/pdf\"," +
-                    "\"contentLength\":10748}"
+                    "{\"valid\":true,\"value\":{\"id\":\"145fd460-5e52-4160-a0e4-64fd1c9ef380\",\"name\":\"name\"," +
+                    "\"contentPath\":\"contentPath\",\"contentType\":\"application/pdf\",\"contentLength\":10748}}"
                 );
         }
 
@@ -100,14 +107,13 @@ public class TaskElementSerializerTest {
                 ElementValueDocumentFixture.getElementValueDocument0()
             );
             String json = this.mapper.writeValueAsString(elementValuesResource);
-            assertThat(StringUtils.countMatches(json, ElementValueDocumentFixture.getElementValueDocument0().getId().toString()))
-                .isEqualTo(3);
+            assertThat(StringUtils.countMatches(json, ElementValueDocumentFixture.getElementValueDocument0().getId())).isEqualTo(3);
         }
     }
 
     @Test
     @DisplayName("GIVEN task element with form value WHEN serialize THEN json")
-    public void givenTaskElementWithFormValueWhenSerializeThenJson() throws JsonMappingException, JsonProcessingException {
+    public void givenTaskElementWithFormValueWhenSerializeThenJson() throws Exception {
         {
             Map<String, Serializable> form = Map.of("key1", "value", "key2", 12);
             TaskElementValueWrapperResource elementValuesResource = TaskElementValueWrapperResource.of(form);

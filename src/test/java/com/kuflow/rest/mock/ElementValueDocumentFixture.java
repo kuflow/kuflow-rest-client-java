@@ -6,14 +6,13 @@
 
 package com.kuflow.rest.mock;
 
-import com.kuflow.rest.client.resource.ElementValueDocumentResource;
-import java.util.UUID;
+import com.kuflow.rest.client.resource.TaskElementValueDocumentResource;
 
 public class ElementValueDocumentFixture {
 
-    public static ElementValueDocumentResource getElementValueDocument0() {
-        ElementValueDocumentResource elementValueDocumentResource = new ElementValueDocumentResource();
-        elementValueDocumentResource.setId(UUID.fromString("145fd460-5e52-4160-a0e4-64fd1c9ef380"));
+    public static TaskElementValueDocumentResource getElementValueDocument0() {
+        TaskElementValueDocumentResource elementValueDocumentResource = new TaskElementValueDocumentResource();
+        elementValueDocumentResource.setId("145fd460-5e52-4160-a0e4-64fd1c9ef380");
         elementValueDocumentResource.setContentLength(10748L);
         elementValueDocumentResource.setContentType("application/pdf");
         elementValueDocumentResource.setContentPath("contentPath");
