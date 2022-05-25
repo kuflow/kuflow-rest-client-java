@@ -29,6 +29,10 @@ public class TaskElementValueItemResourceSerializer extends StdSerializer<TaskEl
             return;
         }
 
-        gen.writeObject(value.getRawValue());
+        if (value.getRawValueTreeNode() != null) {
+            gen.writeTree(value.getRawValueTreeNode());
+        } else {
+            gen.writeObject(value.getRawValue());
+        }
     }
 }

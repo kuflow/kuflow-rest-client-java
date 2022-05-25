@@ -8,8 +8,6 @@ package com.kuflow.rest.serde;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.kuflow.rest.client.resource.ProcessElementValueWrapperResource;
@@ -23,7 +21,7 @@ public class ProcessElementSerializerTest {
 
     @Test
     @DisplayName("GIVEN element values as simple object WHEN serialize THEN json string")
-    public void givenElementValuesAsSimpleObjectWhenserializeThenJsonString() throws JsonMappingException, JsonProcessingException {
+    public void givenElementValuesAsSimpleObjectWhenSerializeThenJsonString() throws Exception {
         {
             ProcessElementValueWrapperResource resource = ProcessElementValueWrapperResource.of("aString");
             String json = this.mapper.writeValueAsString(resource);
