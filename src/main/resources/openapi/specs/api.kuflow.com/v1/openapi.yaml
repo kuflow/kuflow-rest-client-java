@@ -357,9 +357,11 @@ paths:
     post:
       summary: Save an element
       description: |
-        Allow to save an element that is not a document i.e., a field, a decision or form. If you want to add documents, use the appropriate API method.
+        Allow to save an element i.e., a field, a decision, form or document.
 
+        If is a document you need to pass a document reference using the 'id' attribute.
         If values already exist for the provided element code, it replaces them with the new ones, otherwise it creates them.
+        The values of the previous elements that no longer exist will be deleted.
         To remove an element, use the appropriate API method.
       operationId: actionsSaveElement
       tags:
@@ -382,15 +384,15 @@ paths:
         default:
           $ref: "#/components/responses/DefaultError"
 
-  /tasks/{id}/~actions/save-element-document:
+  /tasks/{id}/~actions/save-element-value-document:
     post:
       summary: Save an element document
       description: |
-        Allow to save an element document.
+        Allow to save an element document uploading the content.
 
         If it is a multiple element, and the Id referenced in the body does not exist or is empty, the document will be added to the element.
         If the element already exists (the Id referenced in the body corresponds to an existing one), it updates it.
-      operationId: actionsSaveElementDocument
+      operationId: actionsSaveElementValueDocument
       tags:
         - task
       parameters:
@@ -403,7 +405,7 @@ paths:
               type: object
               properties:
                 json:
-                  $ref: "#/components/schemas/SaveElementDocumentCommand"
+                  $ref: "#/components/schemas/SaveElementValueDocumentCommand"
                 file:
                   type: string
                   format: binary
@@ -449,14 +451,14 @@ paths:
         default:
           $ref: "#/components/responses/DefaultError"
 
-  /tasks/{id}/~actions/delete-element-document:
+  /tasks/{id}/~actions/delete-element-value-document:
     post:
       summary: Delete an element document value
       description: |
         Allow to delete a specific document from an element of document type using its id.
 
         Note: If it is a multiple item, it will only delete the specified document. If it is a single element, in addition to the document, it will also delete the element.
-      operationId: actionsDeleteDocument
+      operationId: actionsDeleteValueDocument
       tags:
         - task
       parameters:
@@ -466,7 +468,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/DeleteElementDocumentCommand"
+              $ref: "#/components/schemas/DeleteElementValueDocumentCommand"
       responses:
         "200":
           description: Task elements deleted
@@ -476,6 +478,30 @@ paths:
                 $ref: "#/components/schemas/Task"
         default:
           $ref: "#/components/responses/DefaultError"
+
+  /tasks/{id}/~actions/download-element-value-document:
+    get:
+      summary: Download document
+      description: Given a task, download a document from an element of document type
+      operationId: actionsDownloadElementValueDocument
+      tags:
+        - task
+      parameters:
+        - $ref: "#/components/parameters/IdPathParam"
+        - name: documentId
+          in: query
+          description: Document Id to download.
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Document requested
+          content:
+            "*/*":
+              schema:
+                type: string
+                format: binary
 
   /tasks/{id}/~actions/complete:
     post:
@@ -517,30 +543,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Task"
-
-  /tasks/{id}/~actions/download-element-document:
-    get:
-      summary: Download document
-      description: Given a task, download a document from an element of document type
-      operationId: actionsDownloadElementDocument
-      tags:
-        - task
-      parameters:
-        - $ref: "#/components/parameters/IdPathParam"
-        - name: documentId
-          in: query
-          description: Document Id to download.
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Document requested
-          content:
-            "*/*":
-              schema:
-                type: string
-                format: binary
 
 x-webhooks:
   events:
@@ -856,7 +858,7 @@ components:
           type: integer
           format: int64
 
-    SaveElementDocumentCommand:
+    SaveElementValueDocumentCommand:
       type: object
       properties:
         id:
@@ -867,6 +869,8 @@ components:
         valid:
           type: boolean
           default: true
+      required:
+        - code
 
     ProcessDefinitionSummary:
       type: object
@@ -1054,7 +1058,7 @@ components:
       required:
         - code
 
-    DeleteElementDocumentCommand:
+    DeleteElementValueDocumentCommand:
       type: object
       properties:
         documentId:
