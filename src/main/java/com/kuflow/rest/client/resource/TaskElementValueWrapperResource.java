@@ -103,6 +103,14 @@ public class TaskElementValueWrapperResource {
         return toElementValuesResource(CastUtils.cast(values));
     }
 
+    public static TaskElementValueWrapperResource of(PrincipalResource value) {
+        return toElementValuesResource(value);
+    }
+
+    public static TaskElementValueWrapperResource of(PrincipalResource... values) {
+        return toElementValuesResource(CastUtils.cast(values));
+    }
+
     private static TaskElementValueWrapperResource toElementValuesResource(Object value) {
         if (value == null) {
             throw new IllegalArgumentException("Some value is required");
@@ -140,6 +148,8 @@ public class TaskElementValueWrapperResource {
             elementValueResource.value(TaskElementValueItemResource.of(valueMap));
         } else if (value instanceof TaskElementValueDocumentResource) {
             elementValueResource.value(TaskElementValueItemResource.of((TaskElementValueDocumentResource) value));
+        } else if (value instanceof PrincipalResource) {
+            elementValueResource.value(TaskElementValueItemResource.of((PrincipalResource) value));
         } else {
             throw new IllegalArgumentException(String.format("Unknown type %s", value.getClass().getName()));
         }
@@ -214,6 +224,14 @@ public class TaskElementValueWrapperResource {
 
     public List<TaskElementValueDocumentResource> getValueAsDocumentList() {
         return this.getValuesAs(TaskElementValueItemResource::getValueAsDocument);
+    }
+
+    public PrincipalResource getValueAsPrincipal() {
+        return this.getValueAs(TaskElementValueItemResource::getValueAsPrincipal);
+    }
+
+    public List<PrincipalResource> getValueAsPrincipalList() {
+        return this.getValuesAs(TaskElementValueItemResource::getValueAsPrincipal);
     }
 
     private <R> R getValueAs(Function<TaskElementValueItemResource, R> cb) {

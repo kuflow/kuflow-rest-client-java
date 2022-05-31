@@ -272,8 +272,16 @@ paths:
                         "element_code_2": { "valid": false, "value": 1111 },
                         "element_code_3": [{ "value": "string" }, { "value": "string" }],
                         "element_code_4": { "value": { "form_field_1": "string", "form_field_2": "string" } },
-                        "element_code_5": { "value": { "documentId": "string", name: "", contentPath: "", contentType: "", contentLength: "" } },
-                        "element_code_6": [{ "value": { "value": { "documentId": "string", name: "", contentPath: "", contentType: "", contentLength: "" } }}],
+                        "element_code_5":
+                          { "value": { "documentId": "string", name: "", contentPath: "", contentType: "", contentLength: "" } },
+                        "element_code_6":
+                          [
+                            {
+                              "value":
+                                { "value": { "documentId": "string", name: "", contentPath: "", contentType: "", contentLength: "" } },
+                            },
+                          ],
+                        "element_code_7": { "value": { "id": "b90c9ae9-444c-4bfd-9594-7468955d2eda", "type": "USER" } },
                       },
                   }
       responses:
@@ -357,7 +365,7 @@ paths:
     post:
       summary: Save an element
       description: |
-        Allow to save an element i.e., a field, a decision, form or document.
+        Allow to save an element i.e., a field, a decision, a form, a principal or document.
 
         If is a document you need to pass a document reference using the 'id' attribute.
         If values already exist for the provided element code, it replaces them with the new ones, otherwise it creates them.
@@ -842,6 +850,7 @@ components:
             - type: number
             - $ref: "#/components/schemas/TaskElementValueDocument"
             - type: object
+            - $ref: "#/components/schemas/Principal"
 
     TaskElementValueDocument:
       type: object
@@ -1041,6 +1050,9 @@ components:
           $ref: "#/components/schemas/PrincipalType"
         name:
           type: string
+      required:
+        - id
+        - type
 
     PrincipalType:
       type: string

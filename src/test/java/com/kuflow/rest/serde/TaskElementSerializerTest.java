@@ -11,8 +11,10 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.kuflow.rest.client.resource.PrincipalResource;
 import com.kuflow.rest.client.resource.TaskElementValueWrapperResource;
 import com.kuflow.rest.mock.ElementValueDocumentFixture;
+import com.kuflow.rest.mock.PrincipalFixture;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
@@ -128,6 +130,34 @@ public class TaskElementSerializerTest {
             TaskElementValueWrapperResource elementValuesResource = TaskElementValueWrapperResource.of(List.of(form, form));
             String json = this.mapper.writeValueAsString(elementValuesResource);
             assertThat(StringUtils.countMatches(json, "key1")).isEqualTo(2);
+        }
+    }
+
+    @Test
+    @DisplayName("GIVEN element with principal value WHEN serialize THEN json")
+    public void givenTaskElementWithPrincipalValueWhenSerializeThenJson() throws Exception {
+        {
+            TaskElementValueWrapperResource elementValuesResource = TaskElementValueWrapperResource.of(
+                PrincipalFixture.getPrincipalUser0()
+            );
+
+            String json = this.mapper.writeValueAsString(elementValuesResource);
+            assertThat(json)
+                .isEqualTo(
+                    "{\"valid\":true,\"value\":{\"id\":\"9b03e7f2-ecb5-4634-b20f-f528a09ffc9a\"," +
+                    "\"type\":\"USER\",\"name\":\"My name\"}}"
+                );
+        }
+
+        {
+            TaskElementValueWrapperResource elementValuesResource = TaskElementValueWrapperResource.of(
+                PrincipalFixture.getPrincipalUser0(),
+                PrincipalFixture.getPrincipalUser0(),
+                PrincipalFixture.getPrincipalUser0()
+            );
+
+            String json = this.mapper.writeValueAsString(elementValuesResource);
+            assertThat(StringUtils.countMatches(json, PrincipalFixture.getPrincipalUser0().getId().toString())).isEqualTo(3);
         }
     }
 }

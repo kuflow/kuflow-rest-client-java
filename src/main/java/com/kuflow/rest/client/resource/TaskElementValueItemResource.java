@@ -16,7 +16,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.kuflow.rest.client.KuFlowRestClientException;
 import com.kuflow.rest.client.util.CastUtils;
 import com.kuflow.rest.client.util.ThrowingFunction;
-import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -59,6 +58,10 @@ public class TaskElementValueItemResource {
     }
 
     public static TaskElementValueItemResource of(TaskElementValueDocumentResource value) {
+        return new TaskElementValueItemResource(value);
+    }
+
+    public static TaskElementValueItemResource of(PrincipalResource value) {
         return new TaskElementValueItemResource(value);
     }
 
@@ -152,8 +155,30 @@ public class TaskElementValueItemResource {
         return CastUtils.cast(this.value);
     }
 
+    public PrincipalResource getValueAsPrincipal() {
+        this.tryReadValueAs(PrincipalResource.class);
+
+        if (this.value == null) {
+            return null;
+        }
+
+        if (this.value == null) {
+            return null;
+        }
+
+        if (!(this.value instanceof PrincipalResource)) {
+            throw new KuFlowRestClientException(String.format("value %s is not a principal", this.value));
+        }
+
+        return CastUtils.cast(this.value);
+    }
+
     private <T> void tryReadValueAs(Class<T> clazz) {
         this.tryReadValueAs(jsonParser -> jsonParser.readValueAs(clazz));
+    }
+
+    private <T> void tryReadValueAs(TypeReference<T> valueTypeRef) {
+        this.tryReadValueAs(jsonParser -> jsonParser.readValueAs(valueTypeRef));
     }
 
     private <T> void tryReadValueAs(ThrowingFunction<JsonParser, T> callback) {
@@ -167,20 +192,6 @@ public class TaskElementValueItemResource {
             this.valueCodec = null;
         } catch (Exception e) {
             throw new KuFlowRestClientException(String.format("Error parsing value %s", this.valueJsonNode), e);
-        }
-    }
-
-    private <T> void tryReadValueAs(TypeReference<T> valueTypeRef) {
-        if (this.valueJsonNode == null) {
-            return;
-        }
-
-        try (JsonParser jsonParser = this.valueJsonNode.traverse(this.valueCodec)) {
-            this.value = jsonParser.readValueAs(valueTypeRef);
-            this.valueJsonNode = null;
-            this.valueCodec = null;
-        } catch (IOException e) {
-            throw new KuFlowRestClientException(String.format("value %s is not %s", this.valueJsonNode, valueTypeRef), e);
         }
     }
 
