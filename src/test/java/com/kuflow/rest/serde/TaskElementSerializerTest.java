@@ -11,7 +11,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.kuflow.rest.client.resource.PrincipalResource;
 import com.kuflow.rest.client.resource.TaskElementValueWrapperResource;
 import com.kuflow.rest.mock.ElementValueDocumentFixture;
 import com.kuflow.rest.mock.PrincipalFixture;
