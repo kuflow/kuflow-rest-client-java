@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.kuflow.rest.client.KuFlowRestClientException;
 import com.kuflow.rest.client.resource.TaskElementValueWrapperResource;
 import java.time.LocalDate;
+import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -242,6 +243,49 @@ public class TaskElementDeserializerTest {
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValueAsDocumentList().size()).isEqualTo(2);
             assertThat(readValue.getValueAsDocumentList().get(0).getId()).isEqualTo("30b33063-a1b4-4d07-a789-c5593893eb54");
+        }
+    }
+
+    @Test
+    @DisplayName("GIVEN json with principal value WHEN deserialize THEN binding object")
+    public void givenJsonWithPrincipalValueWhenDeserializeThenBindingObject() throws Exception {
+        {
+            String json =
+                "{\"valid\":true,\"value\":{\"id\":\"9b03e7f2-ecb5-4634-b20f-f528a09ffc9a\"," + "\"type\":\"USER\",\"name\":\"My name\"}}";
+            TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
+            assertThat(readValue).isNotNull();
+
+            assertThat(readValue.getValueAsPrincipal().getId()).isEqualTo(UUID.fromString("9b03e7f2-ecb5-4634-b20f-f528a09ffc9a"));
+        }
+
+        {
+            String json = "{\"value\":{\"id\":\"9b03e7f2-ecb5-4634-b20f-f528a09ffc9a\"," + "\"type\":\"USER\",\"name\":\"My name\"}}";
+            TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
+            assertThat(readValue).isNotNull();
+
+            assertThat(readValue.getValueAsPrincipal().getId()).isEqualTo(UUID.fromString("9b03e7f2-ecb5-4634-b20f-f528a09ffc9a"));
+        }
+
+        {
+            String json = "{\"value\":{\"id\":\"9b03e7f2-ecb5-4634-b20f-f528a09ffc9a\"," + "\"type\":\"USER\"}}";
+            TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
+            assertThat(readValue).isNotNull();
+            assertThat(readValue.getValueAsPrincipal().getId()).isEqualTo(UUID.fromString("9b03e7f2-ecb5-4634-b20f-f528a09ffc9a"));
+        }
+    }
+
+    @Test
+    @DisplayName("GIVEN json with array principal WHEN deserialize THEN binding object")
+    public void givenJsonWithArrayPrincipalWhenDeserializeThenBindingObject() throws Exception {
+        {
+            String element =
+                "{\"valid\":true,\"value\":{\"id\":\"9b03e7f2-ecb5-4634-b20f-f528a09ffc9a\"," + "\"type\":\"USER\",\"name\":\"My name\"}}";
+            String json = "[" + element + "," + element + "]";
+            TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
+            assertThat(readValue).isNotNull();
+            assertThat(readValue.getValueAsPrincipalList().size()).isEqualTo(2);
+            assertThat(readValue.getValueAsPrincipalList().get(0).getId())
+                .isEqualTo(UUID.fromString("9b03e7f2-ecb5-4634-b20f-f528a09ffc9a"));
         }
     }
 }
