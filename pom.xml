@@ -280,7 +280,7 @@
                 <typeMapping>OneOfTaskElementValuearrayTaskElementValueDocumentarrayResource=TaskElementValueWrapperResource</typeMapping>
                 <typeMapping>OneOfTaskElementValuearrayResource=TaskElementValueWrapperResource</typeMapping>
                 <typeMapping>OneOfstringnumberTaskElementValueDocumentobjectResource=TaskElementValueItemResource</typeMapping>
-                <typeMapping>OneOfstringnumberTaskElementValueDocumentobjectPrincipalResource=TaskElementValueItemResource</typeMapping>
+                <typeMapping>OneOfstringnumberTaskElementValueDocumentobjectTaskElementValuePrincipalResource=TaskElementValueItemResource</typeMapping>
                 <!-- Process Elements -->
                 <typeMapping>OneOfProcessElementValueResource=ProcessElementValueWrapperResource</typeMapping>
                 <typeMapping>OneOfstringnumberResource=ProcessElementValueItemResource</typeMapping>
@@ -290,7 +290,7 @@
                 <!-- Task Elements -->
                 <importMapping>OneOfTaskElementValuearrayTaskElementValueDocumentarrayResource=com.kuflow.rest.client.resource.TaskElementValueWrapperResource</importMapping>
                 <importMapping>OneOfTaskElementValuearrayResource=com.kuflow.rest.client.resource.TaskElementValueWrapperResource</importMapping>
-                <importMapping>OneOfstringnumberTaskElementValueDocumentobjectPrincipalResource=com.kuflow.rest.client.resource.TaskElementValueItemResource</importMapping>
+                <importMapping>OneOfstringnumberTaskElementValueDocumentobjectTaskElementValuePrincipalResource=com.kuflow.rest.client.resource.TaskElementValueItemResource</importMapping>
                 <!-- Process Elements -->
                 <importMapping>OneOfProcessElementValueResource=com.kuflow.rest.client.resource.ProcessElementValueWrapperResource</importMapping>
                 <importMapping>OneOfstringnumberResource=com.kuflow.rest.client.resource.ProcessElementValueItemResource</importMapping>

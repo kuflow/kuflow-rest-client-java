@@ -61,7 +61,7 @@ public class TaskElementValueItemResource {
         return new TaskElementValueItemResource(value);
     }
 
-    public static TaskElementValueItemResource of(PrincipalResource value) {
+    public static TaskElementValueItemResource of(TaskElementValuePrincipalResource value) {
         return new TaskElementValueItemResource(value);
     }
 
@@ -155,8 +155,8 @@ public class TaskElementValueItemResource {
         return CastUtils.cast(this.value);
     }
 
-    public PrincipalResource getValueAsPrincipal() {
-        this.tryReadValueAs(PrincipalResource.class);
+    public TaskElementValuePrincipalResource getValueAsPrincipal() {
+        this.tryReadValueAs(TaskElementValuePrincipalResource.class);
 
         if (this.value == null) {
             return null;
@@ -166,7 +166,7 @@ public class TaskElementValueItemResource {
             return null;
         }
 
-        if (!(this.value instanceof PrincipalResource)) {
+        if (!(this.value instanceof TaskElementValuePrincipalResource)) {
             throw new KuFlowRestClientException(String.format("value %s is not a principal", this.value));
         }
 

@@ -272,16 +272,15 @@ paths:
                         "element_code_2": { "valid": false, "value": 1111 },
                         "element_code_3": [{ "value": "string" }, { "value": "string" }],
                         "element_code_4": { "value": { "form_field_1": "string", "form_field_2": "string" } },
-                        "element_code_5":
-                          { "value": { "documentId": "string", name: "", contentPath: "", contentType: "", contentLength: "" } },
+                        "element_code_5": { "value": { "id": "string", name: "", contentPath: "", contentType: "", contentLength: "" } },
                         "element_code_6":
-                          [
-                            {
-                              "value":
-                                { "value": { "documentId": "string", name: "", contentPath: "", contentType: "", contentLength: "" } },
-                            },
-                          ],
+                          [{ "value": { "value": { "id": "string", name: "", contentPath: "", contentType: "", contentLength: "" } } }],
                         "element_code_7": { "value": { "id": "b90c9ae9-444c-4bfd-9594-7468955d2eda", "type": "USER" } },
+                        "element_code_8":
+                          [
+                            { "value": { "id": "b90c9ae9-444c-4bfd-9594-7468955d2eda", "type": "USER" } },
+                            { "value": { "id": "f4be313c-c0a2-426c-bdd3-c3113d7bbf37", "type": "USER" } },
+                          ],
                       },
                   }
       responses:
@@ -850,7 +849,7 @@ components:
             - type: number
             - $ref: "#/components/schemas/TaskElementValueDocument"
             - type: object
-            - $ref: "#/components/schemas/Principal"
+            - $ref: "#/components/schemas/TaskElementValuePrincipal"
 
     TaskElementValueDocument:
       type: object
@@ -866,6 +865,20 @@ components:
         contentLength:
           type: integer
           format: int64
+
+    TaskElementValuePrincipal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          $ref: "#/components/schemas/PrincipalType"
+        name:
+          type: string
+      required:
+        - id
+        - type
 
     SaveElementValueDocumentCommand:
       type: object

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.kuflow.rest.client.resource.TaskElementValueWrapperResource;
 import com.kuflow.rest.mock.ElementValueDocumentFixture;
-import com.kuflow.rest.mock.PrincipalFixture;
+import com.kuflow.rest.mock.ElementValuePrincipalResourceFixture;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
@@ -137,7 +137,7 @@ public class TaskElementSerializerTest {
     public void givenTaskElementWithPrincipalValueWhenSerializeThenJson() throws Exception {
         {
             TaskElementValueWrapperResource elementValuesResource = TaskElementValueWrapperResource.of(
-                PrincipalFixture.getPrincipalUser0()
+                ElementValuePrincipalResourceFixture.getPrincipalUser0()
             );
 
             String json = this.mapper.writeValueAsString(elementValuesResource);
@@ -150,13 +150,14 @@ public class TaskElementSerializerTest {
 
         {
             TaskElementValueWrapperResource elementValuesResource = TaskElementValueWrapperResource.of(
-                PrincipalFixture.getPrincipalUser0(),
-                PrincipalFixture.getPrincipalUser0(),
-                PrincipalFixture.getPrincipalUser0()
+                ElementValuePrincipalResourceFixture.getPrincipalUser0(),
+                ElementValuePrincipalResourceFixture.getPrincipalUser0(),
+                ElementValuePrincipalResourceFixture.getPrincipalUser0()
             );
 
             String json = this.mapper.writeValueAsString(elementValuesResource);
-            assertThat(StringUtils.countMatches(json, PrincipalFixture.getPrincipalUser0().getId().toString())).isEqualTo(3);
+            assertThat(StringUtils.countMatches(json, ElementValuePrincipalResourceFixture.getPrincipalUser0().getId().toString()))
+                .isEqualTo(3);
         }
     }
 }

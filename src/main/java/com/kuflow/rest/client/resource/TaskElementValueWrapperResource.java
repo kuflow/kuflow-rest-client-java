@@ -103,11 +103,11 @@ public class TaskElementValueWrapperResource {
         return toElementValuesResource(CastUtils.cast(values));
     }
 
-    public static TaskElementValueWrapperResource of(PrincipalResource value) {
+    public static TaskElementValueWrapperResource of(TaskElementValuePrincipalResource value) {
         return toElementValuesResource(value);
     }
 
-    public static TaskElementValueWrapperResource of(PrincipalResource... values) {
+    public static TaskElementValueWrapperResource of(TaskElementValuePrincipalResource... values) {
         return toElementValuesResource(CastUtils.cast(values));
     }
 
@@ -148,8 +148,8 @@ public class TaskElementValueWrapperResource {
             elementValueResource.value(TaskElementValueItemResource.of(valueMap));
         } else if (value instanceof TaskElementValueDocumentResource) {
             elementValueResource.value(TaskElementValueItemResource.of((TaskElementValueDocumentResource) value));
-        } else if (value instanceof PrincipalResource) {
-            elementValueResource.value(TaskElementValueItemResource.of((PrincipalResource) value));
+        } else if (value instanceof TaskElementValuePrincipalResource) {
+            elementValueResource.value(TaskElementValueItemResource.of((TaskElementValuePrincipalResource) value));
         } else {
             throw new IllegalArgumentException(String.format("Unknown type %s", value.getClass().getName()));
         }
@@ -226,11 +226,11 @@ public class TaskElementValueWrapperResource {
         return this.getValuesAs(TaskElementValueItemResource::getValueAsDocument);
     }
 
-    public PrincipalResource getValueAsPrincipal() {
+    public TaskElementValuePrincipalResource getValueAsPrincipal() {
         return this.getValueAs(TaskElementValueItemResource::getValueAsPrincipal);
     }
 
-    public List<PrincipalResource> getValueAsPrincipalList() {
+    public List<TaskElementValuePrincipalResource> getValueAsPrincipalList() {
         return this.getValuesAs(TaskElementValueItemResource::getValueAsPrincipal);
     }
 
