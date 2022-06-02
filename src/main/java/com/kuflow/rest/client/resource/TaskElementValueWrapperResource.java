@@ -60,7 +60,7 @@ public class TaskElementValueWrapperResource {
     }
 
     public static TaskElementValueWrapperResource of(TaskElementValueResource... value) {
-        return new TaskElementValueWrapperResource((TaskElementValueResource) Arrays.asList((Object[]) value));
+        return new TaskElementValueWrapperResource(Arrays.asList(value));
     }
 
     public static TaskElementValueWrapperResource of(String value) {
