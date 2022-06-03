@@ -279,21 +279,16 @@
                 <!-- Task Elements -->
                 <typeMapping>OneOfTaskElementValuearrayTaskElementValueDocumentarrayResource=TaskElementValueWrapperResource</typeMapping>
                 <typeMapping>OneOfTaskElementValuearrayResource=TaskElementValueWrapperResource</typeMapping>
-                <typeMapping>OneOfstringnumberTaskElementValueDocumentobjectResource=TaskElementValueItemResource</typeMapping>
-                <typeMapping>OneOfstringnumberTaskElementValueDocumentobjectTaskElementValuePrincipalResource=TaskElementValueItemResource</typeMapping>
                 <!-- Process Elements -->
                 <typeMapping>OneOfProcessElementValueResource=ProcessElementValueWrapperResource</typeMapping>
-                <typeMapping>OneOfstringnumberResource=ProcessElementValueItemResource</typeMapping>
               </typeMappings>
               <importMappings>
                 <importMapping>java.time.OffsetDateTime=java.time.Instant</importMapping>
                 <!-- Task Elements -->
                 <importMapping>OneOfTaskElementValuearrayTaskElementValueDocumentarrayResource=com.kuflow.rest.client.resource.TaskElementValueWrapperResource</importMapping>
                 <importMapping>OneOfTaskElementValuearrayResource=com.kuflow.rest.client.resource.TaskElementValueWrapperResource</importMapping>
-                <importMapping>OneOfstringnumberTaskElementValueDocumentobjectTaskElementValuePrincipalResource=com.kuflow.rest.client.resource.TaskElementValueItemResource</importMapping>
                 <!-- Process Elements -->
                 <importMapping>OneOfProcessElementValueResource=com.kuflow.rest.client.resource.ProcessElementValueWrapperResource</importMapping>
-                <importMapping>OneOfstringnumberResource=com.kuflow.rest.client.resource.ProcessElementValueItemResource</importMapping>
               </importMappings>
               <globalProperties>
                 <!-- No skip models defined as the form parameters in "requestBody", ie: multipart/form-data -->

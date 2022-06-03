@@ -10,9 +10,12 @@ import static java.util.stream.Collectors.toList;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.kuflow.rest.client.KuFlowRestClientException;
 import com.kuflow.rest.client.util.CastUtils;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -35,20 +38,12 @@ public class TaskElementValueWrapperResource {
 
     TaskElementValueWrapperResource(List<TaskElementValueResource> values) {
         if (values == null) {
-            throw new IllegalArgumentException("Some value is required");
+            values = Collections.emptyList();
         }
 
-        if (!values.isEmpty()) {
-            values
-                .stream()
-                .filter(Objects::isNull)
-                .findAny()
-                .ifPresent(v -> {
-                    throw new IllegalArgumentException(String.format("Items object type: '%s' is unsupported", v.getClass()));
-                });
-        }
+        values = values.stream().filter(Objects::nonNull).collect(toList());
 
-        this.value = values;
+        this.value = Collections.unmodifiableList(values);
     }
 
     Object getRawValue() {
@@ -59,8 +54,8 @@ public class TaskElementValueWrapperResource {
         return new TaskElementValueWrapperResource(value);
     }
 
-    public static TaskElementValueWrapperResource of(TaskElementValueResource... value) {
-        return new TaskElementValueWrapperResource(Arrays.asList(value));
+    public static TaskElementValueWrapperResource of(TaskElementValueResource... values) {
+        return new TaskElementValueWrapperResource(Arrays.asList(values));
     }
 
     public static TaskElementValueWrapperResource of(String value) {
@@ -68,7 +63,7 @@ public class TaskElementValueWrapperResource {
     }
 
     public static TaskElementValueWrapperResource of(String... values) {
-        return toElementValuesResource(CastUtils.cast(values));
+        return toElementValuesResource((Object[]) values);
     }
 
     public static TaskElementValueWrapperResource of(Double value) {
@@ -76,7 +71,7 @@ public class TaskElementValueWrapperResource {
     }
 
     public static TaskElementValueWrapperResource of(Double... values) {
-        return toElementValuesResource(CastUtils.cast(values));
+        return toElementValuesResource((Object[]) values);
     }
 
     public static TaskElementValueWrapperResource of(LocalDate value) {
@@ -84,31 +79,231 @@ public class TaskElementValueWrapperResource {
     }
 
     public static TaskElementValueWrapperResource of(LocalDate... values) {
-        return toElementValuesResource(CastUtils.cast(values));
+        return toElementValuesResource((Object[]) values);
     }
 
     public static TaskElementValueWrapperResource of(Map<String, Serializable> value) {
         return toElementValuesResource(value);
     }
 
-    public static TaskElementValueWrapperResource of(List<Map<String, Serializable>> values) {
-        return toElementValuesResource(values.toArray());
+    @SafeVarargs
+    public static TaskElementValueWrapperResource of(Map<String, Serializable>... values) {
+        return toElementValuesResource((Object[]) values);
     }
 
-    public static TaskElementValueWrapperResource of(TaskElementValueDocumentResource value) {
+    public static TaskElementValueWrapperResource of(TaskElementValueDocumentItemResource value) {
         return toElementValuesResource(value);
     }
 
-    public static TaskElementValueWrapperResource of(TaskElementValueDocumentResource... values) {
-        return toElementValuesResource(CastUtils.cast(values));
+    public static TaskElementValueWrapperResource of(TaskElementValueDocumentItemResource... values) {
+        return toElementValuesResource((Object[]) values);
     }
 
-    public static TaskElementValueWrapperResource of(TaskElementValuePrincipalResource value) {
+    public static TaskElementValueWrapperResource of(TaskElementValuePrincipalItemResource value) {
         return toElementValuesResource(value);
     }
 
-    public static TaskElementValueWrapperResource of(TaskElementValuePrincipalResource... values) {
-        return toElementValuesResource(CastUtils.cast(values));
+    public static TaskElementValueWrapperResource of(TaskElementValuePrincipalItemResource... values) {
+        return toElementValuesResource((Object[]) values);
+    }
+
+    public static String getValueAsString(TaskElementValueResource value) {
+        if (value.getType().equals(TaskElementValueTypeResource.STRING) && (value instanceof TaskElementValueStringResource)) {
+            TaskElementValueStringResource valueString = (TaskElementValueStringResource) value;
+
+            return valueString.getValue();
+        }
+
+        if (value.getType().equals(TaskElementValueTypeResource.NUMBER) && (value instanceof TaskElementValueNumberResource)) {
+            TaskElementValueNumberResource valueNumber = (TaskElementValueNumberResource) value;
+
+            return valueNumber.getValue() != null ? valueNumber.getValue().toString() : null;
+        }
+
+        throw new KuFlowRestClientException(String.format("value %s is not a String", value));
+    }
+
+    public static Double getValueAsDouble(TaskElementValueResource value) {
+        if (value.getType().equals(TaskElementValueTypeResource.NUMBER) && (value instanceof TaskElementValueNumberResource)) {
+            TaskElementValueNumberResource valueNumber = (TaskElementValueNumberResource) value;
+
+            return valueNumber.getValue();
+        }
+
+        if (value.getType().equals(TaskElementValueTypeResource.STRING) && (value instanceof TaskElementValueStringResource)) {
+            TaskElementValueStringResource valueString = (TaskElementValueStringResource) value;
+
+            try {
+                if (valueString.getValue() == null) {
+                    return null;
+                }
+                return Double.valueOf(valueString.getValue());
+            } catch (NumberFormatException e) {
+                throw new KuFlowRestClientException(String.format("value %s is not a number", valueString), e);
+            }
+        }
+
+        throw new KuFlowRestClientException(String.format("value %s is not a Number", value));
+    }
+
+    public static LocalDate getValueAsLocalDate(TaskElementValueResource value) {
+        String valueString = getValueAsString(value);
+
+        if (valueString == null) {
+            return null;
+        }
+
+        try {
+            return LocalDate.parse(valueString, DateTimeFormatter.ISO_LOCAL_DATE);
+        } catch (DateTimeParseException e) {
+            throw new KuFlowRestClientException(String.format("value %s is not a date", valueString), e);
+        }
+    }
+
+    public static Map<String, Serializable> getValueAsMap(TaskElementValueResource value) {
+        if (!value.getType().equals(TaskElementValueTypeResource.OBJECT) || !(value instanceof TaskElementValueObjectResource)) {
+            throw new KuFlowRestClientException(String.format("value %s is not an Object", value));
+        }
+
+        TaskElementValueObjectResource valueObject = (TaskElementValueObjectResource) value;
+
+        if (valueObject.getValue() == null) {
+            return null;
+        }
+
+        return CastUtils.cast(valueObject.getValue());
+    }
+
+    public static TaskElementValueDocumentItemResource getValueAsDocument(TaskElementValueResource value) {
+        if (!value.getType().equals(TaskElementValueTypeResource.DOCUMENT) || !(value instanceof TaskElementValueDocumentResource)) {
+            throw new KuFlowRestClientException(String.format("value %s is not a Document", value));
+        }
+
+        TaskElementValueDocumentResource valueDocument = (TaskElementValueDocumentResource) value;
+
+        return valueDocument.getValue();
+    }
+
+    public static TaskElementValuePrincipalItemResource getValueAsPrincipal(TaskElementValueResource value) {
+        if (!value.getType().equals(TaskElementValueTypeResource.PRINCIPAL) || !(value instanceof TaskElementValuePrincipalResource)) {
+            throw new KuFlowRestClientException(String.format("value %s is not a Principal", value));
+        }
+
+        TaskElementValuePrincipalResource valuePrincipal = (TaskElementValuePrincipalResource) value;
+
+        return valuePrincipal.getValue();
+    }
+
+    public TaskElementValueResource getValue() {
+        if (this.value == null) {
+            return null;
+        }
+
+        if (this.value instanceof TaskElementValueResource) {
+            return (TaskElementValueResource) this.value;
+        }
+
+        Collection<?> collection = (Collection<?>) this.value;
+        if (collection.size() == 0) {
+            return null;
+        }
+
+        return (TaskElementValueResource) collection.iterator().next();
+    }
+
+    public List<TaskElementValueResource> getValueList() {
+        if (this.value == null) {
+            return Collections.emptyList();
+        }
+
+        if (this.value instanceof TaskElementValueResource) {
+            return List.of((TaskElementValueResource) this.value);
+        }
+
+        return CastUtils.cast(this.value);
+    }
+
+    public String getValueAsString() {
+        return this.getValueAs(TaskElementValueWrapperResource::getValueAsString);
+    }
+
+    public List<String> getValueAsStringList() {
+        return this.getValuesAs(TaskElementValueWrapperResource::getValueAsString);
+    }
+
+    public Double getValueAsDouble() {
+        return this.getValueAs(TaskElementValueWrapperResource::getValueAsDouble);
+    }
+
+    public List<Double> getValueAsDoubleList() {
+        return this.getValuesAs(TaskElementValueWrapperResource::getValueAsDouble);
+    }
+
+    public LocalDate getValueAsLocalDate() {
+        return this.getValueAs(TaskElementValueWrapperResource::getValueAsLocalDate);
+    }
+
+    public List<LocalDate> getValueAsLocalDateList() {
+        return this.getValuesAs(TaskElementValueWrapperResource::getValueAsLocalDate);
+    }
+
+    public Map<String, Serializable> getValueAsMap() {
+        return this.getValueAs(TaskElementValueWrapperResource::getValueAsMap);
+    }
+
+    public List<Map<String, Serializable>> getValueAsMapList() {
+        return this.getValuesAs(TaskElementValueWrapperResource::getValueAsMap);
+    }
+
+    public TaskElementValueDocumentItemResource getValueAsDocument() {
+        return this.getValueAs(TaskElementValueWrapperResource::getValueAsDocument);
+    }
+
+    public List<TaskElementValueDocumentItemResource> getValueAsDocumentList() {
+        return this.getValuesAs(TaskElementValueWrapperResource::getValueAsDocument);
+    }
+
+    public TaskElementValuePrincipalItemResource getValueAsPrincipal() {
+        return this.getValueAs(TaskElementValueWrapperResource::getValueAsPrincipal);
+    }
+
+    public List<TaskElementValuePrincipalItemResource> getValueAsPrincipalList() {
+        return this.getValuesAs(TaskElementValueWrapperResource::getValueAsPrincipal);
+    }
+
+    public Boolean getValid() {
+        if (this.value == null) {
+            return null;
+        }
+
+        if (this.value instanceof Collection) {
+            List<TaskElementValueResource> values = CastUtils.cast(this.value);
+            return values.stream().filter(v -> Boolean.FALSE.equals(v.getValid())).findAny().isEmpty();
+        }
+
+        TaskElementValueResource elementValueResource = (TaskElementValueResource) this.value;
+
+        return elementValueResource.getValid();
+    }
+
+    public Boolean getValidAt(int index) {
+        List<TaskElementValueResource> values = this.getValueList();
+
+        return values.get(index).getValid();
+    }
+
+    public TaskElementValueWrapperResource valid(Boolean value) {
+        List<TaskElementValueResource> values = this.getValueList();
+        values.forEach(it -> it.setValid(value));
+
+        return this;
+    }
+
+    public TaskElementValueWrapperResource validAt(int index, Boolean value) {
+        List<TaskElementValueResource> values = this.getValueList();
+        values.get(index).setValid(value);
+
+        return this;
     }
 
     private static TaskElementValueWrapperResource toElementValuesResource(Object value) {
@@ -135,176 +330,75 @@ public class TaskElementValueWrapperResource {
     }
 
     private static TaskElementValueResource toElementValueResource(Object value) {
-        TaskElementValueResource elementValueResource = new TaskElementValueResource();
-
         if (value instanceof String) {
-            elementValueResource.value(TaskElementValueItemResource.of((String) value));
+            return toElementValueResourceString((String) value);
         } else if (value instanceof Double) {
-            elementValueResource.value(TaskElementValueItemResource.of((Double) value));
+            return toElementValueResourceNumber((Double) value);
         } else if (value instanceof LocalDate) {
-            elementValueResource.value(TaskElementValueItemResource.of((LocalDate) value));
+            return toElementValueResourceString(value.toString());
         } else if (value instanceof Map) {
-            Map<String, Serializable> valueMap = CastUtils.cast(value);
-            elementValueResource.value(TaskElementValueItemResource.of(valueMap));
-        } else if (value instanceof TaskElementValueDocumentResource) {
-            elementValueResource.value(TaskElementValueItemResource.of((TaskElementValueDocumentResource) value));
-        } else if (value instanceof TaskElementValuePrincipalResource) {
-            elementValueResource.value(TaskElementValueItemResource.of((TaskElementValuePrincipalResource) value));
+            return toElementValueResourceObject(CastUtils.cast(value));
+        } else if (value instanceof TaskElementValueDocumentItemResource) {
+            return toElementValueResourceDocument((TaskElementValueDocumentItemResource) value);
+        } else if (value instanceof TaskElementValuePrincipalItemResource) {
+            return toElementValueResourcePrincipal((TaskElementValuePrincipalItemResource) value);
         } else {
             throw new IllegalArgumentException(String.format("Unknown type %s", value.getClass().getName()));
         }
+    }
+
+    private static TaskElementValueStringResource toElementValueResourceString(String value) {
+        TaskElementValueStringResource elementValueResource = new TaskElementValueStringResource();
+        elementValueResource.setType(TaskElementValueTypeResource.STRING);
+        elementValueResource.value(value);
 
         return elementValueResource;
     }
 
-    public TaskElementValueResource getValueAsTaskElementValue() {
-        if (this.value == null) {
+    private static TaskElementValueNumberResource toElementValueResourceNumber(Double value) {
+        TaskElementValueNumberResource elementValueResource = new TaskElementValueNumberResource();
+        elementValueResource.setType(TaskElementValueTypeResource.NUMBER);
+        elementValueResource.value(value);
+
+        return elementValueResource;
+    }
+
+    private static TaskElementValueObjectResource toElementValueResourceObject(Map<String, Object> value) {
+        TaskElementValueObjectResource elementValueResource = new TaskElementValueObjectResource();
+        elementValueResource.setType(TaskElementValueTypeResource.OBJECT);
+        elementValueResource.value(value);
+
+        return elementValueResource;
+    }
+
+    private static TaskElementValueDocumentResource toElementValueResourceDocument(TaskElementValueDocumentItemResource value) {
+        TaskElementValueDocumentResource elementValueResource = new TaskElementValueDocumentResource();
+        elementValueResource.setType(TaskElementValueTypeResource.DOCUMENT);
+        elementValueResource.value(value);
+
+        return elementValueResource;
+    }
+
+    private static TaskElementValuePrincipalResource toElementValueResourcePrincipal(TaskElementValuePrincipalItemResource value) {
+        TaskElementValuePrincipalResource elementValueResource = new TaskElementValuePrincipalResource();
+        elementValueResource.setType(TaskElementValueTypeResource.PRINCIPAL);
+        elementValueResource.value(value);
+
+        return elementValueResource;
+    }
+
+    private <R> R getValueAs(Function<TaskElementValueResource, R> cb) {
+        TaskElementValueResource value = this.getValue();
+        if (value == null) {
             return null;
         }
 
-        if (this.value instanceof TaskElementValueResource) {
-            return (TaskElementValueResource) this.value;
-        }
-
-        Collection<?> collection = (Collection<?>) this.value;
-        if (collection.size() == 0) {
-            return null;
-        }
-
-        return (TaskElementValueResource) collection.iterator().next();
+        return cb.apply(value);
     }
 
-    public List<TaskElementValueResource> getValueAsTaskElementValueList() {
-        if (this.value == null) {
-            return Collections.emptyList();
-        }
+    private <R> List<R> getValuesAs(final Function<TaskElementValueResource, R> cb) {
+        List<TaskElementValueResource> values = this.getValueList();
 
-        if (this.value instanceof TaskElementValueResource) {
-            return List.of((TaskElementValueResource) this.value);
-        }
-
-        return CastUtils.cast(this.value);
-    }
-
-    public String getValueAsString() {
-        return this.getValueAs(TaskElementValueItemResource::getValueAsString);
-    }
-
-    public List<String> getValueAsStringList() {
-        return this.getValuesAs(TaskElementValueItemResource::getValueAsString);
-    }
-
-    public Double getValueAsDouble() {
-        return this.getValueAs(TaskElementValueItemResource::getValueAsDouble);
-    }
-
-    public List<Double> getValueAsDoubleList() {
-        return this.getValuesAs(TaskElementValueItemResource::getValueAsDouble);
-    }
-
-    public LocalDate getValueAsLocalDate() {
-        return this.getValueAs(TaskElementValueItemResource::getValueAsLocalDate);
-    }
-
-    public List<LocalDate> getValueAsLocalDateList() {
-        return this.getValuesAs(TaskElementValueItemResource::getValueAsLocalDate);
-    }
-
-    public Map<String, Serializable> getValueAsMap() {
-        return this.getValueAs(TaskElementValueItemResource::getValueAsMap);
-    }
-
-    public List<Map<String, Serializable>> getValueAsMapList() {
-        return this.getValuesAs(TaskElementValueItemResource::getValueAsMap);
-    }
-
-    public TaskElementValueDocumentResource getValueAsDocument() {
-        return this.getValueAs(TaskElementValueItemResource::getValueAsDocument);
-    }
-
-    public List<TaskElementValueDocumentResource> getValueAsDocumentList() {
-        return this.getValuesAs(TaskElementValueItemResource::getValueAsDocument);
-    }
-
-    public TaskElementValuePrincipalResource getValueAsPrincipal() {
-        return this.getValueAs(TaskElementValueItemResource::getValueAsPrincipal);
-    }
-
-    public List<TaskElementValuePrincipalResource> getValueAsPrincipalList() {
-        return this.getValuesAs(TaskElementValueItemResource::getValueAsPrincipal);
-    }
-
-    private <R> R getValueAs(Function<TaskElementValueItemResource, R> cb) {
-        TaskElementValueResource value = this.getValueAsTaskElementValue();
-        if (value == null || value.getValue() == null) {
-            return null;
-        }
-
-        return cb.apply(value.getValue());
-    }
-
-    private <R> List<R> getValuesAs(final Function<TaskElementValueItemResource, R> cb) {
-        List<TaskElementValueResource> values = this.getValueAsTaskElementValueList();
-
-        return values.stream().filter(m -> m.getValue() != null).map(m -> cb.apply(m.getValue())).collect(toList());
-    }
-
-    public Boolean getValid() {
-        if (this.value == null) {
-            return null;
-        }
-
-        if (this.value instanceof Collection) {
-            List<TaskElementValueResource> values = CastUtils.cast(this.value);
-            return values.stream().filter(v -> Boolean.FALSE.equals(v.getValid())).findAny().isEmpty();
-        }
-
-        TaskElementValueResource elementValueResource = (TaskElementValueResource) this.value;
-
-        return elementValueResource.getValid();
-    }
-
-    public Boolean getValidAt(int index) {
-        if (this.value == null) {
-            return null;
-        }
-
-        if (!(this.value instanceof Collection)) {
-            throw new UnsupportedOperationException("Task element value not is an array, did you mean getValid()");
-        }
-
-        List<TaskElementValueResource> values = CastUtils.cast(this.value);
-
-        return values.get(index).getValid();
-    }
-
-    public TaskElementValueWrapperResource valid(Boolean value) {
-        if (this.value == null) {
-            throw new NullPointerException();
-        }
-
-        if (this.value instanceof Collection) {
-            throw new UnsupportedOperationException("Task element value is an array, did you mean validAt()");
-        }
-
-        TaskElementValueResource elementValueResource = (TaskElementValueResource) this.value;
-        elementValueResource.setValid(value);
-
-        return this;
-    }
-
-    public TaskElementValueWrapperResource validAt(int index, Boolean value) {
-        if (this.value == null) {
-            throw new NullPointerException();
-        }
-
-        if (!(this.value instanceof Collection)) {
-            throw new UnsupportedOperationException("Task element value not is an array, did you mean valid()");
-        }
-
-        List<TaskElementValueResource> values = CastUtils.cast(this.value);
-        values.get(index).setValid(value);
-
-        return this;
+        return values.stream().map(cb).collect(toList());
     }
 }

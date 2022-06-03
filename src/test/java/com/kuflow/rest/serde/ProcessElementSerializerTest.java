@@ -25,32 +25,32 @@ public class ProcessElementSerializerTest {
         {
             ProcessElementValueWrapperResource resource = ProcessElementValueWrapperResource.of("aString");
             String json = this.mapper.writeValueAsString(resource);
-            assertThat(json).isEqualTo("{\"valid\":true,\"value\":\"aString\"}");
+            assertThat(json).isEqualTo("{\"value\":\"aString\",\"valid\":true,\"type\":\"STRING\"}");
         }
 
         {
             ProcessElementValueWrapperResource resource = ProcessElementValueWrapperResource.of("aString");
             resource.valid(false);
             String json = this.mapper.writeValueAsString(resource);
-            assertThat(json).isEqualTo("{\"valid\":false,\"value\":\"aString\"}");
+            assertThat(json).isEqualTo("{\"value\":\"aString\",\"valid\":false,\"type\":\"STRING\"}");
         }
 
         {
             ProcessElementValueWrapperResource resource = ProcessElementValueWrapperResource.of(123D);
             String json = this.mapper.writeValueAsString(resource);
-            assertThat(json).isEqualTo("{\"valid\":true,\"value\":123.0}");
+            assertThat(json).isEqualTo("{\"value\":123.0,\"valid\":true,\"type\":\"NUMBER\"}");
         }
 
         {
             ProcessElementValueWrapperResource resource = ProcessElementValueWrapperResource.of(123.123);
             String json = this.mapper.writeValueAsString(resource);
-            assertThat(json).isEqualTo("{\"valid\":true,\"value\":123.123}");
+            assertThat(json).isEqualTo("{\"value\":123.123,\"valid\":true,\"type\":\"NUMBER\"}");
         }
 
         {
             ProcessElementValueWrapperResource resource = ProcessElementValueWrapperResource.of(LocalDate.of(2022, 1, 1));
             String json = this.mapper.writeValueAsString(resource);
-            assertThat(json).isEqualTo("{\"valid\":true,\"value\":\"2022-01-01\"}");
+            assertThat(json).isEqualTo("{\"value\":\"2022-01-01\",\"valid\":true,\"type\":\"STRING\"}");
         }
     }
 }

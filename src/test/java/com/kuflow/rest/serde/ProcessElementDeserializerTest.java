@@ -12,6 +12,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.kuflow.rest.client.KuFlowRestClientException;
 import com.kuflow.rest.client.resource.ProcessElementValueWrapperResource;
 import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
@@ -22,15 +23,10 @@ public class ProcessElementDeserializerTest {
     private final ObjectMapper mapper = JsonMapper.builder().findAndAddModules().build();
 
     @Test
-    @DisplayName("GIVEN json with null or empty object value WHEN deserialize THEN binding to null")
-    public void givenJsonWithNullOrEmptyObjectValueWhenDeserializeThenBindingToNull() throws Exception {
+    @DisplayName("GIVEN json with null WHEN deserialize THEN binding to null")
+    public void givenJsonWithNullValueWhenDeserializeThenBindingToNull() throws Exception {
         {
             String json = "null";
-            ProcessElementValueWrapperResource readValue = this.mapper.readValue(json, ProcessElementValueWrapperResource.class);
-            assertThat(readValue).isNull();
-        }
-        {
-            String json = "{}";
             ProcessElementValueWrapperResource readValue = this.mapper.readValue(json, ProcessElementValueWrapperResource.class);
             assertThat(readValue).isNull();
         }
@@ -40,21 +36,21 @@ public class ProcessElementDeserializerTest {
     @DisplayName("GIVEN json with string value WHEN deserialize THEN binding object")
     public void givenJsonWithStringValueWhenDeserializeThenBindingObject() throws Exception {
         {
-            String json = "{\"value\": \"aString\"}";
+            String json = "{\"value\": \"aString\",\"type\":\"STRING\"}";
             ProcessElementValueWrapperResource readValue = this.mapper.readValue(json, ProcessElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValid()).isTrue();
             assertThat(readValue.getValueAsString()).isEqualTo("aString");
-            assertThatExceptionOfType(NumberFormatException.class).isThrownBy(readValue::getValueAsDouble);
+            assertThatExceptionOfType(KuFlowRestClientException.class).isThrownBy(readValue::getValueAsDouble);
         }
 
         {
-            String json = "{\"valid\": false, \"value\": \"aString\"}";
+            String json = "{\"valid\": false, \"value\": \"aString\",\"type\":\"STRING\"}";
             ProcessElementValueWrapperResource readValue = this.mapper.readValue(json, ProcessElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValid()).isFalse();
             assertThat(readValue.getValueAsString()).isEqualTo("aString");
-            assertThatExceptionOfType(NumberFormatException.class).isThrownBy(readValue::getValueAsDouble);
+            assertThatExceptionOfType(KuFlowRestClientException.class).isThrownBy(readValue::getValueAsDouble);
         }
     }
 
@@ -62,7 +58,7 @@ public class ProcessElementDeserializerTest {
     @DisplayName("GIVEN json with number value WHEN deserialize THEN binding object")
     public void givenJsonWithNumberValueWhenDeserializeThenBindingObject() throws Exception {
         {
-            String json = "{\"value\": 123}";
+            String json = "{\"value\": 123,\"type\":\"NUMBER\"}";
             ProcessElementValueWrapperResource readValue = this.mapper.readValue(json, ProcessElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValueAsString()).isEqualTo("123.0");
@@ -70,7 +66,7 @@ public class ProcessElementDeserializerTest {
         }
 
         {
-            String json = "{\"valid\": false, \"value\": 123.123}";
+            String json = "{\"valid\": false, \"value\": 123.123,\"type\":\"NUMBER\"}";
             ProcessElementValueWrapperResource readValue = this.mapper.readValue(json, ProcessElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValid()).isFalse();
@@ -83,7 +79,7 @@ public class ProcessElementDeserializerTest {
     @DisplayName("GIVEN json with number value WHEN deserialize THEN binding object")
     public void givenJsonWithLocalDateValueWhenDeserializeThenBindingObject() throws Exception {
         {
-            String json = "{\"value\": \"2022-01-01\"}";
+            String json = "{\"value\": \"2022-01-01\",\"type\":\"STRING\"}";
             ProcessElementValueWrapperResource readValue = this.mapper.readValue(json, ProcessElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValueAsLocalDate()).isEqualTo(LocalDate.of(2022, 1, 1));
