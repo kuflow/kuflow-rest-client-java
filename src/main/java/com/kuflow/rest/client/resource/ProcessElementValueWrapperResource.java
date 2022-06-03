@@ -8,7 +8,11 @@ package com.kuflow.rest.client.resource;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.kuflow.rest.client.KuFlowRestClientException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.function.Function;
 
 @JsonDeserialize(using = ProcessElementValueWrapperResourceDeserializer.class)
 @JsonSerialize(using = ProcessElementValueWrapperResourceSerializer.class)
@@ -41,70 +45,20 @@ public class ProcessElementValueWrapperResource {
         return toProcessElementWrapperResource(value);
     }
 
-    private static <T> ProcessElementValueWrapperResource toProcessElementWrapperResource(Object value) {
-        if (value == null) {
-            throw new IllegalArgumentException("Some value is required");
-        }
-
-        ProcessElementValueResource elementValueResource = toProcessElementValueResource(value);
-
-        return new ProcessElementValueWrapperResource(elementValueResource);
-    }
-
-    private static ProcessElementValueResource toProcessElementValueResource(Object value) {
-        ProcessElementValueResource elementValueResource = new ProcessElementValueResource();
-
-        if (value instanceof String) {
-            elementValueResource.value(ProcessElementValueItemResource.of((String) value));
-        } else if (value instanceof Double) {
-            elementValueResource.value(ProcessElementValueItemResource.of((Double) value));
-        } else if (value instanceof LocalDate) {
-            elementValueResource.value(ProcessElementValueItemResource.of((LocalDate) value));
-        } else {
-            throw new IllegalArgumentException(String.format("Unkown type %s", value.getClass().getName()));
-        }
-
-        return elementValueResource;
-    }
-
     public ProcessElementValueResource getValue() {
-        if (this.value == null) {
-            return null;
-        }
-
-        ProcessElementValueResource elementValueResource = (ProcessElementValueResource) this.value;
-
-        return elementValueResource;
+        return this.getValueAsProcessElementValue();
     }
 
     public String getValueAsString() {
-        if (this.value == null) {
-            return null;
-        }
-
-        ProcessElementValueResource elementValueResource = (ProcessElementValueResource) this.value;
-
-        return elementValueResource.getValue().getValueAsString();
+        return this.getValueAs(this::getValueAsString);
     }
 
     public Double getValueAsDouble() {
-        if (this.value == null) {
-            return null;
-        }
-
-        ProcessElementValueResource elementValueResource = (ProcessElementValueResource) this.value;
-
-        return elementValueResource.getValue().getValueAsDouble();
+        return this.getValueAs(this::getValueAsDouble);
     }
 
     public LocalDate getValueAsLocalDate() {
-        if (this.value == null) {
-            return null;
-        }
-
-        ProcessElementValueResource elementValueResource = (ProcessElementValueResource) this.value;
-
-        return elementValueResource.getValue().getValueAsLocalDate();
+        return this.getValueAs(this::getValueAsLocalDate);
     }
 
     public Boolean getValid() {
@@ -126,5 +80,98 @@ public class ProcessElementValueWrapperResource {
         elementValueResource.setValid(value);
 
         return this;
+    }
+
+    private static ProcessElementValueWrapperResource toProcessElementWrapperResource(Object value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Some value is required");
+        }
+
+        ProcessElementValueResource elementValueResource = toProcessElementValueResource(value);
+
+        return new ProcessElementValueWrapperResource(elementValueResource);
+    }
+
+    private static ProcessElementValueResource toProcessElementValueResource(Object value) {
+        if (value instanceof String) {
+            return toProcessElementValueResourceString((String) value);
+        } else if (value instanceof Double) {
+            return toProcessElementValueResourceNumber((Double) value);
+        } else if (value instanceof LocalDate) {
+            return toProcessElementValueResourceString(value.toString());
+        } else {
+            throw new IllegalArgumentException(String.format("Unknown type %s", value.getClass().getName()));
+        }
+    }
+
+    private static ProcessElementValueStringResource toProcessElementValueResourceString(String value) {
+        ProcessElementValueStringResource elementValueResource = new ProcessElementValueStringResource();
+        elementValueResource.setType(ProcessElementValueTypeResource.STRING);
+        elementValueResource.value(value);
+
+        return elementValueResource;
+    }
+
+    private static ProcessElementValueNumberResource toProcessElementValueResourceNumber(Double value) {
+        ProcessElementValueNumberResource elementValueResource = new ProcessElementValueNumberResource();
+        elementValueResource.setType(ProcessElementValueTypeResource.NUMBER);
+        elementValueResource.value(value);
+
+        return elementValueResource;
+    }
+
+    private <R> R getValueAs(Function<ProcessElementValueResource, R> cb) {
+        ProcessElementValueResource value = this.getValueAsProcessElementValue();
+        if (value == null) {
+            return null;
+        }
+
+        return cb.apply(value);
+    }
+
+    private String getValueAsString(ProcessElementValueResource value) {
+        if (!value.getType().equals(ProcessElementValueTypeResource.STRING) || !(value instanceof ProcessElementValueStringResource)) {
+            throw new KuFlowRestClientException(String.format("value %s is not a String", value));
+        }
+
+        ProcessElementValueStringResource valueString = (ProcessElementValueStringResource) value;
+
+        return valueString.getValue();
+    }
+
+    private Double getValueAsDouble(ProcessElementValueResource value) {
+        if (!value.getType().equals(ProcessElementValueTypeResource.NUMBER) || !(value instanceof ProcessElementValueNumberResource)) {
+            throw new KuFlowRestClientException(String.format("value %s is not a Number", value));
+        }
+
+        ProcessElementValueNumberResource valueNumber = (ProcessElementValueNumberResource) value;
+
+        return valueNumber.getValue();
+    }
+
+    private LocalDate getValueAsLocalDate(ProcessElementValueResource value) {
+        String valueString = this.getValueAsString(value);
+
+        if (valueString == null) {
+            return null;
+        }
+
+        try {
+            return LocalDate.parse(valueString, DateTimeFormatter.ISO_LOCAL_DATE);
+        } catch (DateTimeParseException e) {
+            throw new KuFlowRestClientException(String.format("value %s is not a date", valueString), e);
+        }
+    }
+
+    private ProcessElementValueResource getValueAsProcessElementValue() {
+        if (this.value == null) {
+            return null;
+        }
+
+        if (this.value instanceof ProcessElementValueResource) {
+            return (ProcessElementValueResource) this.value;
+        }
+
+        throw new IllegalArgumentException(String.format("Unknown value type %s", this.value.getClass().getName()));
     }
 }

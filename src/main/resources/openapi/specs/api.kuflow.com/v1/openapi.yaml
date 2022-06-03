@@ -268,19 +268,31 @@ paths:
                     "activityResponseVersion": "string",
                     "elementValues":
                       {
-                        "element_code_1": { "value": "string" },
-                        "element_code_2": { "valid": false, "value": 1111 },
-                        "element_code_3": [{ "value": "string" }, { "value": "string" }],
-                        "element_code_4": { "value": { "form_field_1": "string", "form_field_2": "string" } },
-                        "element_code_5": { "value": { "id": "string", name: "", contentPath: "", contentType: "", contentLength: "" } },
-                        "element_code_6":
-                          [{ "value": { "value": { "id": "string", name: "", contentPath: "", contentType: "", contentLength: "" } } }],
-                        "element_code_7": { "value": { "id": "b90c9ae9-444c-4bfd-9594-7468955d2eda", "type": "USER" } },
-                        "element_code_8":
-                          [
-                            { "value": { "id": "b90c9ae9-444c-4bfd-9594-7468955d2eda", "type": "USER" } },
-                            { "value": { "id": "f4be313c-c0a2-426c-bdd3-c3113d7bbf37", "type": "USER" } },
-                          ],
+                        "element_code_1": { type: "STRING", "value": "string" },
+                        "element_code_2": { type: "NUMBER", "valid": false, "value": 1111 },
+                        "element_code_3": [
+                          { type: "STRING", "value": "string" },
+                          { type: "STRING", "value": "string" }
+                        ],
+                        "element_code_4": {
+                          type: "OBJECT",
+                          "value": { "form_field_1": "string", "form_field_2": "string" }
+                        },
+                        "element_code_5": {
+                          type: "DOCUMENT",
+                          "value": { "id": "string", name: "", contentPath: "", contentType: "", contentLength: 100 }
+                        },
+                        "element_code_6": [
+                          {
+                            type: "DOCUMENT",
+                            "value": { "id": "string", name: "", contentPath: "", contentType: "", contentLength: 100 }
+                          }
+                        ],
+                        "element_code_7": { type: "PRINCIPAL", "value": { "id": "b90c9ae9-444c-4bfd-9594-7468955d2eda", "type": "USER" } },
+                        "element_code_8": [
+                          { type: "PRINCIPAL", "value": { "id": "b90c9ae9-444c-4bfd-9594-7468955d2eda", "type": "USER" } },
+                          { type: "PRINCIPAL", "value": { "id": "f4be313c-c0a2-426c-bdd3-c3113d7bbf37", "type": "USER" } }
+                        ]
                       },
                   }
       responses:
@@ -812,16 +824,44 @@ components:
         - COMPLETED
         - CANCELLED
 
+    ProcessElementValueType:
+      type: string
+      enum:
+        - STRING
+        - NUMBER
+
     ProcessElementValue:
       type: object
       properties:
         valid:
           type: boolean
           default: true
-        value:
-          oneOf:
-            - type: string
-            - type: number
+        type:
+          $ref: "#/components/schemas/ProcessElementValueType"
+      discriminator:
+        propertyName: type
+        mapping:
+          "STRING": "#/components/schemas/ProcessElementValueString"
+          "NUMBER": "#/components/schemas/ProcessElementValueNumber"
+      required:
+        - type
+
+    ProcessElementValueString:
+      allOf:
+        - $ref: "#/components/schemas/ProcessElementValue"
+        - type: object
+          properties:
+            value:
+              type: string
+
+    ProcessElementValueNumber:
+      allOf:
+        - $ref: "#/components/schemas/ProcessElementValue"
+        - type: object
+          properties:
+            value:
+              type: number
+              format: double
 
     TaskElementValueOrArrayValue:
       type: object
@@ -837,21 +877,77 @@ components:
       required:
         - code
 
+    TaskElementValueType:
+      type: string
+      enum:
+        - STRING
+        - NUMBER
+        - OBJECT
+        - DOCUMENT
+        - PRINCIPAL
+
     TaskElementValue:
       type: object
       properties:
         valid:
           type: boolean
           default: true
-        value:
-          oneOf:
-            - type: string
-            - type: number
-            - $ref: "#/components/schemas/TaskElementValueDocument"
-            - type: object
-            - $ref: "#/components/schemas/TaskElementValuePrincipal"
+        type:
+          $ref: "#/components/schemas/TaskElementValueType"
+      discriminator:
+        propertyName: type
+        mapping:
+          "STRING": "#/components/schemas/TaskElementValueString"
+          "NUMBER": "#/components/schemas/TaskElementValueNumber"
+          "OBJECT": "#/components/schemas/TaskElementValueObject"
+          "DOCUMENT": "#/components/schemas/TaskElementValueDocument"
+          "PRINCIPAL": "#/components/schemas/TaskElementValuePrincipal"
+      required:
+        - type
+
+    TaskElementValueString:
+      allOf:
+        - $ref: "#/components/schemas/TaskElementValue"
+        - type: object
+          properties:
+            value:
+              type: string
+
+    TaskElementValueNumber:
+      allOf:
+        - $ref: "#/components/schemas/TaskElementValue"
+        - type: object
+          properties:
+            value:
+              type: number
+              format: double
+
+    TaskElementValueObject:
+      allOf:
+        - $ref: "#/components/schemas/TaskElementValue"
+        - type: object
+          properties:
+            value:
+              type: object
+              additionalProperties: true
 
     TaskElementValueDocument:
+      allOf:
+        - $ref: "#/components/schemas/TaskElementValue"
+        - type: object
+          properties:
+            value:
+              $ref: "#/components/schemas/TaskElementValueDocumentItem"
+
+    TaskElementValuePrincipal:
+      allOf:
+        - $ref: "#/components/schemas/TaskElementValue"
+        - type: object
+          properties:
+            value:
+              $ref: "#/components/schemas/TaskElementValuePrincipalItem"
+
+    TaskElementValueDocumentItem:
       type: object
       properties:
         id:
@@ -866,7 +962,7 @@ components:
           type: integer
           format: int64
 
-    TaskElementValuePrincipal:
+    TaskElementValuePrincipalItem:
       type: object
       properties:
         id:

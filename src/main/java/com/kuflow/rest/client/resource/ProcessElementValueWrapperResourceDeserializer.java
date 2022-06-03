@@ -6,7 +6,6 @@
 
 package com.kuflow.rest.client.resource;
 
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -27,15 +26,11 @@ public class ProcessElementValueWrapperResourceDeserializer extends StdDeseriali
     }
 
     @Override
-    public ProcessElementValueWrapperResource deserialize(JsonParser jsonParser, DeserializationContext ctxt)
-        throws IOException, JacksonException {
+    public ProcessElementValueWrapperResource deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
         JsonToken currentToken = jsonParser.getCurrentToken();
 
         if (currentToken == JsonToken.START_OBJECT) {
             ProcessElementValueResource elementValueResource = jsonParser.readValueAs(ProcessElementValueResource.class);
-            if (elementValueResource.getValue() == null) {
-                return null;
-            }
 
             return new ProcessElementValueWrapperResource(elementValueResource);
         } else if (currentToken == JsonToken.VALUE_NULL) {

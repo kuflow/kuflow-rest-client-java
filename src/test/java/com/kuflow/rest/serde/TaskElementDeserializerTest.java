@@ -23,15 +23,10 @@ public class TaskElementDeserializerTest {
     private final ObjectMapper mapper = JsonMapper.builder().findAndAddModules().build();
 
     @Test
-    @DisplayName("GIVEN json with null or empty object value WHEN deserialize THEN binding to null")
+    @DisplayName("GIVEN json with null WHEN deserialize THEN binding to null")
     public void givenJsonWithNullOrEmptyObjectValueWhenDeserializeThenBindingToNull() throws Exception {
         {
             String json = "null";
-            TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
-            assertThat(readValue).isNull();
-        }
-        {
-            String json = "{}";
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue).isNull();
         }
@@ -41,7 +36,7 @@ public class TaskElementDeserializerTest {
     @DisplayName("GIVEN json with string value WHEN deserialize THEN binding object")
     public void givenJsonWithStringValueWhenDeserializeThenBindingObject() throws Exception {
         {
-            String json = "{\"value\": \"aString\"}";
+            String json = "{\"value\": \"aString\", \"type\": \"STRING\"}";
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValid()).isTrue();
@@ -49,7 +44,7 @@ public class TaskElementDeserializerTest {
         }
 
         {
-            String json = "{\"valid\": false, \"value\": \"aString\"}";
+            String json = "{\"valid\": false, \"value\": \"aString\", \"type\": \"STRING\"}";
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValid()).isFalse();
@@ -57,7 +52,7 @@ public class TaskElementDeserializerTest {
         }
 
         {
-            String json = "{\"value\": \"aString\"}";
+            String json = "{\"value\": \"aString\", \"type\": \"STRING\"}";
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThatExceptionOfType(KuFlowRestClientException.class).isThrownBy(readValue::getValueAsLocalDate);
             assertThatExceptionOfType(KuFlowRestClientException.class).isThrownBy(readValue::getValueAsDouble);
@@ -69,7 +64,7 @@ public class TaskElementDeserializerTest {
             assertThatExceptionOfType(KuFlowRestClientException.class).isThrownBy(readValue::getValueAsMapList);
         }
         {
-            String json = "{\"value\": \"aString\"}";
+            String json = "{\"value\": \"aString\", \"type\": \"STRING\"}";
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue.getValueAsString()).isEqualTo("aString");
             assertThatExceptionOfType(KuFlowRestClientException.class).isThrownBy(readValue::getValueAsLocalDate);
@@ -87,14 +82,14 @@ public class TaskElementDeserializerTest {
     @DisplayName("GIVEN json with number value WHEN deserialize THEN binding object")
     public void givenJsonWithNumberValueWhenDeserializeThenBindingObject() throws Exception {
         {
-            String json = "{\"value\": 123}";
+            String json = "{\"value\": 123, \"type\": \"NUMBER\"}";
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValueAsDouble()).isEqualTo(123);
         }
 
         {
-            String json = "{\"valid\": false, \"value\": 123.123}";
+            String json = "{\"valid\": false, \"value\": 123.123, \"type\": \"NUMBER\"}";
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValueAsDouble()).isEqualTo(123.123);
@@ -102,28 +97,17 @@ public class TaskElementDeserializerTest {
     }
 
     @Test
-    @DisplayName("GIVEN json with number as String value WHEN deserialize THEN binding object")
-    public void givenJsonWithNumberAsStringValueWhenDeserializeThenBindingObject() throws Exception {
-        {
-            String json = "{\"value\": \"123\"}";
-            TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
-            assertThat(readValue).isNotNull();
-            assertThat(readValue.getValueAsDouble()).isEqualTo(123);
-        }
-    }
-
-    @Test
     @DisplayName("GIVEN json with local date value WHEN deserialize THEN binding object")
     public void givenJsonWithLocalDateValueWhenDeserializeThenBindingObject() throws Exception {
         {
-            String json = "{\"value\": \"2022-01-01\"}";
+            String json = "{\"value\": \"2022-01-01\", \"type\": \"STRING\"}";
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValueAsLocalDate()).isEqualTo(LocalDate.of(2022, 1, 1));
         }
 
         {
-            String json = "{\"valid\": false, \"value\": \"2022-01-01\"}";
+            String json = "{\"valid\": false, \"value\": \"2022-01-01\", \"type\": \"STRING\"}";
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValueAsLocalDate()).isEqualTo(LocalDate.of(2022, 1, 1));
@@ -134,18 +118,19 @@ public class TaskElementDeserializerTest {
     @DisplayName("GIVEN json with form value WHEN deserialize THEN binding object")
     public void givenJsonWithFormValueWhenDeserializeThenBindingObject() throws Exception {
         {
-            String json = "{\"value\":{\"form_field_1\":\"string1\",\"form_field_2\":\"string2\"}}";
+            String json = "{\"value\":{\"form_field_1\":\"string1\",\"form_field_2\":\"string2\"}, \"type\": \"OBJECT\"}";
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValueAsMap().get("form_field_1")).isEqualTo("string1");
         }
 
         {
-            String json = "[{\"valid\": false, \"value\":{\"form_field_1\":\"string1\",\"form_field_2\":\"string2\"}}]";
+            String json =
+                "[{\"valid\": false, \"value\":{\"form_field_1\":\"string1\",\"form_field_2\":\"string2\"}, \"type\": \"OBJECT\"}]";
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValueAsMapList().get(0).get("form_field_1")).isEqualTo("string1");
-            assertThat(readValue.getValueAsTaskElementValueList().get(0).getValid()).isFalse();
+            assertThat(readValue.getValueList().get(0).getValid()).isFalse();
         }
     }
 
@@ -154,7 +139,7 @@ public class TaskElementDeserializerTest {
     public void givenJsonWithDocumentValueWhenDeserializeThenBindingObject() throws Exception {
         {
             String json =
-                "{\"value\":{\"id\":\"30b33063-a1b4-4d07-a789-c5593893eb54\",\"name\":\"document-accent-o-xxx1.pdf\",\"contentPath\":\"tenants/f46ed181-f124-4e85-95be-ceecaf168b4b/2022/03/30/922f6c3d-0b27-4555-a852-e554dc52b4c7\",\"contentType\":\"application/pdf;charset=UTF-8\",\"contentLength\":16}}";
+                "{\"type\": \"DOCUMENT\", \"value\":{\"id\":\"30b33063-a1b4-4d07-a789-c5593893eb54\",\"name\":\"document-accent-o-xxx1.pdf\",\"contentPath\":\"tenants/f46ed181-f124-4e85-95be-ceecaf168b4b/2022/03/30/922f6c3d-0b27-4555-a852-e554dc52b4c7\",\"contentType\":\"application/pdf;charset=UTF-8\",\"contentLength\":16}}";
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
 
@@ -162,7 +147,7 @@ public class TaskElementDeserializerTest {
         }
         {
             String json =
-                "[{\"value\":{\"id\":\"30b33063-a1b4-4d07-a789-c5593893eb54\",\"name\":\"document-accent-o-xxx1.pdf\",\"contentPath\":\"tenants/f46ed181-f124-4e85-95be-ceecaf168b4b/2022/03/30/922f6c3d-0b27-4555-a852-e554dc52b4c7\",\"contentType\":\"application/pdf;charset=UTF-8\",\"contentLength\":16}}]";
+                "[{\"type\": \"DOCUMENT\", \"value\":{\"id\":\"30b33063-a1b4-4d07-a789-c5593893eb54\",\"name\":\"document-accent-o-xxx1.pdf\",\"contentPath\":\"tenants/f46ed181-f124-4e85-95be-ceecaf168b4b/2022/03/30/922f6c3d-0b27-4555-a852-e554dc52b4c7\",\"contentType\":\"application/pdf;charset=UTF-8\",\"contentLength\":16}}]";
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
 
@@ -173,7 +158,7 @@ public class TaskElementDeserializerTest {
         }
         {
             String json =
-                "[{\"value\":{\"id\":\"30b33063-a1b4-4d07-a789-c5593893eb54\",\"name\":\"document-accent-o-xxx1.pdf\",\"contentPath\":\"tenants/f46ed181-f124-4e85-95be-ceecaf168b4b/2022/03/30/922f6c3d-0b27-4555-a852-e554dc52b4c7\",\"contentType\":\"application/pdf;charset=UTF-8\",\"contentLength\":16}}]";
+                "[{\"type\": \"DOCUMENT\", \"value\":{\"id\":\"30b33063-a1b4-4d07-a789-c5593893eb54\",\"name\":\"document-accent-o-xxx1.pdf\",\"contentPath\":\"tenants/f46ed181-f124-4e85-95be-ceecaf168b4b/2022/03/30/922f6c3d-0b27-4555-a852-e554dc52b4c7\",\"contentType\":\"application/pdf;charset=UTF-8\",\"contentLength\":16}}]";
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
 
@@ -192,7 +177,7 @@ public class TaskElementDeserializerTest {
         }
 
         {
-            String json = "[{\"value\": \"aString\"}]";
+            String json = "[{\"value\": \"aString\", \"type\": \"STRING\"}]";
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValueAsStringList().size()).isEqualTo(1);
@@ -200,7 +185,8 @@ public class TaskElementDeserializerTest {
         }
 
         {
-            String json = "[{\"value\": \"one\"},{\"value\": \"two\"},{\"value\": \"three\"}]";
+            String json =
+                "[{\"value\": \"one\", \"type\": \"STRING\"},{\"value\": \"two\", \"type\": \"STRING\"},{\"value\": \"three\", \"type\": \"STRING\"}]";
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValueAsStringList().size()).isEqualTo(3);
@@ -208,7 +194,8 @@ public class TaskElementDeserializerTest {
         }
 
         {
-            String json = "[{\"value\": 1},{\"value\": 2},{\"value\": 3}]";
+            String json =
+                "[{\"value\": 1, \"type\": \"NUMBER\"},{\"value\": 2, \"type\": \"NUMBER\"},{\"value\": 3, \"type\": \"NUMBER\"}]";
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValueAsDoubleList().size()).isEqualTo(3);
@@ -216,7 +203,8 @@ public class TaskElementDeserializerTest {
         }
 
         {
-            String json = "[{\"valid\": false, \"value\": 1.1}, {\"valid\": false, \"value\": 2.2}, {\"valid\": false, \"value\": 3.3}]";
+            String json =
+                "[{\"valid\": false, \"value\": 1.1, \"type\": \"NUMBER\"}, {\"valid\": false, \"value\": 2.2, \"type\": \"NUMBER\"}, {\"valid\": false, \"value\": 3.3, \"type\": \"NUMBER\"}]";
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValueAsDoubleList().size()).isEqualTo(3);
@@ -224,7 +212,8 @@ public class TaskElementDeserializerTest {
         }
 
         {
-            String json = "[{\"value\": \"2022-01-01\"},{\"value\": \"2022-01-02\"},{\"value\": \"2022-01-03\"}]";
+            String json =
+                "[{\"value\": \"2022-01-01\", \"type\": \"STRING\"},{\"value\": \"2022-01-02\", \"type\": \"STRING\"},{\"value\": \"2022-01-03\", \"type\": \"STRING\"}]";
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValueAsLocalDateList().size()).isEqualTo(3);
@@ -237,7 +226,7 @@ public class TaskElementDeserializerTest {
     public void givenJsonWithArrayDocumentWhenDeserializeThenBindingObject() throws Exception {
         {
             String element =
-                "{\"value\":{\"id\":\"30b33063-a1b4-4d07-a789-c5593893eb54\",\"name\":\"document-accent-o-xxx1.pdf\",\"contentPath\":\"tenants/f46ed181-f124-4e85-95be-ceecaf168b4b/2022/03/30/922f6c3d-0b27-4555-a852-e554dc52b4c7\",\"contentType\":\"application/pdf;charset=UTF-8\",\"contentLength\":16}}";
+                "{\"type\": \"DOCUMENT\", \"value\":{\"id\":\"30b33063-a1b4-4d07-a789-c5593893eb54\",\"name\":\"document-accent-o-xxx1.pdf\",\"contentPath\":\"tenants/f46ed181-f124-4e85-95be-ceecaf168b4b/2022/03/30/922f6c3d-0b27-4555-a852-e554dc52b4c7\",\"contentType\":\"application/pdf;charset=UTF-8\",\"contentLength\":16}}";
             String json = "[" + element + "," + element + "]";
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
@@ -251,7 +240,8 @@ public class TaskElementDeserializerTest {
     public void givenJsonWithPrincipalValueWhenDeserializeThenBindingObject() throws Exception {
         {
             String json =
-                "{\"valid\":true,\"value\":{\"id\":\"9b03e7f2-ecb5-4634-b20f-f528a09ffc9a\"," + "\"type\":\"USER\",\"name\":\"My name\"}}";
+                "{\"type\": \"PRINCIPAL\", \"valid\":true,\"value\":{\"id\":\"9b03e7f2-ecb5-4634-b20f-f528a09ffc9a\"," +
+                "\"type\":\"USER\",\"name\":\"My name\"}}";
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
 
@@ -259,7 +249,9 @@ public class TaskElementDeserializerTest {
         }
 
         {
-            String json = "{\"value\":{\"id\":\"9b03e7f2-ecb5-4634-b20f-f528a09ffc9a\"," + "\"type\":\"USER\",\"name\":\"My name\"}}";
+            String json =
+                "{\"type\": \"PRINCIPAL\", \"value\":{\"id\":\"9b03e7f2-ecb5-4634-b20f-f528a09ffc9a\"," +
+                "\"type\":\"USER\",\"name\":\"My name\"}}";
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
 
@@ -267,7 +259,7 @@ public class TaskElementDeserializerTest {
         }
 
         {
-            String json = "{\"value\":{\"id\":\"9b03e7f2-ecb5-4634-b20f-f528a09ffc9a\"," + "\"type\":\"USER\"}}";
+            String json = "{\"type\": \"PRINCIPAL\", \"value\":{\"id\":\"9b03e7f2-ecb5-4634-b20f-f528a09ffc9a\"," + "\"type\":\"USER\"}}";
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValueAsPrincipal().getId()).isEqualTo(UUID.fromString("9b03e7f2-ecb5-4634-b20f-f528a09ffc9a"));
@@ -279,7 +271,8 @@ public class TaskElementDeserializerTest {
     public void givenJsonWithArrayPrincipalWhenDeserializeThenBindingObject() throws Exception {
         {
             String element =
-                "{\"valid\":true,\"value\":{\"id\":\"9b03e7f2-ecb5-4634-b20f-f528a09ffc9a\"," + "\"type\":\"USER\",\"name\":\"My name\"}}";
+                "{\"type\": \"PRINCIPAL\", \"valid\":true,\"value\":{\"id\":\"9b03e7f2-ecb5-4634-b20f-f528a09ffc9a\"," +
+                "\"type\":\"USER\",\"name\":\"My name\"}}";
             String json = "[" + element + "," + element + "]";
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();

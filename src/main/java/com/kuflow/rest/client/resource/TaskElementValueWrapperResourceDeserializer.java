@@ -49,9 +49,6 @@ public class TaskElementValueWrapperResourceDeserializer extends StdDeserializer
 
     private TaskElementValueWrapperResource deserializeSingleNode(JsonParser jsonParser) throws IOException {
         TaskElementValueResource elementValueResource = jsonParser.readValueAs(TaskElementValueResource.class);
-        if (elementValueResource.getValue() == null) {
-            return null;
-        }
 
         return new TaskElementValueWrapperResource(elementValueResource);
     }

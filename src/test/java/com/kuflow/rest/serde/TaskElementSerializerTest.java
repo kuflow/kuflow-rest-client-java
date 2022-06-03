@@ -16,7 +16,6 @@ import com.kuflow.rest.mock.ElementValueDocumentFixture;
 import com.kuflow.rest.mock.ElementValuePrincipalResourceFixture;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.DisplayName;
@@ -38,38 +37,41 @@ public class TaskElementSerializerTest {
         {
             TaskElementValueWrapperResource elementValuesResource = TaskElementValueWrapperResource.of("aString");
             String json = this.mapper.writeValueAsString(elementValuesResource);
-            assertThat(json).isEqualTo("{\"valid\":true,\"value\":\"aString\"}");
+            assertThat(json).isEqualTo("{\"value\":\"aString\",\"valid\":true,\"type\":\"STRING\"}");
         }
 
         {
             TaskElementValueWrapperResource elementValuesResource = TaskElementValueWrapperResource.of("aString");
             elementValuesResource.valid(false);
             String json = this.mapper.writeValueAsString(elementValuesResource);
-            assertThat(json).isEqualTo("{\"valid\":false,\"value\":\"aString\"}");
+            assertThat(json).isEqualTo("{\"value\":\"aString\",\"valid\":false,\"type\":\"STRING\"}");
         }
 
         {
             TaskElementValueWrapperResource elementValuesResource = TaskElementValueWrapperResource.of(123D);
             String json = this.mapper.writeValueAsString(elementValuesResource);
-            assertThat(json).isEqualTo("{\"valid\":true,\"value\":123.0}");
+            assertThat(json).isEqualTo("{\"value\":123.0,\"valid\":true,\"type\":\"NUMBER\"}");
         }
 
         {
             TaskElementValueWrapperResource elementValuesResource = TaskElementValueWrapperResource.of(123.123);
             String json = this.mapper.writeValueAsString(elementValuesResource);
-            assertThat(json).isEqualTo("{\"valid\":true,\"value\":123.123}");
+            assertThat(json).isEqualTo("{\"value\":123.123,\"valid\":true,\"type\":\"NUMBER\"}");
         }
 
         {
             TaskElementValueWrapperResource elementValuesResource = TaskElementValueWrapperResource.of("one", "two");
             String json = this.mapper.writeValueAsString(elementValuesResource);
-            assertThat(json).isEqualTo("[{\"valid\":true,\"value\":\"one\"},{\"valid\":true,\"value\":\"two\"}]");
+            assertThat(json)
+                .isEqualTo(
+                    "[{\"value\":\"one\",\"valid\":true,\"type\":\"STRING\"},{\"value\":\"two\",\"valid\":true,\"type\":\"STRING\"}]"
+                );
         }
 
         {
             TaskElementValueWrapperResource resource = TaskElementValueWrapperResource.of(LocalDate.of(2022, 1, 1));
             String json = this.mapper.writeValueAsString(resource);
-            assertThat(json).isEqualTo("{\"valid\":true,\"value\":\"2022-01-01\"}");
+            assertThat(json).isEqualTo("{\"value\":\"2022-01-01\",\"valid\":true,\"type\":\"STRING\"}");
         }
     }
 
@@ -77,7 +79,7 @@ public class TaskElementSerializerTest {
     @DisplayName("GIVEN element with simple value WHEN serialize and no one value is read THEN the tree node is used")
     public void givenElementWithSimpleValueWhenSerializeAndNoOneValueIsReadThenTheTreeNodeIsUsed() throws Exception {
         {
-            String jsonExpected = "{\"valid\":true,\"value\":\"aString\"}";
+            String jsonExpected = "{\"value\":\"aString\",\"valid\":true,\"type\":\"STRING\"}";
             TaskElementValueWrapperResource readValue = this.mapper.readValue(jsonExpected, TaskElementValueWrapperResource.class);
 
             String jsonActual = this.mapper.writeValueAsString(readValue);
@@ -96,8 +98,7 @@ public class TaskElementSerializerTest {
             String json = this.mapper.writeValueAsString(elementValuesResource);
             assertThat(json)
                 .isEqualTo(
-                    "{\"valid\":true,\"value\":{\"id\":\"145fd460-5e52-4160-a0e4-64fd1c9ef380\",\"name\":\"name\"," +
-                    "\"contentPath\":\"contentPath\",\"contentType\":\"application/pdf\",\"contentLength\":10748}}"
+                    "{\"value\":{\"id\":\"145fd460-5e52-4160-a0e4-64fd1c9ef380\",\"name\":\"name\",\"contentPath\":\"contentPath\",\"contentType\":\"application/pdf\",\"contentLength\":10748},\"valid\":true,\"type\":\"DOCUMENT\"}"
                 );
         }
 
@@ -108,7 +109,8 @@ public class TaskElementSerializerTest {
                 ElementValueDocumentFixture.getElementValueDocument0()
             );
             String json = this.mapper.writeValueAsString(elementValuesResource);
-            assertThat(StringUtils.countMatches(json, ElementValueDocumentFixture.getElementValueDocument0().getId())).isEqualTo(3);
+            assertThat(StringUtils.countMatches(json, ElementValueDocumentFixture.getElementValueDocument0().getValue().getId()))
+                .isEqualTo(3);
         }
     }
 
@@ -121,12 +123,12 @@ public class TaskElementSerializerTest {
             String json = this.mapper.writeValueAsString(elementValuesResource);
             assertThat(json).contains("\"key1\":\"value\"");
             assertThat(json).contains("\"key2\":12");
-            assertThat(json).startsWith("{\"valid\":true");
+            assertThat(json).endsWith("\"valid\":true,\"type\":\"OBJECT\"}");
         }
 
         {
             Map<String, Serializable> form = Map.of("key1", "value", "key2", 12);
-            TaskElementValueWrapperResource elementValuesResource = TaskElementValueWrapperResource.of(List.of(form, form));
+            TaskElementValueWrapperResource elementValuesResource = TaskElementValueWrapperResource.of(form, form);
             String json = this.mapper.writeValueAsString(elementValuesResource);
             assertThat(StringUtils.countMatches(json, "key1")).isEqualTo(2);
         }
@@ -143,8 +145,7 @@ public class TaskElementSerializerTest {
             String json = this.mapper.writeValueAsString(elementValuesResource);
             assertThat(json)
                 .isEqualTo(
-                    "{\"valid\":true,\"value\":{\"id\":\"9b03e7f2-ecb5-4634-b20f-f528a09ffc9a\"," +
-                    "\"type\":\"USER\",\"name\":\"My name\"}}"
+                    "{\"value\":{\"id\":\"9b03e7f2-ecb5-4634-b20f-f528a09ffc9a\",\"type\":\"USER\",\"name\":\"My name\"},\"valid\":true,\"type\":\"PRINCIPAL\"}"
                 );
         }
 
@@ -156,7 +157,9 @@ public class TaskElementSerializerTest {
             );
 
             String json = this.mapper.writeValueAsString(elementValuesResource);
-            assertThat(StringUtils.countMatches(json, ElementValuePrincipalResourceFixture.getPrincipalUser0().getId().toString()))
+            assertThat(
+                StringUtils.countMatches(json, ElementValuePrincipalResourceFixture.getPrincipalUser0().getValue().getId().toString())
+            )
                 .isEqualTo(3);
         }
     }
