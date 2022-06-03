@@ -278,15 +278,9 @@ paths:
                           type: "OBJECT",
                           "value": { "form_field_1": "string", "form_field_2": "string" }
                         },
-                        "element_code_5": {
-                          type: "DOCUMENT",
-                          "value": { "id": "string", name: "", contentPath: "", contentType: "", contentLength: 100 }
-                        },
+                        "element_code_5": { type: "DOCUMENT", "value": { "id": "string" } },
                         "element_code_6": [
-                          {
-                            type: "DOCUMENT",
-                            "value": { "id": "string", name: "", contentPath: "", contentType: "", contentLength: 100 }
-                          }
+                          { type: "DOCUMENT", "value": { "id": "string" } }
                         ],
                         "element_code_7": { type: "PRINCIPAL", "value": { "id": "b90c9ae9-444c-4bfd-9594-7468955d2eda", "type": "USER" } },
                         "element_code_8": [
