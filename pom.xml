@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.6.4</version>
+    <version>2.6.8</version>
     <relativePath /> <!-- lookup parent from repository -->
   </parent>
 
@@ -19,7 +19,7 @@
   <description>KuFlow REST Client</description>
 
   <properties>
-    <maven.version>3.8.4</maven.version>
+    <maven.version>3.8.5</maven.version>
     <java.version>11</java.version>
 
     <!-- Maven plugin dependencies -->
@@ -34,7 +34,7 @@
     <swagger-annotations.version>1.6.2</swagger-annotations.version>
 
     <!-- Spring dependencies -->
-    <spring-boot.version>2.6.4</spring-boot.version>
+    <spring-boot.version>2.6.8</spring-boot.version>
 
     <!-- Application dependencies -->
     <feign.version>11.7</feign.version>
