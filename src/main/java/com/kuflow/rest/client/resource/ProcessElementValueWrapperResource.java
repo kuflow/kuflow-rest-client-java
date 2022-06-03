@@ -130,23 +130,42 @@ public class ProcessElementValueWrapperResource {
     }
 
     private String getValueAsString(ProcessElementValueResource value) {
-        if (!value.getType().equals(ProcessElementValueTypeResource.STRING) || !(value instanceof ProcessElementValueStringResource)) {
-            throw new KuFlowRestClientException(String.format("value %s is not a String", value));
+        if (value.getType().equals(ProcessElementValueTypeResource.STRING) && (value instanceof ProcessElementValueStringResource)) {
+            ProcessElementValueStringResource valueString = (ProcessElementValueStringResource) value;
+
+            return valueString.getValue();
         }
 
-        ProcessElementValueStringResource valueString = (ProcessElementValueStringResource) value;
+        if (value.getType().equals(ProcessElementValueTypeResource.NUMBER) && (value instanceof ProcessElementValueNumberResource)) {
+            ProcessElementValueNumberResource valueNumber = (ProcessElementValueNumberResource) value;
 
-        return valueString.getValue();
+            return valueNumber.getValue() != null ? valueNumber.getValue().toString() : null;
+        }
+
+        throw new KuFlowRestClientException(String.format("value %s is not a String", value));
     }
 
     private Double getValueAsDouble(ProcessElementValueResource value) {
-        if (!value.getType().equals(ProcessElementValueTypeResource.NUMBER) || !(value instanceof ProcessElementValueNumberResource)) {
-            throw new KuFlowRestClientException(String.format("value %s is not a Number", value));
+        if (value.getType().equals(ProcessElementValueTypeResource.NUMBER) && (value instanceof ProcessElementValueNumberResource)) {
+            ProcessElementValueNumberResource valueNumber = (ProcessElementValueNumberResource) value;
+
+            return valueNumber.getValue();
         }
 
-        ProcessElementValueNumberResource valueNumber = (ProcessElementValueNumberResource) value;
+        if (value.getType().equals(ProcessElementValueTypeResource.STRING) && (value instanceof ProcessElementValueStringResource)) {
+            ProcessElementValueStringResource valueString = (ProcessElementValueStringResource) value;
 
-        return valueNumber.getValue();
+            try {
+                if (valueString.getValue() == null) {
+                    return null;
+                }
+                return Double.valueOf(valueString.getValue());
+            } catch (NumberFormatException e) {
+                throw new KuFlowRestClientException(String.format("value %s is not a number", valueString), e);
+            }
+        }
+
+        throw new KuFlowRestClientException(String.format("value %s is not a Number", value));
     }
 
     private LocalDate getValueAsLocalDate(ProcessElementValueResource value) {

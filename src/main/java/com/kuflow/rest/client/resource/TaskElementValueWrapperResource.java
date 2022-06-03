@@ -117,7 +117,7 @@ public class TaskElementValueWrapperResource {
         if (value.getType().equals(TaskElementValueTypeResource.NUMBER) && (value instanceof TaskElementValueNumberResource)) {
             TaskElementValueNumberResource valueNumber = (TaskElementValueNumberResource) value;
 
-            return valueNumber.toString();
+            return valueNumber.getValue() != null ? valueNumber.getValue().toString() : null;
         }
 
         throw new KuFlowRestClientException(String.format("value %s is not a String", value));

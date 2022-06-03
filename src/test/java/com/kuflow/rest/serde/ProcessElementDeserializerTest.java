@@ -24,7 +24,7 @@ public class ProcessElementDeserializerTest {
 
     @Test
     @DisplayName("GIVEN json with null WHEN deserialize THEN binding to null")
-    public void givenJsonWithNullOrEmptyObjectValueWhenDeserializeThenBindingToNull() throws Exception {
+    public void givenJsonWithNullValueWhenDeserializeThenBindingToNull() throws Exception {
         {
             String json = "null";
             ProcessElementValueWrapperResource readValue = this.mapper.readValue(json, ProcessElementValueWrapperResource.class);
@@ -61,8 +61,8 @@ public class ProcessElementDeserializerTest {
             String json = "{\"value\": 123,\"type\":\"NUMBER\"}";
             ProcessElementValueWrapperResource readValue = this.mapper.readValue(json, ProcessElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
+            assertThat(readValue.getValueAsString()).isEqualTo("123.0");
             assertThat(readValue.getValueAsDouble()).isEqualTo(123);
-            assertThatExceptionOfType(KuFlowRestClientException.class).isThrownBy(readValue::getValueAsString);
         }
 
         {
@@ -70,6 +70,7 @@ public class ProcessElementDeserializerTest {
             ProcessElementValueWrapperResource readValue = this.mapper.readValue(json, ProcessElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValid()).isFalse();
+            assertThat(readValue.getValueAsString()).isEqualTo("123.123");
             assertThat(readValue.getValueAsDouble()).isEqualTo(123.123);
         }
     }

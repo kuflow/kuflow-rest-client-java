@@ -24,7 +24,7 @@ public class TaskElementDeserializerTest {
 
     @Test
     @DisplayName("GIVEN json with null WHEN deserialize THEN binding to null")
-    public void givenJsonWithNullOrEmptyObjectValueWhenDeserializeThenBindingToNull() throws Exception {
+    public void givenJsonWithNullValueWhenDeserializeThenBindingToNull() throws Exception {
         {
             String json = "null";
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
@@ -86,6 +86,7 @@ public class TaskElementDeserializerTest {
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValueAsDouble()).isEqualTo(123);
+            assertThat(readValue.getValueAsString()).isEqualTo("123.0");
         }
 
         {
@@ -93,6 +94,7 @@ public class TaskElementDeserializerTest {
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValueAsDouble()).isEqualTo(123.123);
+            assertThat(readValue.getValueAsString()).isEqualTo("123.123");
         }
     }
 
