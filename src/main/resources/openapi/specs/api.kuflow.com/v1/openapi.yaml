@@ -243,7 +243,8 @@ paths:
       summary: Create a new Task in the selected Process
       description: |
         Create a Task and optionally fill its elements. We can fill in any type of element except documents.
-        If you want to add document type elements, then use the appropriate API method.
+        If you want to add document type elements, you can pass an element document indicating their 'uri' or use the appropriate API
+        method.
         If you pass a valid owner then the task will be claimed for it.
 
         If you want the method to be idempotent, please specify the `id` field in the request body.
@@ -278,9 +279,9 @@ paths:
                           type: "OBJECT",
                           "value": { "form_field_1": "string", "form_field_2": "string" }
                         },
-                        "element_code_5": { type: "DOCUMENT", "value": { "id": "string" } },
+                        "element_code_5": { type: "DOCUMENT", "value": { "uri": "string" } },
                         "element_code_6": [
-                          { type: "DOCUMENT", "value": { "id": "string" } }
+                          { type: "DOCUMENT", "value": { "uri": "string" } }
                         ],
                         "element_code_7": { type: "PRINCIPAL", "value": { "id": "b90c9ae9-444c-4bfd-9594-7468955d2eda", "type": "USER" } },
                         "element_code_8": [
@@ -372,7 +373,7 @@ paths:
       description: |
         Allow to save an element i.e., a field, a decision, a form, a principal or document.
 
-        If is a document you need to pass a document reference using the 'id' attribute.
+        If is a document you need to pass a document reference using the 'uri' attribute.
         If values already exist for the provided element code, it replaces them with the new ones, otherwise it creates them.
         The values of the previous elements that no longer exist will be deleted.
         To remove an element, use the appropriate API method.
@@ -507,6 +508,7 @@ paths:
           required: true
           schema:
             type: string
+            format: uuid
       responses:
         "200":
           description: Document requested
@@ -946,6 +948,9 @@ components:
       properties:
         id:
           type: string
+          format: uuid
+        uri:
+          type: string
         name:
           type: string
         contentPath:
@@ -1179,6 +1184,7 @@ components:
         documentId:
           description: Document Id to delete
           type: string
+          format: uuid
       required:
         - documentId
 

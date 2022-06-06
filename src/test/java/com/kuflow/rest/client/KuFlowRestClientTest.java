@@ -117,7 +117,7 @@ public class KuFlowRestClientTest {
         );
 
         UUID taskId = UUID.randomUUID();
-        String elementId = UUID.randomUUID().toString();
+        UUID elementId = UUID.randomUUID();
 
         Response response = this.kuFlowRestClient.getTaskApi().actionsDownloadElementValueDocument(taskId, elementId);
         assertThat(response.status()).isEqualTo(200);
