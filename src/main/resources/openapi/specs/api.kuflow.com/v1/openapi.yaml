@@ -243,7 +243,7 @@ paths:
       summary: Create a new Task in the selected Process
       description: |
         Create a Task and optionally fill its elements. We can fill in any type of element except documents.
-        If you want to add document type elements, you can pass an element document indicating their 'uri' or use the appropriate API
+        If you want to add document type elements, you can pass a reference to an existing document type element indicating its 'uri'. This will copy that document into the element. In case you want to add a new document, please use the corresponding API method.
         method.
         If you pass a valid owner then the task will be claimed for it.
 
