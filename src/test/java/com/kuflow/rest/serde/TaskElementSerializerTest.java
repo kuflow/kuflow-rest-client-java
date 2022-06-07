@@ -98,7 +98,7 @@ public class TaskElementSerializerTest {
             String json = this.mapper.writeValueAsString(elementValuesResource);
             assertThat(json)
                 .isEqualTo(
-                    "{\"value\":{\"id\":\"145fd460-5e52-4160-a0e4-64fd1c9ef380\",\"name\":\"name\",\"contentPath\":\"contentPath\",\"contentType\":\"application/pdf\",\"contentLength\":10748},\"valid\":true,\"type\":\"DOCUMENT\"}"
+                    "{\"value\":{\"id\":\"145fd460-5e52-4160-a0e4-64fd1c9ef380\",\"uri\":null,\"name\":\"name\",\"contentPath\":\"contentPath\",\"contentType\":\"application/pdf\",\"contentLength\":10748},\"valid\":true,\"type\":\"DOCUMENT\"}"
                 );
         }
 
@@ -109,7 +109,7 @@ public class TaskElementSerializerTest {
                 ElementValueDocumentFixture.getElementValueDocument0()
             );
             String json = this.mapper.writeValueAsString(elementValuesResource);
-            assertThat(StringUtils.countMatches(json, ElementValueDocumentFixture.getElementValueDocument0().getValue().getId()))
+            assertThat(StringUtils.countMatches(json, ElementValueDocumentFixture.getElementValueDocument0().getValue().getId().toString()))
                 .isEqualTo(3);
         }
     }

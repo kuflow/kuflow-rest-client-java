@@ -145,7 +145,7 @@ public class TaskElementDeserializerTest {
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
 
-            assertThat(readValue.getValueAsDocument().getId()).isEqualTo("30b33063-a1b4-4d07-a789-c5593893eb54");
+            assertThat(readValue.getValueAsDocument().getId()).isEqualTo(UUID.fromString("30b33063-a1b4-4d07-a789-c5593893eb54"));
         }
         {
             String json =
@@ -153,10 +153,11 @@ public class TaskElementDeserializerTest {
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
 
-            assertThat(readValue.getValueAsDocument().getId()).isEqualTo("30b33063-a1b4-4d07-a789-c5593893eb54");
+            assertThat(readValue.getValueAsDocument().getId()).isEqualTo(UUID.fromString("30b33063-a1b4-4d07-a789-c5593893eb54"));
 
             assertThat(readValue.getValueAsDocumentList()).hasSize(1);
-            assertThat(readValue.getValueAsDocumentList().get(0).getId()).isEqualTo("30b33063-a1b4-4d07-a789-c5593893eb54");
+            assertThat(readValue.getValueAsDocumentList().get(0).getId())
+                .isEqualTo(UUID.fromString("30b33063-a1b4-4d07-a789-c5593893eb54"));
         }
         {
             String json =
@@ -165,7 +166,8 @@ public class TaskElementDeserializerTest {
             assertThat(readValue).isNotNull();
 
             assertThat(readValue.getValueAsDocumentList()).hasSize(1);
-            assertThat(readValue.getValueAsDocumentList().get(0).getId()).isEqualTo("30b33063-a1b4-4d07-a789-c5593893eb54");
+            assertThat(readValue.getValueAsDocumentList().get(0).getId())
+                .isEqualTo(UUID.fromString("30b33063-a1b4-4d07-a789-c5593893eb54"));
         }
     }
 
@@ -233,7 +235,8 @@ public class TaskElementDeserializerTest {
             TaskElementValueWrapperResource readValue = this.mapper.readValue(json, TaskElementValueWrapperResource.class);
             assertThat(readValue).isNotNull();
             assertThat(readValue.getValueAsDocumentList().size()).isEqualTo(2);
-            assertThat(readValue.getValueAsDocumentList().get(0).getId()).isEqualTo("30b33063-a1b4-4d07-a789-c5593893eb54");
+            assertThat(readValue.getValueAsDocumentList().get(0).getId())
+                .isEqualTo(UUID.fromString("30b33063-a1b4-4d07-a789-c5593893eb54"));
         }
     }
 
