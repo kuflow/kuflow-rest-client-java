@@ -206,6 +206,44 @@ paths:
         default:
           $ref: "#/components/responses/DefaultError"
 
+  /processes/{id}/~actions/save-user-action-document:
+    post:
+      summary: Upload and save a document in a user action
+      description: |
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+        nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+        proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+      operationId: actionsSaveUserActionDocument
+      tags:
+        - process
+      parameters:
+        - $ref: "#/components/parameters/IdPathParam"
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                json:
+                  $ref: "#/components/schemas/SaveUserActionDocument"
+                file:
+                  type: string
+                  format: binary
+              required:
+                - json
+                - file
+            # encoding:
+            #   file:
+            #     contentType: image/*, application/pdf
+      responses:
+        "200":
+          description: Document Saved in user action
+        "304":
+          description: Untouched process
+
   /tasks:
     get:
       summary: Find all accessible Taks
@@ -271,23 +309,16 @@ paths:
                       {
                         "element_code_1": { type: "STRING", "value": "string" },
                         "element_code_2": { type: "NUMBER", "valid": false, "value": 1111 },
-                        "element_code_3": [
-                          { type: "STRING", "value": "string" },
-                          { type: "STRING", "value": "string" }
-                        ],
-                        "element_code_4": {
-                          type: "OBJECT",
-                          "value": { "form_field_1": "string", "form_field_2": "string" }
-                        },
+                        "element_code_3": [{ type: "STRING", "value": "string" }, { type: "STRING", "value": "string" }],
+                        "element_code_4": { type: "OBJECT", "value": { "form_field_1": "string", "form_field_2": "string" } },
                         "element_code_5": { type: "DOCUMENT", "value": { "uri": "string" } },
-                        "element_code_6": [
-                          { type: "DOCUMENT", "value": { "uri": "string" } }
-                        ],
+                        "element_code_6": [{ type: "DOCUMENT", "value": { "uri": "string" } }],
                         "element_code_7": { type: "PRINCIPAL", "value": { "id": "b90c9ae9-444c-4bfd-9594-7468955d2eda", "type": "USER" } },
-                        "element_code_8": [
-                          { type: "PRINCIPAL", "value": { "id": "b90c9ae9-444c-4bfd-9594-7468955d2eda", "type": "USER" } },
-                          { type: "PRINCIPAL", "value": { "id": "f4be313c-c0a2-426c-bdd3-c3113d7bbf37", "type": "USER" } }
-                        ]
+                        "element_code_8":
+                          [
+                            { type: "PRINCIPAL", "value": { "id": "b90c9ae9-444c-4bfd-9594-7468955d2eda", "type": "USER" } },
+                            { type: "PRINCIPAL", "value": { "id": "f4be313c-c0a2-426c-bdd3-c3113d7bbf37", "type": "USER" } },
+                          ],
                       },
                   }
       responses:
@@ -990,6 +1021,15 @@ components:
           default: true
       required:
         - code
+
+    SaveUserActionDocument:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+      required:
+        - id
 
     ProcessDefinitionSummary:
       type: object
