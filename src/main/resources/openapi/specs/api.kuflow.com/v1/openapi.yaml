@@ -161,6 +161,65 @@ paths:
         default:
           $ref: "#/components/responses/DefaultError"
 
+  /processes/{id}/~actions/save-element:
+    post:
+      summary: "Save a process element, aka: metadata"
+      description: |
+        Allow to save an element.
+
+        If values already exist for the provided element code, it replaces them with the new ones, otherwise it creates them.
+        The values of the previous elements that no longer exist will be deleted.
+
+        If the process is already finished the invocations fails with an error.
+      operationId: actionsSaveProcessElement
+      tags:
+        - process
+      parameters:
+        - $ref: "#/components/parameters/IdPathParam"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProcessSaveElementCommand"
+      responses:
+        "200":
+          description: Process updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Process"
+        default:
+          $ref: "#/components/responses/DefaultError"
+
+  /processes/{id}/~actions/delete-element:
+    post:
+      summary: Delete an element by code
+      description: |
+        Allow to delete a process element by specifying the item definition code.
+
+        Remove all the element values.
+      operationId: actionsDeleteProcessElement
+      tags:
+        - process
+      parameters:
+        - $ref: "#/components/parameters/IdPathParam"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteElementCommand"
+      responses:
+        "200":
+          description: Task elements deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Process"
+        default:
+          $ref: "#/components/responses/DefaultError"
+
   /processes/{id}/~actions/complete:
     post:
       summary: Complete a Process
@@ -379,7 +438,7 @@ paths:
         If values already exist for the provided element code, it replaces them with the new ones, otherwise it creates them.
         The values of the previous elements that no longer exist will be deleted.
         To remove an element, use the appropriate API method.
-      operationId: actionsSaveElement
+      operationId: actionsSaveTaskElement
       tags:
         - task
       parameters:
@@ -389,7 +448,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TaskElementValueOrArrayValue"
+              $ref: "#/components/schemas/TaskSaveElementCommand"
       responses:
         "200":
           description: Task with element filled
@@ -408,7 +467,7 @@ paths:
 
         If it is a multiple element, and the Id referenced in the body does not exist or is empty, the document will be added to the element.
         If the element already exists (the Id referenced in the body corresponds to an existing one), it updates it.
-      operationId: actionsSaveElementValueDocument
+      operationId: actionsSaveTaskElementValueDocument
       tags:
         - task
       parameters:
@@ -446,7 +505,7 @@ paths:
         Allow to delete task element by specifying the item definition code.
 
         Remove all the element values.
-      operationId: actionsDeleteElement
+      operationId: actionsDeleteTaskElement
       tags:
         - task
       parameters:
@@ -474,7 +533,7 @@ paths:
         Allow to delete a specific document from an element of document type using its id.
 
         Note: If it is a multiple item, it will only delete the specified document. If it is a single element, in addition to the document, it will also delete the element.
-      operationId: actionsDeleteValueDocument
+      operationId: actionsDeleteTaskElementValueDocument
       tags:
         - task
       parameters:
@@ -499,7 +558,7 @@ paths:
     get:
       summary: Download document
       description: Given a task, download a document from an element of document type
-      operationId: actionsDownloadElementValueDocument
+      operationId: actionsDownloadTaskElementValueDocument
       tags:
         - task
       parameters:
@@ -542,7 +601,7 @@ paths:
     post:
       summary: Append a log to the task
       description: A log entry is added to the task. If the number of log entries is reached, the oldest log entry is removed.
-      operationId: actionsAppendLog
+      operationId: actionsAppendTaskLog
       tags:
         - task
       parameters:
@@ -828,6 +887,17 @@ components:
         - STRING
         - NUMBER
 
+    ProcessSaveElementCommand:
+      type: object
+      properties:
+        code:
+          type: string
+        value:
+          oneOf:
+            - $ref: "#/components/schemas/ProcessElementValue"
+      required:
+        - code
+
     ProcessElementValue:
       type: object
       properties:
@@ -861,7 +931,7 @@ components:
               type: number
               format: double
 
-    TaskElementValueOrArrayValue:
+    TaskSaveElementCommand:
       type: object
       properties:
         code:
