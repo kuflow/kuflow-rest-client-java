@@ -163,7 +163,7 @@ paths:
 
   /processes/{id}/~actions/save-element:
     post:
-      summary: "Save na process element, aka: metadata"
+      summary: "Save a process element, aka: metadata"
       description: |
         Allow to save an element.
 
