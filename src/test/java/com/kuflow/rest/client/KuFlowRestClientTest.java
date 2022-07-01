@@ -96,7 +96,7 @@ public class KuFlowRestClientTest {
         command.setCode("DOC");
         File file = this.getFile("sample.txt");
 
-        TaskResource task = this.kuFlowRestClient.getTaskApi().actionsSaveElementValueDocument(taskId, command, file);
+        TaskResource task = this.kuFlowRestClient.getTaskApi().actionsSaveTaskElementValueDocument(taskId, command, file);
         assertThat(task.getId()).isNotNull();
     }
 
@@ -119,7 +119,7 @@ public class KuFlowRestClientTest {
         UUID taskId = UUID.randomUUID();
         UUID elementId = UUID.randomUUID();
 
-        Response response = this.kuFlowRestClient.getTaskApi().actionsDownloadElementValueDocument(taskId, elementId);
+        Response response = this.kuFlowRestClient.getTaskApi().actionsDownloadTaskElementValueDocument(taskId, elementId);
         assertThat(response.status()).isEqualTo(200);
         assertThat(response.headers().get("Content-Type").iterator().next()).isEqualTo("text/plain");
         assertThat(response.body().length()).isEqualTo(12);
