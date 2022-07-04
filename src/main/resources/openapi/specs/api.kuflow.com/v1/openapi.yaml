@@ -269,7 +269,7 @@ paths:
     post:
       summary: Upload and save a document in a user action
       description: |
-        Allow to save an user action document uploading the content.
+        Allow saving an user action document uploading the content.
       operationId: actionsSaveProcessUserActionValueDocument
       tags:
         - process
@@ -283,16 +283,13 @@ paths:
               type: object
               properties:
                 json:
-                  $ref: "#/components/schemas/SaveUserActionValueDocumentCommand"
+                  $ref: "#/components/schemas/SaveProcessUserActionValueDocumentCommand"
                 file:
                   type: string
                   format: binary
               required:
                 - json
                 - file
-            # encoding:
-            #   file:
-            #     contentType: image/*, application/pdf
       responses:
         "200":
           description: Document Saved in user action
@@ -1092,7 +1089,7 @@ components:
       required:
         - code
 
-    SaveUserActionValueDocumentCommand:
+    SaveProcessUserActionValueDocumentCommand:
       type: object
       properties:
         id:
