@@ -265,16 +265,12 @@ paths:
         default:
           $ref: "#/components/responses/DefaultError"
 
-  /processes/{id}/~actions/save-user-action-document:
+  /processes/{id}/~actions/save-user-action-value-document:
     post:
       summary: Upload and save a document in a user action
       description: |
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-        nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-        proident, sunt in culpa qui officia deserunt mollit anim id est laborum
-      operationId: actionsSaveUserActionDocument
+        Allow to save an user action document uploading the content.
+      operationId: actionsSaveProcessUserActionValueDocument
       tags:
         - process
       parameters:
@@ -287,7 +283,7 @@ paths:
               type: object
               properties:
                 json:
-                  $ref: "#/components/schemas/SaveUserActionDocument"
+                  $ref: "#/components/schemas/SaveUserActionValueDocumentCommand"
                 file:
                   type: string
                   format: binary
@@ -1096,7 +1092,7 @@ components:
       required:
         - code
 
-    SaveUserActionDocument:
+    SaveUserActionValueDocumentCommand:
       type: object
       properties:
         id:
