@@ -300,6 +300,10 @@ paths:
       responses:
         "200":
           description: Document Saved in user action
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Process"
         "304":
           description: Untouched process
 
