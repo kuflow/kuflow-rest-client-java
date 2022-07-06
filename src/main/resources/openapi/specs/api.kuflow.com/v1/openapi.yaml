@@ -161,6 +161,34 @@ paths:
         default:
           $ref: "#/components/responses/DefaultError"
 
+  /processes/{id}/~actions/change-initiator:
+    post:
+      summary: Change process initiator
+      description: |
+        Change the current initiator of a process.
+        Allows you to choose a user (by email or principal identifier) or an application (principal identifier).
+        Only one option will be necessary.
+      operationId: actionsChangeProcessInitiator
+      tags:
+        - process
+      parameters:
+        - $ref: "#/components/parameters/IdPathParam"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangeProcessInitiatorCommand"
+      responses:
+        "200":
+          description: Process with the new initiator
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Process"
+        default:
+          $ref: "#/components/responses/DefaultError"
+
   /processes/{id}/~actions/save-element:
     post:
       summary: "Save a process element, aka: metadata"
@@ -1097,6 +1125,17 @@ components:
           format: uuid
       required:
         - id
+
+    ChangeProcessInitiatorCommand:
+      type: object
+      description: Command to change the process initiator, only one option is required.
+      properties:
+        principalId:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
 
     ProcessDefinitionSummary:
       type: object
