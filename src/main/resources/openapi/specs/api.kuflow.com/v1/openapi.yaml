@@ -657,7 +657,7 @@ paths:
         If there are multiple form values, they are packed into a ZIP.
 
         Important!: To use this feature, please contact to kuflow@kuflow.com
-      operationId: actionsDownloadTaskElementValueAsPdf
+      operationId: actionsDownloadTaskElementValueRendered
       tags:
         - task
       parameters:
