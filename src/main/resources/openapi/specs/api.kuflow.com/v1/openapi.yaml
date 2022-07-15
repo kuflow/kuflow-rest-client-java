@@ -95,13 +95,17 @@ paths:
   /processes:
     get:
       summary: Find all accessible Processes
-      description: List all the Processes that have been created and the the credentials has access.
+      description: |
+        List all the Processes that have been created and the the credentials has access.
+
+        Available sort query values: id, createDate, lastModifiedDate
       operationId: findProcesses
       tags:
         - process
       parameters:
         - $ref: "#/components/parameters/SizeQueryParam"
         - $ref: "#/components/parameters/PageQueryParam"
+        - $ref: "#/components/parameters/SortQueryParam"
       responses:
         "200":
           description: Processes found paginated
@@ -331,13 +335,17 @@ paths:
   /tasks:
     get:
       summary: Find all accessible Taks
-      description: List all Tasks that have been created and the the credentials has access.
+      description: |
+        List all Tasks that have been created and the the credentials has access.
+
+        Available sort query values: id, createdDate, lastModifiedDate, claimedDate, completedDate, cancelledDate
       operationId: findTasks
       tags:
         - task
       parameters:
         - $ref: "#/components/parameters/SizeQueryParam"
         - $ref: "#/components/parameters/PageQueryParam"
+        - $ref: "#/components/parameters/SortQueryParam"
         - name: processId
           in: query
           schema:
@@ -351,6 +359,12 @@ paths:
             type: array
             items:
               $ref: "#/components/schemas/TaskState"
+        - name: taskDefinitionCode
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
 
       responses:
         "200":
@@ -635,6 +649,38 @@ paths:
                 type: string
                 format: binary
 
+  /tasks/{id}/~actions/download-element-value-form-rendered:
+    get:
+      summary: Download a Form rendered as PDF or Zip of PDFs (when the element is multiple)
+      description: |
+        Given a task, generate a PDF from a Form type element with the data filled in, if any.
+        If there are multiple form values, they are packed into a ZIP.
+
+        Important!: To use this feature, please contact to kuflow@kuflow.com
+      operationId: actionsDownloadTaskElementValueAsPdf
+      tags:
+        - task
+      parameters:
+        - $ref: "#/components/parameters/IdPathParam"
+        - name: code
+          in: query
+          description: Element code of a Form Element to download.
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Form requested as PDF or ZIP of PDFs.
+          content:
+            "application/pdf":
+              schema:
+                type: string
+                format: binary
+            "application/zip":
+              schema:
+                type: string
+                format: binary
+
   /tasks/{id}/~actions/complete:
     post:
       summary: Complete a task
@@ -722,6 +768,19 @@ components:
         type: integer
         default: 0
         minimum: 0
+    SortQueryParam:
+      name: sort
+      in: query
+      description: |
+        Sorting criteria in the format: property{,asc|desc}. Example: created-date,desc
+
+        Default sort order is ascending. Multiple sort criteria are supported
+        Please refer to the method description for supported properties.
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
 
   schemas:
     DefaultError:
