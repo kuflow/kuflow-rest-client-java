@@ -98,7 +98,7 @@ paths:
       description: |
         List all the Processes that have been created and the the credentials has access.
 
-        Available sort query values: id, createDate, lastModifiedDate
+        Available sort query values: id, createAt, lastModifiedAt
       operationId: findProcesses
       tags:
         - process
@@ -338,7 +338,7 @@ paths:
       description: |
         List all Tasks that have been created and the the credentials has access.
 
-        Available sort query values: id, createdDate, lastModifiedDate, claimedDate, completedDate, cancelledDate
+        Available sort query values: id, createdAt, lastModifiedAt, claimedAt, completedAt, cancelledAt
       operationId: findTasks
       tags:
         - task
@@ -772,7 +772,7 @@ components:
       name: sort
       in: query
       description: |
-        Sorting criteria in the format: property{,asc|desc}. Example: created-date,desc
+        Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
 
         Default sort order is ascending. Multiple sort criteria are supported
         Please refer to the method description for supported properties.
