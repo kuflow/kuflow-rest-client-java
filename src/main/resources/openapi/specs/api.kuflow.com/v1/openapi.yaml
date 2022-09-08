@@ -256,7 +256,7 @@ paths:
     post:
       summary: Complete a Process
       description: |
-        Complete a Process. The state of Process is setted to completed.
+        Complete a Process. The state of Process is set to 'completed'.
 
         If you are already in this state, no action is taken.
       operationId: actionsCompleteProcess
@@ -278,8 +278,8 @@ paths:
     post:
       summary: Cancel a Process
       description: |
-        Cancel a Process. The state of Process is setted to canceled.
-        All the active tasks will be marked as canceled too.
+        Cancel a Process. The Process state is set to 'cancelled'.
+        All the active tasks will be marked as cancelled too.
 
         If you are already in this state, no action is taken.
       operationId: actionsCancelProcess
@@ -1365,6 +1365,10 @@ components:
           $ref: "#/components/schemas/PrincipalType"
         name:
           type: string
+        user:
+          $ref: "#/components/schemas/PrincipalUser"
+        application:
+          $ref: "#/components/schemas/PrincipalApplication"
       required:
         - id
         - type
@@ -1375,6 +1379,27 @@ components:
         - USER
         - APPLICATION
         - SYSTEM
+
+    PrincipalUser:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+      required:
+        - id
+        - email
+
+    PrincipalApplication:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+      required:
+        - id
 
     DeleteElementCommand:
       type: object
