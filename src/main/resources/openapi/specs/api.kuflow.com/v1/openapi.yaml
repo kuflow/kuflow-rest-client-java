@@ -96,7 +96,7 @@ paths:
     get:
       summary: Find all accessible Processes
       description: |
-        List all the Processes that have been created and the the credentials has access.
+        List all the Processes that have been created and the credentials has access.
 
         Available sort query values: id, createAt, lastModifiedAt
       operationId: findProcesses
@@ -119,6 +119,14 @@ paths:
       summary: Create a new process
       description: |
         Creates a process. This option has direct correspondence to the action of starting a process in the Kuflow GUI.
+
+        When a process is created, the current user is assigned as the process initiator, if you want to change it, you can pass a valid
+        initiator using the following options:
+
+        * If you know the `principal Id` you can assign it to `initiator.id`
+        * If you know the `user Id` you can assign it to `initiator.user.id`
+        * If you know the `user email` you can assign it to `initiator.user.email`
+        * If you know the `application Id` you can assign it to `initiator.application.id`
 
         If you want the method to be idempotent, please specify the `id` field in the request body.
       operationId: createProcess
@@ -336,7 +344,7 @@ paths:
     get:
       summary: Find all accessible Taks
       description: |
-        List all Tasks that have been created and the the credentials has access.
+        List all Tasks that have been created and the credentials has access.
 
         Available sort query values: id, createdAt, lastModifiedAt, claimedAt, completedAt, cancelledAt
       operationId: findTasks
@@ -1237,7 +1245,6 @@ components:
                 oneOf:
                   - $ref: "#/components/schemas/ProcessElementValue"
             initiator:
-              readOnly: true
               allOf:
                 - $ref: "#/components/schemas/Principal"
           required:
@@ -1369,9 +1376,6 @@ components:
           $ref: "#/components/schemas/PrincipalUser"
         application:
           $ref: "#/components/schemas/PrincipalApplication"
-      required:
-        - id
-        - type
 
     PrincipalType:
       type: string
@@ -1388,9 +1392,6 @@ components:
           format: uuid
         email:
           type: string
-      required:
-        - id
-        - email
 
     PrincipalApplication:
       type: object
@@ -1398,8 +1399,6 @@ components:
         id:
           type: string
           format: uuid
-      required:
-        - id
 
     DeleteElementCommand:
       type: object
