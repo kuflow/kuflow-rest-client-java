@@ -1400,18 +1400,6 @@ components:
           type: string
           format: uuid
 
-    PrincipalPage:
-      allOf:
-        - $ref: "#/components/schemas/Page"
-        - type: object
-          properties:
-            content:
-              type: array
-              items:
-                $ref: "#/components/schemas/    Principal"
-          required:
-            - content
-
     DeleteElementCommand:
       type: object
       properties:
