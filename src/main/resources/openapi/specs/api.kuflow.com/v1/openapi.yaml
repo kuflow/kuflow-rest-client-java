@@ -387,9 +387,15 @@ paths:
       summary: Create a new Task in the selected Process
       description: |
         Create a Task and optionally fill its elements. We can fill in any type of element except documents.
+
         If you want to add document type elements, you can pass a reference to an existing document type element indicating its 'uri'. This will copy that document into the element. In case you want to add a new document, please use the corresponding API method.
         method.
-        If you pass a valid owner then the task will be claimed for it.
+
+        If you want that the task created is claimed you can a valid owner using the following options:
+        * If you know the `principal Id` you can assign it to `owner.id`
+        * If you know the `user Id` you can assign it to `owner.user.id`
+        * If you know the `user email` you can assign it to `owner.user.email`
+        * If you know the `application Id` you can assign it to `owner.application.id`
 
         If you want the method to be idempotent, please specify the `id` field in the request body.
       operationId: createTask
