@@ -42,6 +42,11 @@ security:
   - BasicAuth: []
 
 tags:
+  - name: principal
+    description: Operations about principal.
+    externalDocs:
+      description: Find out more about our principal model.
+      url: "https://docs.kuflow.com/fine-grained-concepts/users-groups-roles"
   - name: process
     description: Operations about process
     externalDocs:
@@ -92,13 +97,67 @@ paths:
         default:
           $ref: "#/components/responses/DefaultError"
 
+  /principals:
+    get:
+      summary: Find all accessible Principals
+      description: |
+        List all the Principals that have been created and the used credentials has access.
+
+        Available sort query values: id, name
+      operationId: findPrincipals
+      tags:
+        - principal
+      parameters:
+        - $ref: "#/components/parameters/SizeQueryParam"
+        - $ref: "#/components/parameters/PageQueryParam"
+        - $ref: "#/components/parameters/SortQueryParam"
+        - name: type
+          in: query
+          schema:
+            $ref: "#/components/schemas/PrincipalType"
+        - name: groupId
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              format: uuid
+      responses:
+        "200":
+          description: Principals found paginated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrincipalPage"
+        default:
+          $ref: "#/components/responses/DefaultError"
+
+  /principals/{id}:
+    get:
+      summary: Get a Principal by Id
+      description: Returns the requested Principal when has access to do it.
+      operationId: retrievePrincipal
+      tags:
+        - principal
+      parameters:
+        - $ref: "#/components/parameters/IdPathParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Principal"
+        default:
+          $ref: "#/components/responses/DefaultError"
+
   /processes:
     get:
       summary: Find all accessible Processes
       description: |
         List all the Processes that have been created and the credentials has access.
 
-        Available sort query values: id, createAt, lastModifiedAt
+        Available sort query values: id, createdAt, lastModifiedAt
       operationId: findProcesses
       tags:
         - process
@@ -1367,6 +1426,18 @@ components:
       required:
         - message
         - level
+
+    PrincipalPage:
+      allOf:
+        - $ref: "#/components/schemas/Page"
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                $ref: "#/components/schemas/Principal"
+          required:
+            - content
 
     Principal:
       type: object
