@@ -65,6 +65,7 @@ tags:
 x-tagGroups:
   - name: General
     tags:
+      - principal
       - process
       - task
   - name: Notification
