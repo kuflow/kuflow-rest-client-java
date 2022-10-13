@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.kuflow.rest.client.controller.AuthenticationApi;
+import com.kuflow.rest.client.controller.PrincipalApi;
 import com.kuflow.rest.client.controller.ProcessApi;
 import com.kuflow.rest.client.controller.TaskApi;
 import com.kuflow.rest.client.feign.KuFlowFormEncoder;
@@ -40,6 +41,8 @@ public class KuFlowRestClient {
     }
 
     private final AuthenticationApi authenticationApi;
+
+    private final PrincipalApi principalApi;
 
     private final ProcessApi processApi;
 
@@ -89,6 +92,17 @@ public class KuFlowRestClient {
                 .requestInterceptor(authRequestInterceptor)
                 .target(AuthenticationApi.class, properties.getEndpoint());
 
+        this.principalApi =
+            Feign
+                .builder()
+                .encoder(encoder)
+                .decoder(decoder)
+                .logger(new Slf4jLogger(PrincipalApi.class))
+                .logLevel(logLevel)
+                .options(options)
+                .requestInterceptor(authRequestInterceptor)
+                .target(PrincipalApi.class, properties.getEndpoint());
+
         this.processApi =
             Feign
                 .builder()
@@ -114,6 +128,10 @@ public class KuFlowRestClient {
 
     public AuthenticationApi getAuthenticationApi() {
         return this.authenticationApi;
+    }
+
+    public PrincipalApi getPrincipalApi() {
+        return this.principalApi;
     }
 
     public ProcessApi getProcessApi() {
