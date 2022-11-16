@@ -4,6 +4,10 @@
 !.gitattributes
 !.gitignore
 
+######################
+# Node
+######################
+node_modules/
 
 ######################
 # Maven
