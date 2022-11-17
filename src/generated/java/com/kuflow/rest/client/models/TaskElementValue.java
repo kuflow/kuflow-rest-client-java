@@ -16,8 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
         property = "type",
-        defaultImpl = TaskElementValue.class,
-        visible = true)
+        defaultImpl = TaskElementValue.class)
 @JsonTypeName("TaskElementValue")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "STRING", value = TaskElementValueString.class),

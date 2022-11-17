@@ -15,7 +15,7 @@ public class KuFlowRestClient {
         this.principalOperations = new PrincipalOperations(client.getPrincipalOperations());
         this.authenticationOperations = new AuthenticationOperations(client.getAuthenticationOperations());
         this.processOperations = new ProcessOperations(client.getProcessOperations());
-        this.taskOperations = new TaskOperations(client.getTaskOperations());
+        this.taskOperations = new TaskOperations(client);
     }
 
     public PrincipalOperations getPrincipalOperations() {

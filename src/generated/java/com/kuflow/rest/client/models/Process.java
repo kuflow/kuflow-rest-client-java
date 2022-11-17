@@ -6,8 +6,8 @@
 package com.kuflow.rest.client.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,21 +15,11 @@ import java.util.Map;
 import java.util.UUID;
 
 /** The Process model. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "modelType",
-        visible = true)
-@JsonTypeName("PROCESS")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeName("#KuFlow.Rest.Process")
+@JsonFlatten
 @Fluent
-public final class Process extends AbstractAudited {
-    /*
-     * Audited Model types.
-     */
-    @JsonTypeId
-    @JsonProperty(value = "modelType", required = true)
-    private AuditedModelType modelType = AuditedModelType.PROCESS;
-
+public class Process extends AbstractAudited {
     /*
      * Process ID.
      */
@@ -68,15 +58,6 @@ public final class Process extends AbstractAudited {
 
     /** Creates an instance of Process class. */
     public Process() {}
-
-    /**
-     * Get the modelType property: Audited Model types.
-     *
-     * @return the modelType value.
-     */
-    public AuditedModelType getModelType() {
-        return this.modelType;
-    }
 
     /**
      * Get the id property: Process ID.

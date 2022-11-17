@@ -8,37 +8,37 @@ package com.kuflow.rest.client.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Audited Model types. */
-public enum AuditedModelType {
-    /** Enum value PROCESS. */
-    PROCESS("PROCESS"),
+/** Audited Open Data Types. */
+public enum AuditedODataType {
+    /** Enum value #KuFlow.Rest.Process. */
+    KU_FLOW_REST_PROCESS("#KuFlow.Rest.Process"),
 
-    /** Enum value TASK. */
-    TASK("TASK"),
+    /** Enum value #KuFlow.Rest.Task. */
+    KU_FLOW_REST_TASK("#KuFlow.Rest.Task"),
 
-    /** Enum value AUTHENTICATION. */
-    AUTHENTICATION("AUTHENTICATION");
+    /** Enum value #KuFlow.Rest.Authentication. */
+    KU_FLOW_REST_AUTHENTICATION("#KuFlow.Rest.Authentication");
 
-    /** The actual serialized value for a AuditedModelType instance. */
+    /** The actual serialized value for a AuditedODataType instance. */
     private final String value;
 
-    AuditedModelType(String value) {
+    AuditedODataType(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a AuditedModelType instance.
+     * Parses a serialized value to a AuditedODataType instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed AuditedModelType object, or null if unable to parse.
+     * @return the parsed AuditedODataType object, or null if unable to parse.
      */
     @JsonCreator
-    public static AuditedModelType fromString(String value) {
+    public static AuditedODataType fromString(String value) {
         if (value == null) {
             return null;
         }
-        AuditedModelType[] items = AuditedModelType.values();
-        for (AuditedModelType item : items) {
+        AuditedODataType[] items = AuditedODataType.values();
+        for (AuditedODataType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

@@ -16,8 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
         property = "type",
-        defaultImpl = ProcessElementValue.class,
-        visible = true)
+        defaultImpl = ProcessElementValue.class)
 @JsonTypeName("ProcessElementValue")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "STRING", value = ProcessElementValueString.class),

@@ -16,8 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
         property = "modelType",
-        defaultImpl = Page.class,
-        visible = true)
+        defaultImpl = Page.class)
 @JsonTypeName("Page")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "PRINCIPAL_PAGE", value = PrincipalPage.class),

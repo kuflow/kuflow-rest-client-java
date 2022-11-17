@@ -30,7 +30,6 @@ import com.kuflow.rest.client.models.ProcessChangeInitiatorCommand;
 import com.kuflow.rest.client.models.ProcessDeleteElementCommand;
 import com.kuflow.rest.client.models.ProcessPage;
 import com.kuflow.rest.client.models.ProcessSaveElementCommand;
-import com.kuflow.rest.client.models.ProcessSaveUserActionValueDocumentCommand;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Objects;
@@ -220,41 +219,44 @@ public final class ProcessOperationsImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        // @Multipart not supported by RestProxy
         @Post("/processes/{id}/~actions/save-user-action-value-document")
         @ExpectedResponses({200, 304})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Process>> actionsProcessSaveUserActionValueDocument(
                 @HostParam("$host") String host,
                 @PathParam("id") UUID id,
-                @BodyParam("multipart/form-data") ProcessSaveUserActionValueDocumentCommand command,
-                @BodyParam("multipart/form-data") Flux<ByteBuffer> file,
+                @QueryParam("fileContentType") String fileContentType,
+                @QueryParam("fileName") String fileName,
+                @QueryParam("userActionValueId") UUID userActionValueId,
+                @BodyParam("application/octet-stream") Flux<ByteBuffer> file,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        // @Multipart not supported by RestProxy
         @Post("/processes/{id}/~actions/save-user-action-value-document")
         @ExpectedResponses({200, 304})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Process>> actionsProcessSaveUserActionValueDocument(
                 @HostParam("$host") String host,
                 @PathParam("id") UUID id,
-                @BodyParam("multipart/form-data") ProcessSaveUserActionValueDocumentCommand command,
-                @BodyParam("multipart/form-data") BinaryData file,
+                @QueryParam("fileContentType") String fileContentType,
+                @QueryParam("fileName") String fileName,
+                @QueryParam("userActionValueId") UUID userActionValueId,
+                @BodyParam("application/octet-stream") BinaryData file,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        // @Multipart not supported by RestProxy
         @Post("/processes/{id}/~actions/save-user-action-value-document")
         @ExpectedResponses({200, 304})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Process> actionsProcessSaveUserActionValueDocumentSync(
                 @HostParam("$host") String host,
                 @PathParam("id") UUID id,
-                @BodyParam("multipart/form-data") ProcessSaveUserActionValueDocumentCommand command,
-                @BodyParam("multipart/form-data") BinaryData file,
+                @QueryParam("fileContentType") String fileContentType,
+                @QueryParam("fileName") String fileName,
+                @QueryParam("userActionValueId") UUID userActionValueId,
+                @BodyParam("application/octet-stream") BinaryData file,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -1367,8 +1369,10 @@ public final class ProcessOperationsImpl {
      * <p>Allow saving a user action document uploading the content.
      *
      * @param id The resource ID.
-     * @param command Command info.
-     * @param file Document file.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param userActionValueId User action value ID related to de document.
+     * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1377,12 +1381,25 @@ public final class ProcessOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Process>> actionsProcessSaveUserActionValueDocumentWithResponseAsync(
-            UUID id, ProcessSaveUserActionValueDocumentCommand command, Flux<ByteBuffer> file, long contentLength) {
+            UUID id,
+            String fileContentType,
+            String fileName,
+            UUID userActionValueId,
+            Flux<ByteBuffer> file,
+            long contentLength) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.actionsProcessSaveUserActionValueDocument(
-                                this.client.getHost(), id, command, file, contentLength, accept, context));
+                                this.client.getHost(),
+                                id,
+                                fileContentType,
+                                fileName,
+                                userActionValueId,
+                                file,
+                                contentLength,
+                                accept,
+                                context));
     }
 
     /**
@@ -1391,8 +1408,10 @@ public final class ProcessOperationsImpl {
      * <p>Allow saving a user action document uploading the content.
      *
      * @param id The resource ID.
-     * @param command Command info.
-     * @param file Document file.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param userActionValueId User action value ID related to de document.
+     * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1403,13 +1422,23 @@ public final class ProcessOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Process>> actionsProcessSaveUserActionValueDocumentWithResponseAsync(
             UUID id,
-            ProcessSaveUserActionValueDocumentCommand command,
+            String fileContentType,
+            String fileName,
+            UUID userActionValueId,
             Flux<ByteBuffer> file,
             long contentLength,
             Context context) {
         final String accept = "application/json";
         return service.actionsProcessSaveUserActionValueDocument(
-                this.client.getHost(), id, command, file, contentLength, accept, context);
+                this.client.getHost(),
+                id,
+                fileContentType,
+                fileName,
+                userActionValueId,
+                file,
+                contentLength,
+                accept,
+                context);
     }
 
     /**
@@ -1418,8 +1447,10 @@ public final class ProcessOperationsImpl {
      * <p>Allow saving a user action document uploading the content.
      *
      * @param id The resource ID.
-     * @param command Command info.
-     * @param file Document file.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param userActionValueId User action value ID related to de document.
+     * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1428,8 +1459,14 @@ public final class ProcessOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Process> actionsProcessSaveUserActionValueDocumentAsync(
-            UUID id, ProcessSaveUserActionValueDocumentCommand command, Flux<ByteBuffer> file, long contentLength) {
-        return actionsProcessSaveUserActionValueDocumentWithResponseAsync(id, command, file, contentLength)
+            UUID id,
+            String fileContentType,
+            String fileName,
+            UUID userActionValueId,
+            Flux<ByteBuffer> file,
+            long contentLength) {
+        return actionsProcessSaveUserActionValueDocumentWithResponseAsync(
+                        id, fileContentType, fileName, userActionValueId, file, contentLength)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1439,8 +1476,10 @@ public final class ProcessOperationsImpl {
      * <p>Allow saving a user action document uploading the content.
      *
      * @param id The resource ID.
-     * @param command Command info.
-     * @param file Document file.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param userActionValueId User action value ID related to de document.
+     * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1451,11 +1490,14 @@ public final class ProcessOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Process> actionsProcessSaveUserActionValueDocumentAsync(
             UUID id,
-            ProcessSaveUserActionValueDocumentCommand command,
+            String fileContentType,
+            String fileName,
+            UUID userActionValueId,
             Flux<ByteBuffer> file,
             long contentLength,
             Context context) {
-        return actionsProcessSaveUserActionValueDocumentWithResponseAsync(id, command, file, contentLength, context)
+        return actionsProcessSaveUserActionValueDocumentWithResponseAsync(
+                        id, fileContentType, fileName, userActionValueId, file, contentLength, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1465,8 +1507,10 @@ public final class ProcessOperationsImpl {
      * <p>Allow saving a user action document uploading the content.
      *
      * @param id The resource ID.
-     * @param command Command info.
-     * @param file Document file.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param userActionValueId User action value ID related to de document.
+     * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1475,12 +1519,25 @@ public final class ProcessOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Process>> actionsProcessSaveUserActionValueDocumentWithResponseAsync(
-            UUID id, ProcessSaveUserActionValueDocumentCommand command, BinaryData file, long contentLength) {
+            UUID id,
+            String fileContentType,
+            String fileName,
+            UUID userActionValueId,
+            BinaryData file,
+            long contentLength) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.actionsProcessSaveUserActionValueDocument(
-                                this.client.getHost(), id, command, file, contentLength, accept, context));
+                                this.client.getHost(),
+                                id,
+                                fileContentType,
+                                fileName,
+                                userActionValueId,
+                                file,
+                                contentLength,
+                                accept,
+                                context));
     }
 
     /**
@@ -1489,8 +1546,10 @@ public final class ProcessOperationsImpl {
      * <p>Allow saving a user action document uploading the content.
      *
      * @param id The resource ID.
-     * @param command Command info.
-     * @param file Document file.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param userActionValueId User action value ID related to de document.
+     * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1501,13 +1560,23 @@ public final class ProcessOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Process>> actionsProcessSaveUserActionValueDocumentWithResponseAsync(
             UUID id,
-            ProcessSaveUserActionValueDocumentCommand command,
+            String fileContentType,
+            String fileName,
+            UUID userActionValueId,
             BinaryData file,
             long contentLength,
             Context context) {
         final String accept = "application/json";
         return service.actionsProcessSaveUserActionValueDocument(
-                this.client.getHost(), id, command, file, contentLength, accept, context);
+                this.client.getHost(),
+                id,
+                fileContentType,
+                fileName,
+                userActionValueId,
+                file,
+                contentLength,
+                accept,
+                context);
     }
 
     /**
@@ -1516,8 +1585,10 @@ public final class ProcessOperationsImpl {
      * <p>Allow saving a user action document uploading the content.
      *
      * @param id The resource ID.
-     * @param command Command info.
-     * @param file Document file.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param userActionValueId User action value ID related to de document.
+     * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1526,8 +1597,14 @@ public final class ProcessOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Process> actionsProcessSaveUserActionValueDocumentAsync(
-            UUID id, ProcessSaveUserActionValueDocumentCommand command, BinaryData file, long contentLength) {
-        return actionsProcessSaveUserActionValueDocumentWithResponseAsync(id, command, file, contentLength)
+            UUID id,
+            String fileContentType,
+            String fileName,
+            UUID userActionValueId,
+            BinaryData file,
+            long contentLength) {
+        return actionsProcessSaveUserActionValueDocumentWithResponseAsync(
+                        id, fileContentType, fileName, userActionValueId, file, contentLength)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1537,8 +1614,10 @@ public final class ProcessOperationsImpl {
      * <p>Allow saving a user action document uploading the content.
      *
      * @param id The resource ID.
-     * @param command Command info.
-     * @param file Document file.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param userActionValueId User action value ID related to de document.
+     * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1549,11 +1628,14 @@ public final class ProcessOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Process> actionsProcessSaveUserActionValueDocumentAsync(
             UUID id,
-            ProcessSaveUserActionValueDocumentCommand command,
+            String fileContentType,
+            String fileName,
+            UUID userActionValueId,
             BinaryData file,
             long contentLength,
             Context context) {
-        return actionsProcessSaveUserActionValueDocumentWithResponseAsync(id, command, file, contentLength, context)
+        return actionsProcessSaveUserActionValueDocumentWithResponseAsync(
+                        id, fileContentType, fileName, userActionValueId, file, contentLength, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1563,8 +1645,10 @@ public final class ProcessOperationsImpl {
      * <p>Allow saving a user action document uploading the content.
      *
      * @param id The resource ID.
-     * @param command Command info.
-     * @param file Document file.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param userActionValueId User action value ID related to de document.
+     * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1575,13 +1659,23 @@ public final class ProcessOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Process> actionsProcessSaveUserActionValueDocumentWithResponse(
             UUID id,
-            ProcessSaveUserActionValueDocumentCommand command,
+            String fileContentType,
+            String fileName,
+            UUID userActionValueId,
             BinaryData file,
             long contentLength,
             Context context) {
         final String accept = "application/json";
         return service.actionsProcessSaveUserActionValueDocumentSync(
-                this.client.getHost(), id, command, file, contentLength, accept, context);
+                this.client.getHost(),
+                id,
+                fileContentType,
+                fileName,
+                userActionValueId,
+                file,
+                contentLength,
+                accept,
+                context);
     }
 
     /**
@@ -1590,8 +1684,10 @@ public final class ProcessOperationsImpl {
      * <p>Allow saving a user action document uploading the content.
      *
      * @param id The resource ID.
-     * @param command Command info.
-     * @param file Document file.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param userActionValueId User action value ID related to de document.
+     * @param file Document to save.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1600,8 +1696,14 @@ public final class ProcessOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Process actionsProcessSaveUserActionValueDocument(
-            UUID id, ProcessSaveUserActionValueDocumentCommand command, BinaryData file, long contentLength) {
-        return actionsProcessSaveUserActionValueDocumentWithResponse(id, command, file, contentLength, Context.NONE)
+            UUID id,
+            String fileContentType,
+            String fileName,
+            UUID userActionValueId,
+            BinaryData file,
+            long contentLength) {
+        return actionsProcessSaveUserActionValueDocumentWithResponse(
+                        id, fileContentType, fileName, userActionValueId, file, contentLength, Context.NONE)
                 .getValue();
     }
 }

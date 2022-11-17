@@ -12,7 +12,11 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.kuflow.rest.client.implementation.ProcessOperationsImpl;
+import com.kuflow.rest.client.model.Document;
+import com.kuflow.rest.client.model.FindPrincipalsOptions;
+import com.kuflow.rest.client.model.FindProcessesOptions;
 import com.kuflow.rest.client.models.DefaultErrorException;
+import com.kuflow.rest.client.models.PrincipalType;
 import com.kuflow.rest.client.models.Process;
 import com.kuflow.rest.client.models.ProcessChangeInitiatorCommand;
 import com.kuflow.rest.client.models.ProcessDeleteElementCommand;
@@ -21,6 +25,7 @@ import com.kuflow.rest.client.models.ProcessSaveElementCommand;
 import com.kuflow.rest.client.models.ProcessSaveUserActionValueDocumentCommand;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 /** An instance of this class provides access to all the operations defined in ProcessOperations. */
@@ -44,11 +49,7 @@ public final class ProcessOperations {
      *
      * <p>Available sort query values: id, createdAt, lastModifiedAt.
      *
-     * @param size The number of records returned within a single API call.
-     * @param page The page number of the current page in the returned records, 0 is the first page.
-     * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *     <p>Default sort order is ascending. Multiple sort criteria are supported.
-     *     <p>Please refer to the method description for supported properties.
+     * @param options The options parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -56,8 +57,13 @@ public final class ProcessOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProcessPage> findProcessesWithResponse(
-            Integer size, Integer page, List<String> sort, Context context) {
+    public Response<ProcessPage> findProcessesWithResponse(FindProcessesOptions options, Context context) {
+        options = options != null ? options : new FindProcessesOptions();
+
+        Integer size = options.getSize();
+        Integer page = options.getPage();
+        List<String> sort = !options.getSorts().isEmpty() ? options.getSorts() : null;
+
         return this.service.findProcessesWithResponse(size, page, sort, context);
     }
 
@@ -68,19 +74,15 @@ public final class ProcessOperations {
      *
      * <p>Available sort query values: id, createdAt, lastModifiedAt.
      *
-     * @param size The number of records returned within a single API call.
-     * @param page The page number of the current page in the returned records, 0 is the first page.
-     * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *     <p>Default sort order is ascending. Multiple sort criteria are supported.
-     *     <p>Please refer to the method description for supported properties.
+     * @param options The options parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProcessPage findProcesses(Integer size, Integer page, List<String> sort) {
-        return this.findProcessesWithResponse(size, page, sort, Context.NONE).getValue();
+    public ProcessPage findProcesses(FindProcessesOptions options) {
+        return this.findProcessesWithResponse(options, Context.NONE).getValue();
     }
 
     /**
@@ -96,7 +98,7 @@ public final class ProcessOperations {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProcessPage findProcesses() {
-        return this.findProcessesWithResponse(null, null, null, Context.NONE).getValue();
+        return this.findProcessesWithResponse(null, Context.NONE).getValue();
     }
 
     /**
@@ -395,8 +397,7 @@ public final class ProcessOperations {
      *
      * @param id The resource ID.
      * @param command Command info.
-     * @param file Document file.
-     * @param contentLength The Content-Length header for the request.
+     * @param document Document to upload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -407,11 +408,33 @@ public final class ProcessOperations {
     public Response<Process> actionsProcessSaveUserActionValueDocumentWithResponse(
             UUID id,
             ProcessSaveUserActionValueDocumentCommand command,
-            BinaryData file,
-            long contentLength,
+            Document document,
             Context context
     ) {
-        return this.service.actionsProcessSaveUserActionValueDocumentWithResponse(id, command, file, contentLength, context);
+        Objects.requireNonNull(document, "'document' is required");
+        Objects.requireNonNull(document.getFileContent(), "'document.fileContent' is required");
+        Objects.requireNonNull(document.getFileContent().getLength(), "'document.fileContent.length' is required");
+        Objects.requireNonNull(document.getFileName(), "'document.fileName' is required");
+        Objects.requireNonNull(document.getContentType(), "'document.contentType' is required");
+        if (document.getFileContent().getLength() == 0) {
+            throw new IllegalArgumentException("File size must be greater that 0");
+        }
+
+        String fileContentType = document.getContentType();
+        String fileName = document.getFileName();
+        UUID userActionValueId = command.getUserActionValueId();
+        BinaryData file = document.getFileContent();
+        long contentLength = file.getLength();
+
+        return this.service.actionsProcessSaveUserActionValueDocumentWithResponse(
+            id,
+            fileContentType,
+            fileName,
+            userActionValueId,
+            file,
+            contentLength,
+            context
+        );
     }
 
     /**
@@ -421,15 +444,14 @@ public final class ProcessOperations {
      *
      * @param id The resource ID.
      * @param command Command info.
-     * @param file Document file.
-     * @param contentLength The Content-Length header for the request.
+     * @param document Document to upload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Process actionsProcessSaveUserActionValueDocument(UUID id, ProcessSaveUserActionValueDocumentCommand command, BinaryData file, long contentLength) {
-        return this.actionsProcessSaveUserActionValueDocumentWithResponse(id, command, file, contentLength, Context.NONE).getValue();
+    public Process actionsProcessSaveUserActionValueDocument(UUID id, ProcessSaveUserActionValueDocumentCommand command, Document document) {
+        return this.actionsProcessSaveUserActionValueDocumentWithResponse(id, command, document, Context.NONE).getValue();
     }
 }

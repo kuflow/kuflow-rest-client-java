@@ -7,26 +7,14 @@ package com.kuflow.rest.client.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** The TaskElementValueNumber model. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "type",
-        visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("NUMBER")
 @Fluent
 public final class TaskElementValueNumber extends TaskElementValue {
-    /*
-     * The type property.
-     */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
-    private TaskElementValueType type = TaskElementValueType.NUMBER;
-
     /*
      * The value property.
      */
@@ -35,15 +23,6 @@ public final class TaskElementValueNumber extends TaskElementValue {
 
     /** Creates an instance of TaskElementValueNumber class. */
     public TaskElementValueNumber() {}
-
-    /**
-     * Get the type property: The type property.
-     *
-     * @return the type value.
-     */
-    public TaskElementValueType getType() {
-        return this.type;
-    }
 
     /**
      * Get the value property: The value property.

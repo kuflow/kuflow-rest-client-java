@@ -6,24 +6,19 @@
 package com.kuflow.rest.client.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
 /** The Authentication model. */
-@JsonTypeName("AUTHENTICATION")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeName("#KuFlow.Rest.Authentication")
+@JsonFlatten
 @Fluent
-public final class Authentication extends AbstractAudited {
-    /*
-     * Audited Model types.
-     */
-    @JsonTypeId
-    @JsonProperty(value = "modelType", required = true)
-    private AuditedModelType modelType = AuditedModelType.AUTHENTICATION;
-
+public class Authentication extends AbstractAudited {
     /*
      * The id property.
      */
@@ -50,15 +45,6 @@ public final class Authentication extends AbstractAudited {
 
     /** Creates an instance of Authentication class. */
     public Authentication() {}
-
-    /**
-     * Get the modelType property: Audited Model types.
-     *
-     * @return the modelType value.
-     */
-    public AuditedModelType getModelType() {
-        return this.modelType;
-    }
 
     /**
      * Get the id property: The id property.

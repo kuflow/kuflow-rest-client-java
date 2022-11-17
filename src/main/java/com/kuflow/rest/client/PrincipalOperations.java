@@ -10,6 +10,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.kuflow.rest.client.implementation.PrincipalOperationsImpl;
+import com.kuflow.rest.client.model.FindPrincipalsOptions;
 import com.kuflow.rest.client.models.DefaultErrorException;
 import com.kuflow.rest.client.models.Principal;
 import com.kuflow.rest.client.models.PrincipalPage;
@@ -39,13 +40,7 @@ public final class PrincipalOperations {
      *
      * <p>Available sort query values: id, name.
      *
-     * @param size The number of records returned within a single API call.
-     * @param page The page number of the current page in the returned records, 0 is the first page.
-     * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *     <p>Default sort order is ascending. Multiple sort criteria are supported.
-     *     <p>Please refer to the method description for supported properties.
-     * @param type Filter principals by type.
-     * @param groupId Filter principals that exists in one of group ids.
+     * @param options The options parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -53,8 +48,15 @@ public final class PrincipalOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrincipalPage> findPrincipalsWithResponse(
-            Integer size, Integer page, List<String> sort, PrincipalType type, List<UUID> groupId, Context context) {
+    public Response<PrincipalPage> findPrincipalsWithResponse(FindPrincipalsOptions options, Context context) {
+        options = options != null ? options : new FindPrincipalsOptions();
+
+        Integer size = options.getSize();
+        Integer page = options.getPage();
+        List<String> sort = !options.getSorts().isEmpty() ? options.getSorts() : null;
+        PrincipalType type = options.getType();
+        List<UUID> groupId = !options.getGroupIds().isEmpty() ? options.getGroupIds() : null;
+
         return this.service.findPrincipalsWithResponse(size, page, sort, type, groupId, context);
     }
 
@@ -65,21 +67,15 @@ public final class PrincipalOperations {
      *
      * <p>Available sort query values: id, name.
      *
-     * @param size The number of records returned within a single API call.
-     * @param page The page number of the current page in the returned records, 0 is the first page.
-     * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *     <p>Default sort order is ascending. Multiple sort criteria are supported.
-     *     <p>Please refer to the method description for supported properties.
-     * @param type Filter principals by type.
-     * @param groupId Filter principals that exists in one of group ids.
+     * @param options The options parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrincipalPage findPrincipals(Integer size, Integer page, List<String> sort, PrincipalType type, List<UUID> groupId) {
-        return this.findPrincipalsWithResponse(size, page, sort, type, groupId, Context.NONE).getValue();
+    public PrincipalPage findPrincipals(FindPrincipalsOptions options) {
+        return this.findPrincipalsWithResponse(options, Context.NONE).getValue();
     }
 
     /**
@@ -95,7 +91,7 @@ public final class PrincipalOperations {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrincipalPage findPrincipals() {
-        return this.findPrincipalsWithResponse(null, null, null, null, null, Context.NONE).getValue();
+        return this.findPrincipalsWithResponse(null, Context.NONE).getValue();
     }
 
     /**

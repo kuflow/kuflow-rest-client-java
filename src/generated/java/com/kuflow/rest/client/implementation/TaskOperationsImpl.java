@@ -34,7 +34,6 @@ import com.kuflow.rest.client.models.TaskDeleteElementCommand;
 import com.kuflow.rest.client.models.TaskDeleteElementValueDocumentCommand;
 import com.kuflow.rest.client.models.TaskPage;
 import com.kuflow.rest.client.models.TaskSaveElementCommand;
-import com.kuflow.rest.client.models.TaskSaveElementValueDocumentCommand;
 import com.kuflow.rest.client.models.TaskState;
 import java.nio.ByteBuffer;
 import java.util.List;
@@ -194,41 +193,50 @@ public final class TaskOperationsImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        // @Multipart not supported by RestProxy
         @Post("/tasks/{id}/~actions/save-element-value-document")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Task>> actionsTaskSaveElementValueDocument(
                 @HostParam("$host") String host,
                 @PathParam("id") UUID id,
-                @BodyParam("multipart/form-data") TaskSaveElementValueDocumentCommand command,
-                @BodyParam("multipart/form-data") Flux<ByteBuffer> file,
+                @QueryParam("fileContentType") String fileContentType,
+                @QueryParam("fileName") String fileName,
+                @QueryParam("elementDefinitionCode") String elementDefinitionCode,
+                @QueryParam("elementValueId") UUID elementValueId,
+                @QueryParam("elementValueValid") Boolean elementValueValid,
+                @BodyParam("application/octet-stream") Flux<ByteBuffer> file,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        // @Multipart not supported by RestProxy
         @Post("/tasks/{id}/~actions/save-element-value-document")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Task>> actionsTaskSaveElementValueDocument(
                 @HostParam("$host") String host,
                 @PathParam("id") UUID id,
-                @BodyParam("multipart/form-data") TaskSaveElementValueDocumentCommand command,
-                @BodyParam("multipart/form-data") BinaryData file,
+                @QueryParam("fileContentType") String fileContentType,
+                @QueryParam("fileName") String fileName,
+                @QueryParam("elementDefinitionCode") String elementDefinitionCode,
+                @QueryParam("elementValueId") UUID elementValueId,
+                @QueryParam("elementValueValid") Boolean elementValueValid,
+                @BodyParam("application/octet-stream") BinaryData file,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        // @Multipart not supported by RestProxy
         @Post("/tasks/{id}/~actions/save-element-value-document")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Task> actionsTaskSaveElementValueDocumentSync(
                 @HostParam("$host") String host,
                 @PathParam("id") UUID id,
-                @BodyParam("multipart/form-data") TaskSaveElementValueDocumentCommand command,
-                @BodyParam("multipart/form-data") BinaryData file,
+                @QueryParam("fileContentType") String fileContentType,
+                @QueryParam("fileName") String fileName,
+                @QueryParam("elementDefinitionCode") String elementDefinitionCode,
+                @QueryParam("elementValueId") UUID elementValueId,
+                @QueryParam("elementValueValid") Boolean elementValueValid,
+                @BodyParam("application/octet-stream") BinaryData file,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -1387,9 +1395,13 @@ public final class TaskOperationsImpl {
      * one), it updates it.
      *
      * @param id The resource ID.
-     * @param command Command info.
-     * @param file Command file.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param elementDefinitionCode Element Definition Code.
+     * @param file Command to save a document element value.
      * @param contentLength The Content-Length header for the request.
+     * @param elementValueId Element Value ID.
+     * @param elementValueValid Element Value ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1397,12 +1409,29 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Task>> actionsTaskSaveElementValueDocumentWithResponseAsync(
-            UUID id, TaskSaveElementValueDocumentCommand command, Flux<ByteBuffer> file, long contentLength) {
+            UUID id,
+            String fileContentType,
+            String fileName,
+            String elementDefinitionCode,
+            Flux<ByteBuffer> file,
+            long contentLength,
+            UUID elementValueId,
+            Boolean elementValueValid) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.actionsTaskSaveElementValueDocument(
-                                this.client.getHost(), id, command, file, contentLength, accept, context));
+                                this.client.getHost(),
+                                id,
+                                fileContentType,
+                                fileName,
+                                elementDefinitionCode,
+                                elementValueId,
+                                elementValueValid,
+                                file,
+                                contentLength,
+                                accept,
+                                context));
     }
 
     /**
@@ -1415,9 +1444,13 @@ public final class TaskOperationsImpl {
      * one), it updates it.
      *
      * @param id The resource ID.
-     * @param command Command info.
-     * @param file Command file.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param elementDefinitionCode Element Definition Code.
+     * @param file Command to save a document element value.
      * @param contentLength The Content-Length header for the request.
+     * @param elementValueId Element Value ID.
+     * @param elementValueValid Element Value ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1427,13 +1460,27 @@ public final class TaskOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Task>> actionsTaskSaveElementValueDocumentWithResponseAsync(
             UUID id,
-            TaskSaveElementValueDocumentCommand command,
+            String fileContentType,
+            String fileName,
+            String elementDefinitionCode,
             Flux<ByteBuffer> file,
             long contentLength,
+            UUID elementValueId,
+            Boolean elementValueValid,
             Context context) {
         final String accept = "application/json";
         return service.actionsTaskSaveElementValueDocument(
-                this.client.getHost(), id, command, file, contentLength, accept, context);
+                this.client.getHost(),
+                id,
+                fileContentType,
+                fileName,
+                elementDefinitionCode,
+                elementValueId,
+                elementValueValid,
+                file,
+                contentLength,
+                accept,
+                context);
     }
 
     /**
@@ -1446,9 +1493,13 @@ public final class TaskOperationsImpl {
      * one), it updates it.
      *
      * @param id The resource ID.
-     * @param command Command info.
-     * @param file Command file.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param elementDefinitionCode Element Definition Code.
+     * @param file Command to save a document element value.
      * @param contentLength The Content-Length header for the request.
+     * @param elementValueId Element Value ID.
+     * @param elementValueValid Element Value ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1456,8 +1507,23 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Task> actionsTaskSaveElementValueDocumentAsync(
-            UUID id, TaskSaveElementValueDocumentCommand command, Flux<ByteBuffer> file, long contentLength) {
-        return actionsTaskSaveElementValueDocumentWithResponseAsync(id, command, file, contentLength)
+            UUID id,
+            String fileContentType,
+            String fileName,
+            String elementDefinitionCode,
+            Flux<ByteBuffer> file,
+            long contentLength,
+            UUID elementValueId,
+            Boolean elementValueValid) {
+        return actionsTaskSaveElementValueDocumentWithResponseAsync(
+                        id,
+                        fileContentType,
+                        fileName,
+                        elementDefinitionCode,
+                        file,
+                        contentLength,
+                        elementValueId,
+                        elementValueValid)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1471,9 +1537,55 @@ public final class TaskOperationsImpl {
      * one), it updates it.
      *
      * @param id The resource ID.
-     * @param command Command info.
-     * @param file Command file.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param elementDefinitionCode Element Definition Code.
+     * @param file Command to save a document element value.
      * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Task> actionsTaskSaveElementValueDocumentAsync(
+            UUID id,
+            String fileContentType,
+            String fileName,
+            String elementDefinitionCode,
+            Flux<ByteBuffer> file,
+            long contentLength) {
+        final UUID elementValueId = null;
+        final Boolean elementValueValid = null;
+        return actionsTaskSaveElementValueDocumentWithResponseAsync(
+                        id,
+                        fileContentType,
+                        fileName,
+                        elementDefinitionCode,
+                        file,
+                        contentLength,
+                        elementValueId,
+                        elementValueValid)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Save an element document
+     *
+     * <p>Allow to save an element document uploading the content.
+     *
+     * <p>If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will
+     * be added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
+     * one), it updates it.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param elementDefinitionCode Element Definition Code.
+     * @param file Command to save a document element value.
+     * @param contentLength The Content-Length header for the request.
+     * @param elementValueId Element Value ID.
+     * @param elementValueValid Element Value ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1483,11 +1595,24 @@ public final class TaskOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Task> actionsTaskSaveElementValueDocumentAsync(
             UUID id,
-            TaskSaveElementValueDocumentCommand command,
+            String fileContentType,
+            String fileName,
+            String elementDefinitionCode,
             Flux<ByteBuffer> file,
             long contentLength,
+            UUID elementValueId,
+            Boolean elementValueValid,
             Context context) {
-        return actionsTaskSaveElementValueDocumentWithResponseAsync(id, command, file, contentLength, context)
+        return actionsTaskSaveElementValueDocumentWithResponseAsync(
+                        id,
+                        fileContentType,
+                        fileName,
+                        elementDefinitionCode,
+                        file,
+                        contentLength,
+                        elementValueId,
+                        elementValueValid,
+                        context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1501,9 +1626,13 @@ public final class TaskOperationsImpl {
      * one), it updates it.
      *
      * @param id The resource ID.
-     * @param command Command info.
-     * @param file Command file.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param elementDefinitionCode Element Definition Code.
+     * @param file Command to save a document element value.
      * @param contentLength The Content-Length header for the request.
+     * @param elementValueId Element Value ID.
+     * @param elementValueValid Element Value ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1511,12 +1640,29 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Task>> actionsTaskSaveElementValueDocumentWithResponseAsync(
-            UUID id, TaskSaveElementValueDocumentCommand command, BinaryData file, long contentLength) {
+            UUID id,
+            String fileContentType,
+            String fileName,
+            String elementDefinitionCode,
+            BinaryData file,
+            long contentLength,
+            UUID elementValueId,
+            Boolean elementValueValid) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.actionsTaskSaveElementValueDocument(
-                                this.client.getHost(), id, command, file, contentLength, accept, context));
+                                this.client.getHost(),
+                                id,
+                                fileContentType,
+                                fileName,
+                                elementDefinitionCode,
+                                elementValueId,
+                                elementValueValid,
+                                file,
+                                contentLength,
+                                accept,
+                                context));
     }
 
     /**
@@ -1529,9 +1675,13 @@ public final class TaskOperationsImpl {
      * one), it updates it.
      *
      * @param id The resource ID.
-     * @param command Command info.
-     * @param file Command file.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param elementDefinitionCode Element Definition Code.
+     * @param file Command to save a document element value.
      * @param contentLength The Content-Length header for the request.
+     * @param elementValueId Element Value ID.
+     * @param elementValueValid Element Value ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1541,13 +1691,27 @@ public final class TaskOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Task>> actionsTaskSaveElementValueDocumentWithResponseAsync(
             UUID id,
-            TaskSaveElementValueDocumentCommand command,
+            String fileContentType,
+            String fileName,
+            String elementDefinitionCode,
             BinaryData file,
             long contentLength,
+            UUID elementValueId,
+            Boolean elementValueValid,
             Context context) {
         final String accept = "application/json";
         return service.actionsTaskSaveElementValueDocument(
-                this.client.getHost(), id, command, file, contentLength, accept, context);
+                this.client.getHost(),
+                id,
+                fileContentType,
+                fileName,
+                elementDefinitionCode,
+                elementValueId,
+                elementValueValid,
+                file,
+                contentLength,
+                accept,
+                context);
     }
 
     /**
@@ -1560,9 +1724,13 @@ public final class TaskOperationsImpl {
      * one), it updates it.
      *
      * @param id The resource ID.
-     * @param command Command info.
-     * @param file Command file.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param elementDefinitionCode Element Definition Code.
+     * @param file Command to save a document element value.
      * @param contentLength The Content-Length header for the request.
+     * @param elementValueId Element Value ID.
+     * @param elementValueValid Element Value ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1570,8 +1738,23 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Task> actionsTaskSaveElementValueDocumentAsync(
-            UUID id, TaskSaveElementValueDocumentCommand command, BinaryData file, long contentLength) {
-        return actionsTaskSaveElementValueDocumentWithResponseAsync(id, command, file, contentLength)
+            UUID id,
+            String fileContentType,
+            String fileName,
+            String elementDefinitionCode,
+            BinaryData file,
+            long contentLength,
+            UUID elementValueId,
+            Boolean elementValueValid) {
+        return actionsTaskSaveElementValueDocumentWithResponseAsync(
+                        id,
+                        fileContentType,
+                        fileName,
+                        elementDefinitionCode,
+                        file,
+                        contentLength,
+                        elementValueId,
+                        elementValueValid)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1585,9 +1768,55 @@ public final class TaskOperationsImpl {
      * one), it updates it.
      *
      * @param id The resource ID.
-     * @param command Command info.
-     * @param file Command file.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param elementDefinitionCode Element Definition Code.
+     * @param file Command to save a document element value.
      * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Task> actionsTaskSaveElementValueDocumentAsync(
+            UUID id,
+            String fileContentType,
+            String fileName,
+            String elementDefinitionCode,
+            BinaryData file,
+            long contentLength) {
+        final UUID elementValueId = null;
+        final Boolean elementValueValid = null;
+        return actionsTaskSaveElementValueDocumentWithResponseAsync(
+                        id,
+                        fileContentType,
+                        fileName,
+                        elementDefinitionCode,
+                        file,
+                        contentLength,
+                        elementValueId,
+                        elementValueValid)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Save an element document
+     *
+     * <p>Allow to save an element document uploading the content.
+     *
+     * <p>If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will
+     * be added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
+     * one), it updates it.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param elementDefinitionCode Element Definition Code.
+     * @param file Command to save a document element value.
+     * @param contentLength The Content-Length header for the request.
+     * @param elementValueId Element Value ID.
+     * @param elementValueValid Element Value ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1597,11 +1826,24 @@ public final class TaskOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Task> actionsTaskSaveElementValueDocumentAsync(
             UUID id,
-            TaskSaveElementValueDocumentCommand command,
+            String fileContentType,
+            String fileName,
+            String elementDefinitionCode,
             BinaryData file,
             long contentLength,
+            UUID elementValueId,
+            Boolean elementValueValid,
             Context context) {
-        return actionsTaskSaveElementValueDocumentWithResponseAsync(id, command, file, contentLength, context)
+        return actionsTaskSaveElementValueDocumentWithResponseAsync(
+                        id,
+                        fileContentType,
+                        fileName,
+                        elementDefinitionCode,
+                        file,
+                        contentLength,
+                        elementValueId,
+                        elementValueValid,
+                        context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1615,9 +1857,13 @@ public final class TaskOperationsImpl {
      * one), it updates it.
      *
      * @param id The resource ID.
-     * @param command Command info.
-     * @param file Command file.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param elementDefinitionCode Element Definition Code.
+     * @param file Command to save a document element value.
      * @param contentLength The Content-Length header for the request.
+     * @param elementValueId Element Value ID.
+     * @param elementValueValid Element Value ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1627,13 +1873,27 @@ public final class TaskOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Task> actionsTaskSaveElementValueDocumentWithResponse(
             UUID id,
-            TaskSaveElementValueDocumentCommand command,
+            String fileContentType,
+            String fileName,
+            String elementDefinitionCode,
             BinaryData file,
             long contentLength,
+            UUID elementValueId,
+            Boolean elementValueValid,
             Context context) {
         final String accept = "application/json";
         return service.actionsTaskSaveElementValueDocumentSync(
-                this.client.getHost(), id, command, file, contentLength, accept, context);
+                this.client.getHost(),
+                id,
+                fileContentType,
+                fileName,
+                elementDefinitionCode,
+                elementValueId,
+                elementValueValid,
+                file,
+                contentLength,
+                accept,
+                context);
     }
 
     /**
@@ -1646,8 +1906,55 @@ public final class TaskOperationsImpl {
      * one), it updates it.
      *
      * @param id The resource ID.
-     * @param command Command info.
-     * @param file Command file.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param elementDefinitionCode Element Definition Code.
+     * @param file Command to save a document element value.
+     * @param contentLength The Content-Length header for the request.
+     * @param elementValueId Element Value ID.
+     * @param elementValueValid Element Value ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Task actionsTaskSaveElementValueDocument(
+            UUID id,
+            String fileContentType,
+            String fileName,
+            String elementDefinitionCode,
+            BinaryData file,
+            long contentLength,
+            UUID elementValueId,
+            Boolean elementValueValid) {
+        return actionsTaskSaveElementValueDocumentWithResponse(
+                        id,
+                        fileContentType,
+                        fileName,
+                        elementDefinitionCode,
+                        file,
+                        contentLength,
+                        elementValueId,
+                        elementValueValid,
+                        Context.NONE)
+                .getValue();
+    }
+
+    /**
+     * Save an element document
+     *
+     * <p>Allow to save an element document uploading the content.
+     *
+     * <p>If it is a multiple element, and the ID referenced in the body does not exist or is empty, the document will
+     * be added to the element. If the element already exists (the ID referenced in the body corresponds to an existing
+     * one), it updates it.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param elementDefinitionCode Element Definition Code.
+     * @param file Command to save a document element value.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1656,8 +1963,24 @@ public final class TaskOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Task actionsTaskSaveElementValueDocument(
-            UUID id, TaskSaveElementValueDocumentCommand command, BinaryData file, long contentLength) {
-        return actionsTaskSaveElementValueDocumentWithResponse(id, command, file, contentLength, Context.NONE)
+            UUID id,
+            String fileContentType,
+            String fileName,
+            String elementDefinitionCode,
+            BinaryData file,
+            long contentLength) {
+        final UUID elementValueId = null;
+        final Boolean elementValueValid = null;
+        return actionsTaskSaveElementValueDocumentWithResponse(
+                        id,
+                        fileContentType,
+                        fileName,
+                        elementDefinitionCode,
+                        file,
+                        contentLength,
+                        elementValueId,
+                        elementValueValid,
+                        Context.NONE)
                 .getValue();
     }
 

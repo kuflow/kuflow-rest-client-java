@@ -8,7 +8,7 @@
   },
   "scripts": {
     "autorest": "autorest",
-    "generate": "npm run generate:autorest && generate:mkdir && generate:cp && generate:rm",
+    "generate": "npm run generate:autorest && npm run generate:mkdir && npm run generate:cp && npm run generate:rm",
     "generate:autorest": "autorest readme.md",
     "generate:mkdir": "shx mkdir -p ../../src/generated/",
     "generate:cp": "shx cp -r ../../target/openapi-generated/src/main/* ../../src/generated/",

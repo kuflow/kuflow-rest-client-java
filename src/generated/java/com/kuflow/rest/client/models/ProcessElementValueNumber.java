@@ -7,26 +7,14 @@ package com.kuflow.rest.client.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** The ProcessElementValueNumber model. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "type",
-        visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("NUMBER")
 @Fluent
 public final class ProcessElementValueNumber extends ProcessElementValue {
-    /*
-     * Process element value types.
-     */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
-    private ProcessElementValueType type = ProcessElementValueType.NUMBER;
-
     /*
      * The value property.
      */
@@ -35,15 +23,6 @@ public final class ProcessElementValueNumber extends ProcessElementValue {
 
     /** Creates an instance of ProcessElementValueNumber class. */
     public ProcessElementValueNumber() {}
-
-    /**
-     * Get the type property: Process element value types.
-     *
-     * @return the type value.
-     */
-    public ProcessElementValueType getType() {
-        return this.type;
-    }
 
     /**
      * Get the value property: The value property.

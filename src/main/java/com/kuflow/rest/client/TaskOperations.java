@@ -5,13 +5,33 @@
 
 package com.kuflow.rest.client;
 
+import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.HeaderParam;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
+import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.RestProxy;
+import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.kuflow.rest.client.implementation.KuFlowClientImpl;
 import com.kuflow.rest.client.implementation.TaskOperationsImpl;
+import com.kuflow.rest.client.model.Document;
+import com.kuflow.rest.client.model.FindTasksOptions;
 import com.kuflow.rest.client.models.DefaultErrorException;
 import com.kuflow.rest.client.models.Log;
 import com.kuflow.rest.client.models.Task;
@@ -22,22 +42,49 @@ import com.kuflow.rest.client.models.TaskPage;
 import com.kuflow.rest.client.models.TaskSaveElementCommand;
 import com.kuflow.rest.client.models.TaskSaveElementValueDocumentCommand;
 import com.kuflow.rest.client.models.TaskState;
+import com.kuflow.rest.client.util.MultipartHelper;
 
+import java.security.SecureRandom;
 import java.util.List;
+import java.util.Objects;
+import java.util.Random;
 import java.util.UUID;
 
 /** An instance of this class provides access to all the operations defined in TaskOperations. */
 public final class TaskOperations {
+
+    private static final SecureRandom RANDOM = new SecureRandom();
+
     /** The service. */
+    private final KuFlowClientImpl client;
+
     private final TaskOperationsImpl service;
+
+    private final TaskOperationsServiceWorkaround serviceWorkaround;
 
     /**
      * Initializes an instance of TaskOperationsImpl.
      *
-     * @param service the instance of the service client containing this operation class.
+     * @param client the instance of the service client containing this operation class.
      */
-    TaskOperations(TaskOperationsImpl service) {
-        this.service = service;
+    TaskOperations(KuFlowClientImpl client) {
+        this.client = client;
+        this.service = client.getTaskOperations();
+        this.serviceWorkaround = RestProxy.create(TaskOperationsServiceWorkaround.class, client.getHttpPipeline(), client.getSerializerAdapter());
+    }
+
+    @Host("{$host}")
+    @ServiceInterface(name = "KuFlowClientTaskOperationsServiceWorkaround")
+    public interface TaskOperationsServiceWorkaround {
+
+        @Post("/tasks/{id}/~actions/save-element-value-document")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Task> actionsTaskSaveElementValueDocumentSync(
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            RequestOptions requestOptions,
+            Context context);
     }
 
     /**
@@ -47,14 +94,7 @@ public final class TaskOperations {
      *
      * <p>Available sort query values: id, createdAt, lastModifiedAt, claimedAt, completedAt, cancelledAt.
      *
-     * @param size The number of records returned within a single API call.
-     * @param page The page number of the current page in the returned records, 0 is the first page.
-     * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *     <p>Default sort order is ascending. Multiple sort criteria are supported.
-     *     <p>Please refer to the method description for supported properties.
-     * @param processId Filter by an array of process ids.
-     * @param state Filter by an array of task states.
-     * @param taskDefinitionCode Filter by an array of task definition codes.
+     * @param options The options parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
@@ -62,22 +102,17 @@ public final class TaskOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TaskPage> findTasksWithResponse(
-            Integer size,
-            Integer page,
-            List<String> sort,
-            List<UUID> processId,
-            List<TaskState> state,
-            List<String> taskDefinitionCode,
-            Context context) {
-        return this.service.findTasksWithResponse(
-                size,
-                page,
-                sort,
-                processId,
-                state,
-                taskDefinitionCode,
-                context);
+    public Response<TaskPage> findTasksWithResponse(FindTasksOptions options, Context context) {
+        options = options != null ? options : new FindTasksOptions();
+
+        Integer size = options.getSize();
+        Integer page = options.getPage();
+        List<String> sort = !options.getSorts().isEmpty() ? options.getSorts() : null;
+        List<UUID> processId = !options.getProcessIds().isEmpty() ? options.getProcessIds() : null;
+        List<TaskState> state = !options.getStates().isEmpty() ? options.getStates() : null;
+        List<String> taskDefinitionCode = !options.getTaskDefinitionCodes().isEmpty() ? options.getTaskDefinitionCodes() : null;
+
+        return this.service.findTasksWithResponse(size, page, sort, processId, state, taskDefinitionCode, context);
     }
 
     /**
@@ -87,28 +122,15 @@ public final class TaskOperations {
      *
      * <p>Available sort query values: id, createdAt, lastModifiedAt, claimedAt, completedAt, cancelledAt.
      *
-     * @param size The number of records returned within a single API call.
-     * @param page The page number of the current page in the returned records, 0 is the first page.
-     * @param sort Sorting criteria in the format: property{,asc|desc}. Example: createdAt,desc
-     *     <p>Default sort order is ascending. Multiple sort criteria are supported.
-     *     <p>Please refer to the method description for supported properties.
-     * @param processId Filter by an array of process ids.
-     * @param state Filter by an array of task states.
-     * @param taskDefinitionCode Filter by an array of task definition codes.
+     * @param options The options parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TaskPage findTasks(
-            Integer size,
-            Integer page,
-            List<String> sort,
-            List<UUID> processId,
-            List<TaskState> state,
-            List<String> taskDefinitionCode) {
-        return this.findTasksWithResponse(size, page, sort, processId, state, taskDefinitionCode, Context.NONE).getValue();
+    public TaskPage findTasks(FindTasksOptions options) {
+        return this.findTasksWithResponse(options, Context.NONE).getValue();
     }
 
     /**
@@ -124,7 +146,7 @@ public final class TaskOperations {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TaskPage findTasks() {
-        return this.findTasksWithResponse(null, null, null, null, null, null, Context.NONE).getValue();
+        return this.findTasksWithResponse(null, Context.NONE).getValue();
     }
 
     /**
@@ -374,8 +396,7 @@ public final class TaskOperations {
      *
      * @param id The resource ID.
      * @param command Command info.
-     * @param file Command file.
-     * @param contentLength The Content-Length header for the request.
+     * @param document Document to upload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -386,10 +407,37 @@ public final class TaskOperations {
     public Response<Task> actionsTaskSaveElementValueDocumentWithResponse(
             UUID id,
             TaskSaveElementValueDocumentCommand command,
-            BinaryData file,
-            long contentLength,
-            Context context) {
-        return this.service.actionsTaskSaveElementValueDocumentWithResponse(id, command, file, contentLength, context);
+            Document document,
+            Context context
+    ) {
+        Objects.requireNonNull(document, "'document' is required");
+        Objects.requireNonNull(document.getFileContent(), "'document.fileContent' is required");
+        Objects.requireNonNull(document.getFileContent().getLength(), "'document.fileContent.length' is required");
+        Objects.requireNonNull(document.getFileName(), "'document.fileName' is required");
+        Objects.requireNonNull(document.getContentType(), "'document.contentType' is required");
+        if (document.getFileContent().getLength() == 0) {
+            throw new IllegalArgumentException("File size must be greater that 0");
+        }
+
+        String fileContentType = document.getContentType();
+        String fileName = document.getFileName();
+        String elementDefinitionCode = command.getElementDefinitionCode();
+        UUID elementValueId = command.getElementValueId();
+        Boolean elementValueValid = command.isElementValueValid();
+        BinaryData file = document.getFileContent();
+        long contentLength = file.getLength();
+
+        return this.service.actionsTaskSaveElementValueDocumentWithResponse(
+            id,
+            fileContentType,
+            fileName,
+            elementDefinitionCode,
+            file,
+            contentLength,
+            elementValueId,
+            elementValueValid,
+            context
+        );
     }
 
     /**
@@ -403,8 +451,7 @@ public final class TaskOperations {
      *
      * @param id The resource ID.
      * @param command Command info.
-     * @param file Command file.
-     * @param contentLength The Content-Length header for the request.
+     * @param document Document to upload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -412,8 +459,8 @@ public final class TaskOperations {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Task actionsTaskSaveElementValueDocument(
-            UUID id, TaskSaveElementValueDocumentCommand command, BinaryData file, long contentLength) {
-        return this.actionsTaskSaveElementValueDocumentWithResponse(id, command, file, contentLength, Context.NONE)
+            UUID id, TaskSaveElementValueDocumentCommand command, Document document) {
+        return this.actionsTaskSaveElementValueDocumentWithResponse(id, command, document, Context.NONE)
                 .getValue();
     }
 

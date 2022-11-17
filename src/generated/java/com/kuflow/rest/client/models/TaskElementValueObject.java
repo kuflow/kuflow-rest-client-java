@@ -7,27 +7,15 @@ package com.kuflow.rest.client.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.Map;
 
 /** The TaskElementValueObject model. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "type",
-        visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("OBJECT")
 @Fluent
 public final class TaskElementValueObject extends TaskElementValue {
-    /*
-     * The type property.
-     */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
-    private TaskElementValueType type = TaskElementValueType.OBJECT;
-
     /*
      * Dictionary of <any>
      */
@@ -36,15 +24,6 @@ public final class TaskElementValueObject extends TaskElementValue {
 
     /** Creates an instance of TaskElementValueObject class. */
     public TaskElementValueObject() {}
-
-    /**
-     * Get the type property: The type property.
-     *
-     * @return the type value.
-     */
-    public TaskElementValueType getType() {
-        return this.type;
-    }
 
     /**
      * Get the value property: Dictionary of &lt;any&gt;.

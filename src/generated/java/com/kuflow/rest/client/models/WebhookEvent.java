@@ -18,8 +18,7 @@ import java.util.UUID;
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
         property = "type",
-        defaultImpl = WebhookEvent.class,
-        visible = true)
+        defaultImpl = WebhookEvent.class)
 @JsonTypeName("WebhookEvent")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "PROCESS.STATE_CHANGED", value = WebhookEventProcessStateChanged.class),

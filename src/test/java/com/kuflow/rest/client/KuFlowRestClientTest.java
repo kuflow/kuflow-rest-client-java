@@ -8,9 +8,25 @@ package com.kuflow.rest.client;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.util.BinaryData;
+import com.kuflow.rest.client.model.Document;
 import com.kuflow.rest.client.models.Authentication;
 import com.kuflow.rest.client.models.AuthenticationType;
+import com.kuflow.rest.client.models.Process;
+import com.kuflow.rest.client.models.ProcessDefinitionSummary;
+import com.kuflow.rest.client.models.Task;
+import com.kuflow.rest.client.models.TaskElementValueNumber;
+import com.kuflow.rest.client.models.TaskElementValueString;
+import com.kuflow.rest.client.models.TaskSaveElementCommand;
+import com.kuflow.rest.client.models.TaskSaveElementValueDocumentCommand;
+import com.kuflow.rest.client.models.TasksDefinitionSummary;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.UUID;
 
 //import static com.github.tomakehurst.wiremock.client.WireMock.aMultipart;
 //import static com.github.tomakehurst.wiremock.client.WireMock.containing;
@@ -70,7 +86,7 @@ public class KuFlowRestClientTest {
 
 
     @Test
-    public void dummy() {
+    public void dummy() throws IOException {
         HttpLogOptions logOptions = new HttpLogOptions();
         logOptions.setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS);
 
@@ -82,9 +98,62 @@ public class KuFlowRestClientTest {
                 .httpLogOptions(logOptions)
                 .buildClient();
 
-        Authentication authentication = new Authentication().setType(AuthenticationType.ENGINE);
-        Authentication authenticationResponse = kuFlowRestClient.getAuthenticationOperations().createAuthentication(authentication);
-        System.out.println(authenticationResponse);
+        Process process = new Process()
+            .setId(UUID.fromString("cf9b199e-18b7-489a-811a-0132edef21b3"))
+            .setProcessDefinition(new ProcessDefinitionSummary().setId(UUID.fromString("be35212b-deb8-4719-a10d-b8550219d156")));
+        Process processCreated = kuFlowRestClient.getProcessOperations().createProcess(process);
+
+        System.out.println(processCreated);
+
+        Task task = new Task()
+            .setId(UUID.fromString("a81b7d61-9619-4e1c-b2f4-e0e7de03d310"))
+            .setProcessId(processCreated.getId())
+            .setTaskDefinition(
+                new TasksDefinitionSummary().setCode("TASK_0001")
+            );
+
+        Task taskCreated = kuFlowRestClient.getTaskOperations().createTask(task);
+
+        System.out.println(taskCreated);
+
+//        kuFlowRestClient.getTaskOperations().actionsTaskClaim(taskCreated.getId());
+
+        // TODO IMPORVE HOW VALUES IS ADDED VALUES
+//        TaskSaveElementCommand command1 = new TaskSaveElementCommand()
+//            .setElementDefinitionCode("TEXT_001")
+//            .setValues(
+//                List.of(new TaskElementValueString().setValue("Valor del bueno"))
+//            );
+//        kuFlowRestClient.getTaskOperations().actionsTaskSaveElement(taskCreated.getId(), command1);
+//
+//        TaskSaveElementCommand command2 = new TaskSaveElementCommand()
+//            .setElementDefinitionCode("TEXT_002")
+//            .setValues(
+//                List.of(
+//                    new TaskElementValueString().setValue("Valor del bueno uno"),
+//                    new TaskElementValueString().setValue("Valor del bueno dos")
+//                )
+//            );
+//        kuFlowRestClient.getTaskOperations().actionsTaskSaveElement(taskCreated.getId(), command2);
+
+//        TaskSaveElementCommand command3 = new TaskSaveElementCommand()
+//            .setElementDefinitionCode("NUMBER_001")
+//            .setValues(
+//                List.of(
+//                    new TaskElementValueNumber().setValue(50.0)
+//                )
+//            );
+//        kuFlowRestClient.getTaskOperations().actionsTaskSaveElement(taskCreated.getId(), command3);
+
+        TaskSaveElementValueDocumentCommand command4 = new TaskSaveElementValueDocumentCommand()
+            .setElementDefinitionCode("DOC_001");
+
+        BinaryData file = BinaryData.fromFile(Path.of("/Users/kuflow/Downloads/bugs-bunny.png"));
+        Document document = new Document()
+            .setFileContent(file)
+            .setFileName("bugs-bunny.png")
+            .setContentType("image/png");
+        kuFlowRestClient.getTaskOperations().actionsTaskSaveElementValueDocument(taskCreated.getId(), command4, document);
     }
 //
 //    @Test

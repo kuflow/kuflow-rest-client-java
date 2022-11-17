@@ -6,6 +6,7 @@
 package com.kuflow.rest.client.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,15 +18,15 @@ import java.util.UUID;
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
-        property = "modelType",
-        defaultImpl = AbstractAudited.class,
-        visible = true)
+        property = "@odata\\.type",
+        defaultImpl = AbstractAudited.class)
 @JsonTypeName("AbstractAudited")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "AUTHENTICATION", value = Authentication.class),
-    @JsonSubTypes.Type(name = "PROCESS", value = Process.class),
-    @JsonSubTypes.Type(name = "TASK", value = Task.class)
+    @JsonSubTypes.Type(name = "#KuFlow.Rest.Authentication", value = Authentication.class),
+    @JsonSubTypes.Type(name = "#KuFlow.Rest.Process", value = Process.class),
+    @JsonSubTypes.Type(name = "#KuFlow.Rest.Task", value = Task.class)
 })
+@JsonFlatten
 @Immutable
 public class AbstractAudited {
     /*

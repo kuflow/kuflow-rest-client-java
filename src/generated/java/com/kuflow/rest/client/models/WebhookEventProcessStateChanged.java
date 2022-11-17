@@ -7,28 +7,16 @@ package com.kuflow.rest.client.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
 /** Process Events. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "type",
-        visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("PROCESS.STATE_CHANGED")
 @Fluent
 public final class WebhookEventProcessStateChanged extends WebhookEvent {
-    /*
-     * Type of the Event.
-     */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
-    private WebhookType type = WebhookType.PROCESS_STATE_CHANGED;
-
     /*
      * The data property.
      */
@@ -37,15 +25,6 @@ public final class WebhookEventProcessStateChanged extends WebhookEvent {
 
     /** Creates an instance of WebhookEventProcessStateChanged class. */
     public WebhookEventProcessStateChanged() {}
-
-    /**
-     * Get the type property: Type of the Event.
-     *
-     * @return the type value.
-     */
-    public WebhookType getType() {
-        return this.type;
-    }
 
     /**
      * Get the data property: The data property.

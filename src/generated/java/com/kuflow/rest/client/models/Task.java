@@ -6,8 +6,8 @@
 package com.kuflow.rest.client.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,21 +15,11 @@ import java.util.Map;
 import java.util.UUID;
 
 /** The Task model. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "modelType",
-        visible = true)
-@JsonTypeName("TASK")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeName("#KuFlow.Rest.Task")
+@JsonFlatten
 @Fluent
-public final class Task extends AbstractAudited {
-    /*
-     * Audited Model types.
-     */
-    @JsonTypeId
-    @JsonProperty(value = "modelType", required = true)
-    private AuditedModelType modelType = AuditedModelType.TASK;
-
+public class Task extends AbstractAudited {
     /*
      * The id property.
      */
@@ -74,15 +64,6 @@ public final class Task extends AbstractAudited {
 
     /** Creates an instance of Task class. */
     public Task() {}
-
-    /**
-     * Get the modelType property: Audited Model types.
-     *
-     * @return the modelType value.
-     */
-    public AuditedModelType getModelType() {
-        return this.modelType;
-    }
 
     /**
      * Get the id property: The id property.

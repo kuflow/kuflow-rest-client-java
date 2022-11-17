@@ -7,27 +7,15 @@ package com.kuflow.rest.client.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /** The PrincipalPage model. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "modelType",
-        visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "modelType")
 @JsonTypeName("PRINCIPAL_PAGE")
 @Fluent
 public final class PrincipalPage extends Page {
-    /*
-     * Paged Model types.
-     */
-    @JsonTypeId
-    @JsonProperty(value = "modelType", required = true)
-    private PagedModelType modelType = PagedModelType.PRINCIPAL_PAGE;
-
     /*
      * The content property.
      */
@@ -36,15 +24,6 @@ public final class PrincipalPage extends Page {
 
     /** Creates an instance of PrincipalPage class. */
     public PrincipalPage() {}
-
-    /**
-     * Get the modelType property: Paged Model types.
-     *
-     * @return the modelType value.
-     */
-    public PagedModelType getModelType() {
-        return this.modelType;
-    }
 
     /**
      * Get the content property: The content property.
