@@ -1,6 +1,6 @@
 /*
  * The MIT License
- * Copyright © 2022-present KuFlow S.L.
+ * Copyright © 2021-present KuFlow S.L.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,10 @@ package com.kuflow.rest.client;
 
 import com.azure.core.annotation.ServiceClient;
 import com.kuflow.rest.client.implementation.KuFlowClientImpl;
+import com.kuflow.rest.client.operations.AuthenticationOperations;
+import com.kuflow.rest.client.operations.PrincipalOperations;
+import com.kuflow.rest.client.operations.ProcessOperations;
+import com.kuflow.rest.client.operations.TaskOperations;
 
 @ServiceClient(builder = KuFlowRestClientBuilder.class)
 public class KuFlowRestClient {

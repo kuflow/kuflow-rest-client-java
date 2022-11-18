@@ -1,6 +1,6 @@
 /*
  * The MIT License
- * Copyright © 2022-present KuFlow S.L.
+ * Copyright © 2021-present KuFlow S.L.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,6 @@ import com.kuflow.rest.client.models.Task;
 import com.kuflow.rest.client.models.TaskElementValue;
 import java.util.HashMap;
 import java.util.List;
-import javax.annotation.Nullable;
 
 public class TaskElementValueAccessorTask implements TaskElementValueAccessor {
 
@@ -43,7 +42,6 @@ public class TaskElementValueAccessorTask implements TaskElementValueAccessor {
         return new TaskElementValueAccessorTask(task, elementDefinitionCode);
     }
 
-    @Nullable
     @Override
     public List<TaskElementValue> getElementValues() {
         if (this.task.getElementValues() == null) {

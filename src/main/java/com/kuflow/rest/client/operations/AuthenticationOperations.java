@@ -1,6 +1,6 @@
 /*
  * The MIT License
- * Copyright © 2022-present KuFlow S.L.
+ * Copyright © 2021-present KuFlow S.L.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kuflow.rest.client;
+package com.kuflow.rest.client.operations;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -41,7 +41,7 @@ public final class AuthenticationOperations {
      *
      * @param service the instance of the service client containing this operation class.
      */
-    AuthenticationOperations(AuthenticationOperationsImpl service) {
+    public AuthenticationOperations(AuthenticationOperationsImpl service) {
         this.service = service;
     }
 

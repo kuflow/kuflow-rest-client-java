@@ -1,6 +1,6 @@
 /*
  * The MIT License
- * Copyright © 2022-present KuFlow S.L.
+ * Copyright © 2021-present KuFlow S.L.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,6 @@ package com.kuflow.rest.client.util;
 import com.kuflow.rest.client.models.ProcessElementValue;
 import com.kuflow.rest.client.models.ProcessSaveElementCommand;
 import java.util.List;
-import javax.annotation.Nullable;
 
 public class ProcessElementValueAccessorProcessSaveElementCommand implements ProcessElementValueAccessor {
 
@@ -39,7 +38,6 @@ public class ProcessElementValueAccessorProcessSaveElementCommand implements Pro
         return new ProcessElementValueAccessorProcessSaveElementCommand(command);
     }
 
-    @Nullable
     @Override
     public List<ProcessElementValue> getElementValues() {
         return this.command.getElementValues();

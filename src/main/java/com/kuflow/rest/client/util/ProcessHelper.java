@@ -1,6 +1,6 @@
 /*
  * The MIT License
- * Copyright © 2022-present KuFlow S.L.
+ * Copyright © 2021-present KuFlow S.L.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +35,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import javax.annotation.Nonnull;
 
 public class ProcessHelper {
 
@@ -113,8 +112,7 @@ public class ProcessHelper {
         processElementValueAccessor.setElementValues(processElementValues);
     }
 
-    @Nonnull
-    private static ProcessElementValue toProcessElementValue(@Nonnull Object value) {
+    private static ProcessElementValue toProcessElementValue(Object value) {
         if (value instanceof String) {
             return toElementValueResourceString((String) value);
         } else if (value instanceof Double) {
@@ -238,7 +236,6 @@ public class ProcessHelper {
         }
     }
 
-    @Nonnull
     private static Optional<ProcessElementValue> findElementValueOf(ProcessElementValueAccessor processElementValueAccessor) {
         List<ProcessElementValue> processElementValues = processElementValueAccessor.getElementValues();
         if (processElementValues == null || processElementValues.isEmpty()) {
@@ -248,7 +245,6 @@ public class ProcessHelper {
         return Optional.of(processElementValues.get(0));
     }
 
-    @Nonnull
     private static List<ProcessElementValue> getElementValuesOf(ProcessElementValueAccessor processElementValueAccessor) {
         List<ProcessElementValue> processElementValues = processElementValueAccessor.getElementValues();
         if (processElementValues == null || processElementValues.isEmpty()) {

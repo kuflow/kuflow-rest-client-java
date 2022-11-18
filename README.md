@@ -5,7 +5,7 @@
 
 > ***"KuFlow is a platform on which you can design and execute your business processes"***
 
-In KuFlow we are engineers and therefore we like concrete things; we like to know 'the how' because it is the only way to understand how a platform can solve our problems.
+In KuFlow we are engineers, and therefore we like concrete things; we like to know 'the how' because it is the only way to understand how a platform can solve our problems.
 
 This library is the client for the REST API that the integrators can use with the platform.
 

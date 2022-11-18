@@ -1,6 +1,6 @@
 /*
  * The MIT License
- * Copyright © 2022-present KuFlow S.L.
+ * Copyright © 2021-present KuFlow S.L.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 //
 
-package com.kuflow.rest.client;
+package com.kuflow.rest.client.operations;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -34,9 +34,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.kuflow.rest.client.implementation.ProcessOperationsImpl;
-import com.kuflow.rest.client.model.Document;
-import com.kuflow.rest.client.model.FindProcessesOptions;
 import com.kuflow.rest.client.models.DefaultErrorException;
+import com.kuflow.rest.client.models.Document;
+import com.kuflow.rest.client.models.FindProcessesOptions;
 import com.kuflow.rest.client.models.Process;
 import com.kuflow.rest.client.models.ProcessChangeInitiatorCommand;
 import com.kuflow.rest.client.models.ProcessDeleteElementCommand;
@@ -58,7 +58,7 @@ public final class ProcessOperations {
      *
      * @param service the instance of the service client containing this operation class.
      */
-    ProcessOperations(ProcessOperationsImpl service) {
+    public ProcessOperations(ProcessOperationsImpl service) {
         this.service = service;
     }
 

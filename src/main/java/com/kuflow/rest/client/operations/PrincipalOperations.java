@@ -1,6 +1,6 @@
 /*
  * The MIT License
- * Copyright © 2022-present KuFlow S.L.
+ * Copyright © 2021-present KuFlow S.L.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,15 +25,15 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 //
 
-package com.kuflow.rest.client;
+package com.kuflow.rest.client.operations;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.kuflow.rest.client.implementation.PrincipalOperationsImpl;
-import com.kuflow.rest.client.model.FindPrincipalsOptions;
 import com.kuflow.rest.client.models.DefaultErrorException;
+import com.kuflow.rest.client.models.FindPrincipalsOptions;
 import com.kuflow.rest.client.models.Principal;
 import com.kuflow.rest.client.models.PrincipalPage;
 import com.kuflow.rest.client.models.PrincipalType;
@@ -51,7 +51,7 @@ public final class PrincipalOperations {
      *
      * @param service the instance of the service client containing this operation class.
      */
-    PrincipalOperations(PrincipalOperationsImpl service) {
+    public PrincipalOperations(PrincipalOperationsImpl service) {
         this.service = service;
     }
 

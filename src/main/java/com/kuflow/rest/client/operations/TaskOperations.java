@@ -1,6 +1,6 @@
 /*
  * The MIT License
- * Copyright © 2022-present KuFlow S.L.
+ * Copyright © 2021-present KuFlow S.L.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,28 +25,19 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 //
 
-package com.kuflow.rest.client;
+package com.kuflow.rest.client.operations;
 
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.kuflow.rest.client.implementation.KuFlowClientImpl;
 import com.kuflow.rest.client.implementation.TaskOperationsImpl;
-import com.kuflow.rest.client.model.Document;
-import com.kuflow.rest.client.model.FindTasksOptions;
 import com.kuflow.rest.client.models.DefaultErrorException;
+import com.kuflow.rest.client.models.Document;
+import com.kuflow.rest.client.models.FindTasksOptions;
 import com.kuflow.rest.client.models.Log;
 import com.kuflow.rest.client.models.Task;
 import com.kuflow.rest.client.models.TaskAssignCommand;
@@ -56,7 +47,6 @@ import com.kuflow.rest.client.models.TaskPage;
 import com.kuflow.rest.client.models.TaskSaveElementCommand;
 import com.kuflow.rest.client.models.TaskSaveElementValueDocumentCommand;
 import com.kuflow.rest.client.models.TaskState;
-import java.security.SecureRandom;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -64,39 +54,16 @@ import java.util.UUID;
 /** An instance of this class provides access to all the operations defined in TaskOperations. */
 public final class TaskOperations {
 
-    private static final SecureRandom RANDOM = new SecureRandom();
-
     /** The service. */
-    private final KuFlowClientImpl client;
-
     private final TaskOperationsImpl service;
-
-    private final TaskOperationsServiceWorkaround serviceWorkaround;
 
     /**
      * Initializes an instance of TaskOperationsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    TaskOperations(KuFlowClientImpl client) {
-        this.client = client;
+    public TaskOperations(KuFlowClientImpl client) {
         this.service = client.getTaskOperations();
-        this.serviceWorkaround =
-            RestProxy.create(TaskOperationsServiceWorkaround.class, client.getHttpPipeline(), client.getSerializerAdapter());
-    }
-
-    @Host("{$host}")
-    @ServiceInterface(name = "KuFlowClientTaskOperationsServiceWorkaround")
-    public interface TaskOperationsServiceWorkaround {
-        @Post("/tasks/{id}/~actions/save-element-value-document")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Task> actionsTaskSaveElementValueDocumentSync(
-            @HostParam("$host") String host,
-            @PathParam("id") UUID id,
-            RequestOptions requestOptions,
-            Context context
-        );
     }
 
     /**

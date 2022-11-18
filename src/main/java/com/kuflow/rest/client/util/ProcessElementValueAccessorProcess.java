@@ -1,6 +1,6 @@
 /*
  * The MIT License
- * Copyright © 2022-present KuFlow S.L.
+ * Copyright © 2021-present KuFlow S.L.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,6 @@ import com.kuflow.rest.client.models.Process;
 import com.kuflow.rest.client.models.ProcessElementValue;
 import java.util.HashMap;
 import java.util.List;
-import javax.annotation.Nullable;
 
 public class ProcessElementValueAccessorProcess implements ProcessElementValueAccessor {
 
@@ -43,7 +42,6 @@ public class ProcessElementValueAccessorProcess implements ProcessElementValueAc
         return new ProcessElementValueAccessorProcess(process, elementDefinitionCode);
     }
 
-    @Nullable
     @Override
     public List<ProcessElementValue> getElementValues() {
         if (this.process.getElementValues() == null) {

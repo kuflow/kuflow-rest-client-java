@@ -1,6 +1,6 @@
 /*
  * The MIT License
- * Copyright © 2022-present KuFlow S.L.
+ * Copyright © 2021-present KuFlow S.L.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,7 +41,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import javax.annotation.Nonnull;
 
 public class TaskHelper {
 
@@ -116,9 +115,8 @@ public class TaskHelper {
         taskElementValueAccessor.setElementValues(taskElementValues);
     }
 
-    @Nonnull
     @SuppressWarnings("unchecked")
-    private static TaskElementValue toTaskElementValue(@Nonnull Object value) {
+    private static TaskElementValue toTaskElementValue(Object value) {
         if (value instanceof String) {
             return toElementValueResourceString((String) value);
         } else if (value instanceof Double) {
@@ -345,7 +343,6 @@ public class TaskHelper {
         return elementValuePrincipal.getValue();
     }
 
-    @Nonnull
     private static Optional<TaskElementValue> findElementValueOf(TaskElementValueAccessor taskElementValueAccessor) {
         List<TaskElementValue> taskElementValues = taskElementValueAccessor.getElementValues();
         if (taskElementValues == null || taskElementValues.isEmpty()) {
@@ -355,7 +352,6 @@ public class TaskHelper {
         return Optional.of(taskElementValues.get(0));
     }
 
-    @Nonnull
     private static List<TaskElementValue> getElementValuesOf(TaskElementValueAccessor taskElementValueAccessor) {
         List<TaskElementValue> taskElementValues = taskElementValueAccessor.getElementValues();
         if (taskElementValues == null || taskElementValues.isEmpty()) {

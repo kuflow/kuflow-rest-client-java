@@ -1,6 +1,6 @@
 /*
  * The MIT License
- * Copyright © 2022-present KuFlow S.L.
+ * Copyright © 2021-present KuFlow S.L.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,10 +24,8 @@ package com.kuflow.rest.client.util;
 
 import com.kuflow.rest.client.models.TaskElementValue;
 import java.util.List;
-import javax.annotation.Nullable;
 
 public interface TaskElementValueAccessor {
-    @Nullable
     List<TaskElementValue> getElementValues();
 
     void setElementValues(List<TaskElementValue> elementValues);

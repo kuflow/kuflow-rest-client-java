@@ -1,6 +1,6 @@
 /*
  * The MIT License
- * Copyright © 2022-present KuFlow S.L.
+ * Copyright © 2021-present KuFlow S.L.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,7 @@ package com.kuflow.rest.client;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.BinaryData;
-import com.kuflow.rest.client.model.Document;
+import com.kuflow.rest.client.models.Document;
 import com.kuflow.rest.client.models.Process;
 import com.kuflow.rest.client.models.ProcessDefinitionSummary;
 import com.kuflow.rest.client.models.Task;
@@ -35,9 +35,7 @@ import com.kuflow.rest.client.models.TaskSaveElementValueDocumentCommand;
 import com.kuflow.rest.client.models.TasksDefinitionSummary;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
@@ -89,8 +87,6 @@ public class KuFlowRestClientTest {
             .setProcessId(processCreated.getId())
             .setTaskDefinition(new TasksDefinitionSummary().setCode("TASK_0001"));
 
-        List<Map<String, Object>> hashMaps = List.of(new HashMap<>());
-        task.putElementValueAsMapList("", hashMaps);
         Task taskCreated = kuFlowRestClient.getTaskOperations().createTask(task);
 
         System.out.println(taskCreated);
