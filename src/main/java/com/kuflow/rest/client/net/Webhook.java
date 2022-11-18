@@ -1,9 +1,3 @@
-/*
- * Copyright (c) 2021-present KuFlow S.L.
- *
- * All rights reserved.
- */
-
 package com.kuflow.rest.client.net;
 
 //import com.kuflow.rest.client.resource.WebhookEventResource;
