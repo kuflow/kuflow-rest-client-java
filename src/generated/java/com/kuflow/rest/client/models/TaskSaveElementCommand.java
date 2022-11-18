@@ -7,6 +7,10 @@ package com.kuflow.rest.client.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.kuflow.rest.client.util.TaskHelper;
+import reactor.util.annotation.Nullable;
+
+import javax.annotation.Nonnull;
 import java.util.List;
 
 /** The TaskSaveElementCommand model. */
@@ -19,10 +23,10 @@ public final class TaskSaveElementCommand {
     private String elementDefinitionCode;
 
     /*
-     * The values property.
+     * The elementValues property.
      */
-    @JsonProperty(value = "values")
-    private List<TaskElementValue> values;
+    @JsonProperty(value = "elementValues")
+    private List<TaskElementValue> elementValues;
 
     /** Creates an instance of TaskSaveElementCommand class. */
     public TaskSaveElementCommand() {}
@@ -48,22 +52,22 @@ public final class TaskSaveElementCommand {
     }
 
     /**
-     * Get the values property: The values property.
+     * Get the elementValues property: The elementValues property.
      *
-     * @return the values value.
+     * @return the elementValues value.
      */
-    public List<TaskElementValue> getValues() {
-        return this.values;
+    public List<TaskElementValue> getElementValues() {
+        return this.elementValues;
     }
 
     /**
-     * Set the values property: The values property.
+     * Set the elementValues property: The elementValues property.
      *
-     * @param values the values value to set.
+     * @param elementValues the elementValues value to set.
      * @return the TaskSaveElementCommand object itself.
      */
-    public TaskSaveElementCommand setValues(List<TaskElementValue> values) {
-        this.values = values;
+    public TaskSaveElementCommand setElementValues(List<TaskElementValue> elementValues) {
+        this.elementValues = elementValues;
         return this;
     }
 }

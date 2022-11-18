@@ -41,7 +41,7 @@
     <azure-communication-common.version>1.2.3</azure-communication-common.version>
 <!--    <feign.version>11.7</feign.version>-->
 <!--    <feign-form.version>3.8.0</feign-form.version>-->
-<!--    <jsr305.version>3.0.2</jsr305.version>-->
+    <jsr305.version>3.0.2</jsr305.version>
 
     <wiremock.version>2.32.0</wiremock.version>
   </properties>
@@ -56,6 +56,11 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
       <version>${azure-communication-common.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+      <version>${jsr305.version}</version>
     </dependency>
 <!--    <dependency>-->
 <!--      <groupId>org.slf4j</groupId>-->

@@ -10,9 +10,14 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.kuflow.rest.client.util.TaskHelper;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
+import javax.annotation.Nonnull;
+import reactor.util.annotation.Nullable;
 
 /** The Task model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
@@ -194,5 +199,481 @@ public class Task extends AbstractAudited {
     public Task setOwner(Principal owner) {
         this.owner = owner;
         return this;
+    }
+
+    /**
+     * Set an element value
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @param elementValue Element value
+     * @return the Task object itself.
+     */
+    @Nonnull
+    public Task putElementValue(@Nonnull String elementDefinitionCode, @Nullable String elementValue) {
+        return TaskHelper.putElementValue(this, elementDefinitionCode, elementValue);
+    }
+
+    /**
+     * Set an element value
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @param elementValues Element values
+     * @return the Task object itself.
+     */
+    @Nonnull
+    public Task putElementValues(@Nonnull String elementDefinitionCode, @Nullable String... elementValues) {
+        return TaskHelper.putElementValues(this, elementDefinitionCode, (Object[]) elementValues);
+    }
+
+    /**
+     * Add a new element value
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @param elementValue Element value
+     * @return the Task object itself.
+     */
+    public Task addElementValue(@Nonnull String elementDefinitionCode, @Nullable String elementValue) {
+        return TaskHelper.addElementValue(this, elementDefinitionCode, elementValue);
+    }
+
+    /**
+     * Get an element as String
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @return the element value.
+     * @throws com.kuflow.rest.client.KuFlowRestClientException com.kuflow.rest.client.KuFlowRestClientException If
+     *     element value doesn't exists
+     */
+    @Nonnull
+    public String getElementValueAsString(@Nonnull String elementDefinitionCode) {
+        return TaskHelper.getElementValueAsString(this, elementDefinitionCode);
+    }
+
+    /**
+     * Get all elements as String
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @return the elements values.
+     */
+    @Nonnull
+    public List<String> getElementValueAsStringList(@Nonnull String elementDefinitionCode) {
+        return TaskHelper.getElementValueAsStringList(this, elementDefinitionCode);
+    }
+
+    /**
+     * Try to get an element as String
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @return the element value if exists.
+     */
+    @Nonnull
+    public Optional<String> findElementValueAsString(@Nonnull String elementDefinitionCode) {
+        return TaskHelper.findElementValueAsString(this, elementDefinitionCode);
+    }
+
+    /**
+     * Set an element value
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @param elementValue Element value
+     * @return the Task object itself.
+     */
+    @Nonnull
+    public Task putElementValue(@Nonnull String elementDefinitionCode, @Nullable Double elementValue) {
+        return TaskHelper.putElementValue(this, elementDefinitionCode, elementValue);
+    }
+
+    /**
+     * Set an element value
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @param elementValues Element values
+     * @return the Task object itself.
+     */
+    @Nonnull
+    public Task putElementValues(@Nonnull String elementDefinitionCode, @Nullable Double... elementValues) {
+        return TaskHelper.putElementValues(this, elementDefinitionCode, (Object[]) elementValues);
+    }
+
+    /**
+     * Add a new element value
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @param elementValue Element value
+     * @return the Task object itself.
+     */
+    public Task addElementValue(@Nonnull String elementDefinitionCode, @Nullable Double elementValue) {
+        return TaskHelper.addElementValue(this, elementDefinitionCode, elementValue);
+    }
+
+    /**
+     * Get an element as Double
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @return the element value.
+     * @throws com.kuflow.rest.client.KuFlowRestClientException com.kuflow.rest.client.KuFlowRestClientException If
+     *     element value doesn't exists
+     */
+    @Nonnull
+    public Double getElementValueAsDouble(@Nonnull String elementDefinitionCode) {
+        return TaskHelper.getElementValueAsDouble(this, elementDefinitionCode);
+    }
+
+    /**
+     * Get all elements as Double
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @return the elements values.
+     */
+    @Nonnull
+    public List<Double> getElementValueAsDoubleList(@Nonnull String elementDefinitionCode) {
+        return TaskHelper.getElementValueAsDoubleList(this, elementDefinitionCode);
+    }
+
+    /**
+     * Try to get an element as Double
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @return the element value if exists.
+     */
+    @Nonnull
+    public Optional<Double> findElementValueAsDouble(@Nonnull String elementDefinitionCode) {
+        return TaskHelper.findElementValueAsDouble(this, elementDefinitionCode);
+    }
+
+    /**
+     * Set an element value
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @param elementValue Element value
+     * @return the Task object itself.
+     */
+    @Nonnull
+    public Task putElementValue(@Nonnull String elementDefinitionCode, @Nullable LocalDate elementValue) {
+        return TaskHelper.putElementValue(this, elementDefinitionCode, elementValue);
+    }
+
+    /**
+     * Set an element value
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @param elementValues Element values
+     * @return the Task object itself.
+     */
+    @Nonnull
+    public Task putElementValues(@Nonnull String elementDefinitionCode, @Nullable LocalDate... elementValues) {
+        return TaskHelper.putElementValues(this, elementDefinitionCode, (Object[]) elementValues);
+    }
+
+    /**
+     * Add a new element value
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @param elementValue Element value
+     * @return the Task object itself.
+     */
+    public Task addElementValue(@Nonnull String elementDefinitionCode, @Nullable LocalDate elementValue) {
+        return TaskHelper.addElementValue(this, elementDefinitionCode, elementValue);
+    }
+
+    /**
+     * Get an element as LocalDate
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @return the element value.
+     * @throws com.kuflow.rest.client.KuFlowRestClientException com.kuflow.rest.client.KuFlowRestClientException If
+     *     element value doesn't exists
+     */
+    @Nonnull
+    public LocalDate getElementValueAsLocalDate(@Nonnull String elementDefinitionCode) {
+        return TaskHelper.getElementValueAsLocalDate(this, elementDefinitionCode);
+    }
+
+    /**
+     * Get all elements as LocalDate
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @return the elements values.
+     */
+    @Nonnull
+    public List<LocalDate> getElementValueAsLocalDateList(@Nonnull String elementDefinitionCode) {
+        return TaskHelper.getElementValueAsLocalDateList(this, elementDefinitionCode);
+    }
+
+    /**
+     * Try to get an element as LocalDate
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @return the element value if exists.
+     */
+    @Nonnull
+    public Optional<LocalDate> findElementValueAsLocalDate(@Nonnull String elementDefinitionCode) {
+        return TaskHelper.findElementValueAsLocalDate(this, elementDefinitionCode);
+    }
+
+    /**
+     * Set an element value
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @param elementValue Element value
+     * @return the Task object itself.
+     */
+    @Nonnull
+    public Task putElementValue(@Nonnull String elementDefinitionCode, @Nullable Map<String, Object> elementValue) {
+        return TaskHelper.putElementValue(this, elementDefinitionCode, elementValue);
+    }
+
+    /**
+     * Set an element value
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @param elementValues Element values
+     * @return the Task object itself.
+     */
+    @Nonnull
+    @SafeVarargs
+    public final Task putElementValues(
+            @Nonnull String elementDefinitionCode, @Nullable Map<String, Object>... elementValues) {
+        return TaskHelper.putElementValues(this, elementDefinitionCode, (Object[]) elementValues);
+    }
+
+    /**
+     * Add a new element value
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @param elementValue Element value
+     * @return the Task object itself.
+     */
+    public Task addElementValue(@Nonnull String elementDefinitionCode, @Nullable Map<String, Object> elementValue) {
+        return TaskHelper.addElementValue(this, elementDefinitionCode, elementValue);
+    }
+
+    /**
+     * Get an element as Map
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @return the element value.
+     * @throws com.kuflow.rest.client.KuFlowRestClientException com.kuflow.rest.client.KuFlowRestClientException If
+     *     element value doesn't exists
+     */
+    @Nonnull
+    public Map<String, Object> getElementValueAsMap(@Nonnull String elementDefinitionCode) {
+        return TaskHelper.getElementValueAsMap(this, elementDefinitionCode);
+    }
+
+    /**
+     * Get all elements as Map
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @return the elements values.
+     */
+    @Nonnull
+    public List<Map<String, Object>> getElementValueAsMapList(@Nonnull String elementDefinitionCode) {
+        return TaskHelper.getElementValueAsMapList(this, elementDefinitionCode);
+    }
+
+    /**
+     * Try to get an element as Map
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @return the element value if exists.
+     */
+    @Nonnull
+    public Optional<Map<String, Object>> findElementValueAsMap(@Nonnull String elementDefinitionCode) {
+        return TaskHelper.findElementValueAsMap(this, elementDefinitionCode);
+    }
+
+    /**
+     * Set an element value
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @param elementValue Element value
+     * @return the Task object itself.
+     */
+    @Nonnull
+    public Task putElementValue(
+            @Nonnull String elementDefinitionCode, @Nullable TaskElementValueDocumentItem elementValue) {
+        return TaskHelper.putElementValue(this, elementDefinitionCode, elementValue);
+    }
+
+    /**
+     * Set an element value
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @param elementValues Element values
+     * @return the Task object itself.
+     */
+    @Nonnull
+    public Task putElementValues(
+            @Nonnull String elementDefinitionCode, @Nullable TaskElementValueDocumentItem... elementValues) {
+        return TaskHelper.putElementValues(this, elementDefinitionCode, (Object[]) elementValues);
+    }
+
+    /**
+     * Add a new element value
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @param elementValue Element value
+     * @return the Task object itself.
+     */
+    public Task addElementValue(
+            @Nonnull String elementDefinitionCode, @Nullable TaskElementValueDocumentItem elementValue) {
+        return TaskHelper.addElementValue(this, elementDefinitionCode, elementValue);
+    }
+
+    /**
+     * Get an element as Document
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @return the element value.
+     * @throws com.kuflow.rest.client.KuFlowRestClientException com.kuflow.rest.client.KuFlowRestClientException If
+     *     element value doesn't exists
+     */
+    @Nonnull
+    public TaskElementValueDocumentItem getElementValueAsDocument(@Nonnull String elementDefinitionCode) {
+        return TaskHelper.getElementValueAsDocument(this, elementDefinitionCode);
+    }
+
+    /**
+     * Get all elements as Document
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @return the elements values.
+     */
+    @Nonnull
+    public List<TaskElementValueDocumentItem> getElementValueAsDocumentList(@Nonnull String elementDefinitionCode) {
+        return TaskHelper.getElementValueAsDocumentList(this, elementDefinitionCode);
+    }
+
+    /**
+     * Try to get an element as Document
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @return the element value if exists.
+     */
+    @Nonnull
+    public Optional<TaskElementValueDocumentItem> findElementValueAsDocument(@Nonnull String elementDefinitionCode) {
+        return TaskHelper.findElementValueAsDocument(this, elementDefinitionCode);
+    }
+
+    /**
+     * Set an element value
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @param elementValue Element value
+     * @return the Task object itself.
+     */
+    @Nonnull
+    public Task putElementValue(
+            @Nonnull String elementDefinitionCode, @Nullable TaskElementValuePrincipalItem elementValue) {
+        return TaskHelper.putElementValue(this, elementDefinitionCode, elementValue);
+    }
+
+    /**
+     * Set an element value
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @param elementValues Element values
+     * @return the Task object itself.
+     */
+    @Nonnull
+    public Task putElementValues(
+            @Nonnull String elementDefinitionCode, @Nullable TaskElementValuePrincipalItem... elementValues) {
+        return TaskHelper.putElementValues(this, elementDefinitionCode, (Object[]) elementValues);
+    }
+
+    /**
+     * Add a new element value
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @param elementValue Element value
+     * @return the Task object itself.
+     */
+    public Task addElementValue(
+            @Nonnull String elementDefinitionCode, @Nullable TaskElementValuePrincipalItem elementValue) {
+        return TaskHelper.addElementValue(this, elementDefinitionCode, elementValue);
+    }
+
+    /**
+     * Get an element as Principal
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @return the element value.
+     * @throws com.kuflow.rest.client.KuFlowRestClientException com.kuflow.rest.client.KuFlowRestClientException If
+     *     element value doesn't exists
+     */
+    @Nonnull
+    public TaskElementValuePrincipalItem getElementValueAsPrincipal(@Nonnull String elementDefinitionCode) {
+        return TaskHelper.getElementValueAsPrincipal(this, elementDefinitionCode);
+    }
+
+    /**
+     * Get all elements as Principal
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @return the elements values.
+     */
+    @Nonnull
+    public List<TaskElementValuePrincipalItem> getElementValueAsPrincipalList(@Nonnull String elementDefinitionCode) {
+        return TaskHelper.getElementValueAsPrincipalList(this, elementDefinitionCode);
+    }
+
+    /**
+     * Try to get an element as Principal
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @return the element value if exists.
+     */
+    @Nonnull
+    public Optional<TaskElementValuePrincipalItem> findElementValueAsPrincipal(@Nonnull String elementDefinitionCode) {
+        return TaskHelper.findElementValueAsPrincipal(this, elementDefinitionCode);
+    }
+
+    /**
+     * Check if all related valid values are TRUE
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @return TRUE if all related valid values are TRUE else FALSE.
+     */
+    @Nullable
+    public Boolean getElementValueValid(@Nonnull String elementDefinitionCode) {
+        return TaskHelper.getElementValueValid(this, elementDefinitionCode);
+    }
+
+    /**
+     * Check if all related valid values are TRUE
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @param index Element value index
+     * @return The requested valid value
+     */
+    @Nullable
+    public Boolean getElementValueValidAt(@Nonnull String elementDefinitionCode, int index) {
+        return TaskHelper.getElementValueValidAt(this, elementDefinitionCode, index);
+    }
+
+    /**
+     * Set valid to all values
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @param valid Valid value
+     * @return the Task object itself.
+     */
+    @Nonnull
+    public Task setElementValueValid(@Nonnull String elementDefinitionCode, Boolean valid) {
+        return TaskHelper.setElementValueValid(this, elementDefinitionCode, valid);
+    }
+
+    /**
+     * Set valid to the selected value
+     *
+     * @param elementDefinitionCode Element Definition Code
+     * @param valid Valid value
+     * @param index Element value index
+     * @return the Task object itself.
+     */
+    @Nullable
+    public Task setElementValueValidAt(@Nonnull String elementDefinitionCode, @Nullable Boolean valid, int index) {
+        return TaskHelper.setElementValueValidAt(this, elementDefinitionCode, valid, index);
     }
 }

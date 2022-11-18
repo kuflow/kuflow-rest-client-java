@@ -125,16 +125,16 @@ public class KuFlowRestClientTest {
 //                List.of(new TaskElementValueString().setValue("Valor del bueno"))
 //            );
 //        kuFlowRestClient.getTaskOperations().actionsTaskSaveElement(taskCreated.getId(), command1);
-//
-//        TaskSaveElementCommand command2 = new TaskSaveElementCommand()
-//            .setElementDefinitionCode("TEXT_002")
-//            .setValues(
-//                List.of(
-//                    new TaskElementValueString().setValue("Valor del bueno uno"),
-//                    new TaskElementValueString().setValue("Valor del bueno dos")
-//                )
-//            );
-//        kuFlowRestClient.getTaskOperations().actionsTaskSaveElement(taskCreated.getId(), command2);
+
+        TaskSaveElementCommand command2 = new TaskSaveElementCommand()
+            .setElementDefinitionCode("TEXT_002")
+            .setElementValues(
+                List.of(
+                    new TaskElementValueString().setValue("Valor del bueno uno"),
+                    new TaskElementValueString().setValue("Valor del bueno dos")
+                )
+            );
+        kuFlowRestClient.getTaskOperations().actionsTaskSaveElement(taskCreated.getId(), command2);
 
 //        TaskSaveElementCommand command3 = new TaskSaveElementCommand()
 //            .setElementDefinitionCode("NUMBER_001")
