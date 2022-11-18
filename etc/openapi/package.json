@@ -8,12 +8,13 @@
   },
   "scripts": {
     "autorest": "autorest",
-    "generate": "npm run generate:autorest && npm run generate:move && npm run generate:prettier",
+    "generate": "npm run generate:autorest && npm run generate:move && npm run generate:prettier && npm run generate:license",
     "generate:autorest": "autorest readme.md",
     "generate:move": "npm run generate:move:mkdir && npm run generate:move:cp && npm run generate:move:rm",
     "generate:move:mkdir": "shx mkdir -p ../../src/generated/",
     "generate:move:cp": "shx cp -r ../../target/openapi-generated/src/main/* ../../src/generated/",
     "generate:move:rm": "shx rm -rf ../../target/openapi-generated",
-    "generate:prettier": "cd ../.. && ./mvnw prettier:write"
+    "generate:prettier": "cd ../.. && ./mvnw prettier:write",
+    "generate:license": "cd ../.. && ./mvnw license:format"
   }
 }
