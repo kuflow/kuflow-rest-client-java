@@ -16,6 +16,7 @@ import java.util.List;
 @JsonTypeName("PRINCIPAL_PAGE")
 @Fluent
 public final class PrincipalPage extends Page {
+
     /*
      * The content property.
      */

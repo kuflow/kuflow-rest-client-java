@@ -2,9 +2,8 @@ package com.kuflow.rest.client.util;
 
 import com.kuflow.rest.client.models.TaskElementValue;
 import com.kuflow.rest.client.models.TaskSaveElementCommand;
-
-import javax.annotation.Nullable;
 import java.util.List;
+import javax.annotation.Nullable;
 
 public class TaskElementValueAccessorTaskSaveElementCommand implements TaskElementValueAccessor {
 
@@ -28,5 +27,4 @@ public class TaskElementValueAccessorTaskSaveElementCommand implements TaskEleme
     public void setElementValues(List<TaskElementValue> elementValues) {
         command.setElementValues(elementValues);
     }
-
 }

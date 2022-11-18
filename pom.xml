@@ -266,6 +266,11 @@
           <configuration>
             <prettierJavaVersion>${prettier-java.version}</prettierJavaVersion>
             <ignoreEditorConfig>false</ignoreEditorConfig>
+            <inputGlobs>
+              <inputGlob>src/main/java/**/*.java</inputGlob>
+              <inputGlob>src/test/java/**/*.java</inputGlob>
+              <inputGlob>src/generated/java/**/*.java</inputGlob>
+            </inputGlobs>
           </configuration>
           <executions>
             <execution>
@@ -276,11 +281,6 @@
             </execution>
           </executions>
         </plugin>
-<!--        <plugin>-->
-<!--          <groupId>org.openapitools</groupId>-->
-<!--          <artifactId>openapi-generator-maven-plugin</artifactId>-->
-<!--          <version>${openapi-generator-maven-plugin.version}</version>-->
-<!--        </plugin>-->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-gpg-plugin</artifactId>

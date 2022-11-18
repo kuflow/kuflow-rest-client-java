@@ -3,7 +3,6 @@ package com.kuflow.rest.client.model;
 import static java.util.Collections.unmodifiableList;
 
 import com.kuflow.rest.client.models.TaskState;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;

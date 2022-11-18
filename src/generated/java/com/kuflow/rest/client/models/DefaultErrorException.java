@@ -10,6 +10,7 @@ import com.azure.core.http.HttpResponse;
 
 /** Exception thrown for an invalid response with DefaultError information. */
 public final class DefaultErrorException extends HttpResponseException {
+
     /**
      * Initializes a new instance of the DefaultErrorException class.
      *

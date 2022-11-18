@@ -17,6 +17,7 @@ import java.util.UUID;
 @JsonTypeName("PROCESS.STATE_CHANGED")
 @Fluent
 public final class WebhookEventProcessStateChanged extends WebhookEvent {
+
     /*
      * The data property.
      */

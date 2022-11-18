@@ -11,8 +11,6 @@ import com.kuflow.rest.client.models.TaskElementValueObject;
 import com.kuflow.rest.client.models.TaskElementValuePrincipal;
 import com.kuflow.rest.client.models.TaskElementValuePrincipalItem;
 import com.kuflow.rest.client.models.TaskElementValueString;
-
-import javax.annotation.Nonnull;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -21,6 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import javax.annotation.Nonnull;
 
 public class TaskHelper {
 
@@ -64,10 +63,7 @@ public class TaskHelper {
             elementValueList.addAll(elementValues);
         }
 
-        List<TaskElementValue> taskElementValues = elementValueList
-            .stream()
-            .map(TaskHelper::toTaskElementValue)
-            .collect(toList());
+        List<TaskElementValue> taskElementValues = elementValueList.stream().map(TaskHelper::toTaskElementValue).collect(toList());
 
         List<TaskElementValue> taskElementValueList = taskElementValueAccessor.getElementValues();
 
@@ -93,10 +89,7 @@ public class TaskHelper {
             elementValues = new LinkedList<>();
         }
 
-        List<TaskElementValue> taskElementValues = elementValues
-            .stream()
-            .map(TaskHelper::toTaskElementValue)
-            .collect(toList());
+        List<TaskElementValue> taskElementValues = elementValues.stream().map(TaskHelper::toTaskElementValue).collect(toList());
 
         taskElementValueAccessor.setElementValues(taskElementValues);
     }
@@ -185,7 +178,6 @@ public class TaskHelper {
             .orElseThrow(() -> new KuFlowRestClientException("Element value doesn't exist"));
     }
 
-
     public static List<Double> getElementValueOfAsDoubleList(TaskElementValueAccessor taskElementValueAccessor) {
         List<TaskElementValue> taskElementValues = getElementValuesOf(taskElementValueAccessor);
 
@@ -253,8 +245,8 @@ public class TaskHelper {
     }
 
     public static Map<String, Object> getElementValueOfAsMap(TaskElementValueAccessor taskElementValueAccessor) {
-            return findElementValueOfAsMap(taskElementValueAccessor)
-                .orElseThrow(() -> new KuFlowRestClientException("Element value doesn't exist"));
+        return findElementValueOfAsMap(taskElementValueAccessor)
+            .orElseThrow(() -> new KuFlowRestClientException("Element value doesn't exist"));
     }
 
     public static List<Map<String, Object>> getElementValueOfAsMapList(TaskElementValueAccessor taskElementValueAccessor) {
@@ -350,8 +342,4 @@ public class TaskHelper {
 
         return taskElementValues;
     }
-
-
-
-
 }

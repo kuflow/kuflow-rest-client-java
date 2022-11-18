@@ -24,6 +24,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in EchoOperations. */
 public final class EchoOperationsImpl {
+
     /** The proxy service used to perform REST calls. */
     private final EchoOperationsService service;
 
@@ -36,8 +37,7 @@ public final class EchoOperationsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     EchoOperationsImpl(KuFlowClientImpl client) {
-        this.service =
-                RestProxy.create(EchoOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(EchoOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -49,16 +49,14 @@ public final class EchoOperationsImpl {
     @ServiceInterface(name = "KuFlowClientEchoOper")
     public interface EchoOperationsService {
         @Get("/echo")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Mono<Response<Authentication>> requestEcho(
-                @HostParam("$host") String host, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Authentication>> requestEcho(@HostParam("$host") String host, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/echo")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
-        Response<Authentication> requestEchoSync(
-                @HostParam("$host") String host, @HeaderParam("Accept") String accept, Context context);
+        Response<Authentication> requestEchoSync(@HostParam("$host") String host, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**

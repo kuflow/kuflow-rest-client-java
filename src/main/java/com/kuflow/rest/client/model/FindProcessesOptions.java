@@ -3,7 +3,6 @@ package com.kuflow.rest.client.model;
 import static java.util.Collections.unmodifiableList;
 
 import com.kuflow.rest.client.models.PrincipalType;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -66,5 +65,4 @@ public class FindProcessesOptions {
         Objects.requireNonNull(sort, "'sort' is required");
         this.sorts.remove(sort);
     }
-
 }

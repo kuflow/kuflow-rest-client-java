@@ -15,12 +15,12 @@ import com.kuflow.rest.client.models.DefaultErrorException;
 import com.kuflow.rest.client.models.Principal;
 import com.kuflow.rest.client.models.PrincipalPage;
 import com.kuflow.rest.client.models.PrincipalType;
-
 import java.util.List;
 import java.util.UUID;
 
 /** An instance of this class provides access to all the operations defined in PrincipalOperations. */
 public final class PrincipalOperations {
+
     /** The service. */
     private final PrincipalOperationsImpl service;
 

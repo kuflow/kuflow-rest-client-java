@@ -9,5 +9,4 @@ public class KuFlowRestClientException extends RuntimeException {
     public KuFlowRestClientException(String message, Throwable cause) {
         super(message, cause);
     }
-
 }

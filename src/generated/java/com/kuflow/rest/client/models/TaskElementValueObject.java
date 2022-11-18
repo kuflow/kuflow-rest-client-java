@@ -16,6 +16,7 @@ import java.util.Map;
 @JsonTypeName("OBJECT")
 @Fluent
 public final class TaskElementValueObject extends TaskElementValue {
+
     /*
      * Dictionary of <any>
      */

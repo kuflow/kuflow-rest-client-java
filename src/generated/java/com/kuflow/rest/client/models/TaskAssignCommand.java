@@ -12,6 +12,7 @@ import java.util.UUID;
 /** Command to assign task, only one option is required. */
 @Fluent
 public final class TaskAssignCommand {
+
     /*
      * The principalId property.
      */

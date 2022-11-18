@@ -12,6 +12,7 @@ import java.util.UUID;
 /** The PrincipalApplication model. */
 @Fluent
 public final class PrincipalApplication {
+
     /*
      * The id property.
      */

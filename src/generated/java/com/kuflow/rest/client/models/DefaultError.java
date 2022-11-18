@@ -13,6 +13,7 @@ import java.util.List;
 /** Default error. */
 @Fluent
 public final class DefaultError {
+
     /*
      * Timestamp indicating when the error happened.
      */

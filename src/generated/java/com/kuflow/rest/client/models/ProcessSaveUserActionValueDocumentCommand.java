@@ -12,6 +12,7 @@ import java.util.UUID;
 /** The ProcessSaveUserActionValueDocumentCommand model. */
 @Fluent
 public final class ProcessSaveUserActionValueDocumentCommand {
+
     /*
      * The userActionValueId property.
      */

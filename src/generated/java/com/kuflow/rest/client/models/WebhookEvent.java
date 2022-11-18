@@ -14,18 +14,17 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 /** The WebhookEvent model. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type",
-        defaultImpl = WebhookEvent.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = WebhookEvent.class)
 @JsonTypeName("WebhookEvent")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "PROCESS.STATE_CHANGED", value = WebhookEventProcessStateChanged.class),
-    @JsonSubTypes.Type(name = "TASK.STATE_CHANGED", value = WebhookEventTaskStateChanged.class)
-})
+@JsonSubTypes(
+    {
+        @JsonSubTypes.Type(name = "PROCESS.STATE_CHANGED", value = WebhookEventProcessStateChanged.class),
+        @JsonSubTypes.Type(name = "TASK.STATE_CHANGED", value = WebhookEventTaskStateChanged.class),
+    }
+)
 @Fluent
 public class WebhookEvent {
+
     /*
      * The id property.
      */

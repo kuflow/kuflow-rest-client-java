@@ -40,6 +40,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ProcessOperations. */
 public final class ProcessOperationsImpl {
+
     /** The proxy service used to perform REST calls. */
     private final ProcessOperationsService service;
 
@@ -52,9 +53,7 @@ public final class ProcessOperationsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     ProcessOperationsImpl(KuFlowClientImpl client) {
-        this.service =
-                RestProxy.create(
-                        ProcessOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ProcessOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,200 +65,219 @@ public final class ProcessOperationsImpl {
     @ServiceInterface(name = "KuFlowClientProcessO")
     public interface ProcessOperationsService {
         @Get("/processes")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<ProcessPage>> findProcesses(
-                @HostParam("$host") String host,
-                @QueryParam("size") Integer size,
-                @QueryParam("page") Integer page,
-                @QueryParam("sort") String sort,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @QueryParam("size") Integer size,
+            @QueryParam("page") Integer page,
+            @QueryParam("sort") String sort,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Get("/processes")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<ProcessPage> findProcessesSync(
-                @HostParam("$host") String host,
-                @QueryParam("size") Integer size,
-                @QueryParam("page") Integer page,
-                @QueryParam("sort") String sort,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @QueryParam("size") Integer size,
+            @QueryParam("page") Integer page,
+            @QueryParam("sort") String sort,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/processes")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Process>> createProcess(
-                @HostParam("$host") String host,
-                @BodyParam("application/json") Process process,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @BodyParam("application/json") Process process,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/processes")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Process> createProcessSync(
-                @HostParam("$host") String host,
-                @BodyParam("application/json") Process process,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @BodyParam("application/json") Process process,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Get("/processes/{id}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Process>> retrieveProcess(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Get("/processes/{id}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Process> retrieveProcessSync(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/processes/{id}/~actions/change-initiator")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Process>> actionsProcessChangeInitiator(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @BodyParam("application/json") ProcessChangeInitiatorCommand command,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") ProcessChangeInitiatorCommand command,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/processes/{id}/~actions/change-initiator")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Process> actionsProcessChangeInitiatorSync(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @BodyParam("application/json") ProcessChangeInitiatorCommand command,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") ProcessChangeInitiatorCommand command,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/processes/{id}/~actions/save-element")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Process>> actionsProcessSaveElement(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @BodyParam("application/json") ProcessSaveElementCommand command,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") ProcessSaveElementCommand command,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/processes/{id}/~actions/save-element")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Process> actionsProcessSaveElementSync(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @BodyParam("application/json") ProcessSaveElementCommand command,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") ProcessSaveElementCommand command,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/processes/{id}/~actions/delete-element")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Process>> actionsProcessDeleteElement(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @BodyParam("application/json") ProcessDeleteElementCommand command,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") ProcessDeleteElementCommand command,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/processes/{id}/~actions/delete-element")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Process> actionsProcessDeleteElementSync(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @BodyParam("application/json") ProcessDeleteElementCommand command,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @BodyParam("application/json") ProcessDeleteElementCommand command,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/processes/{id}/~actions/complete")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Process>> actionsProcessComplete(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/processes/{id}/~actions/complete")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Process> actionsProcessCompleteSync(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/processes/{id}/~actions/cancel")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Process>> actionsProcessCancel(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/processes/{id}/~actions/cancel")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Process> actionsProcessCancelSync(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/processes/{id}/~actions/save-user-action-value-document")
-        @ExpectedResponses({200, 304})
+        @ExpectedResponses({ 200, 304 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Process>> actionsProcessSaveUserActionValueDocument(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @QueryParam("fileContentType") String fileContentType,
-                @QueryParam("fileName") String fileName,
-                @QueryParam("userActionValueId") UUID userActionValueId,
-                @BodyParam("application/octet-stream") Flux<ByteBuffer> file,
-                @HeaderParam("Content-Length") long contentLength,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("fileContentType") String fileContentType,
+            @QueryParam("fileName") String fileName,
+            @QueryParam("userActionValueId") UUID userActionValueId,
+            @BodyParam("application/octet-stream") Flux<ByteBuffer> file,
+            @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/processes/{id}/~actions/save-user-action-value-document")
-        @ExpectedResponses({200, 304})
+        @ExpectedResponses({ 200, 304 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Process>> actionsProcessSaveUserActionValueDocument(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @QueryParam("fileContentType") String fileContentType,
-                @QueryParam("fileName") String fileName,
-                @QueryParam("userActionValueId") UUID userActionValueId,
-                @BodyParam("application/octet-stream") BinaryData file,
-                @HeaderParam("Content-Length") long contentLength,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("fileContentType") String fileContentType,
+            @QueryParam("fileName") String fileName,
+            @QueryParam("userActionValueId") UUID userActionValueId,
+            @BodyParam("application/octet-stream") BinaryData file,
+            @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/processes/{id}/~actions/save-user-action-value-document")
-        @ExpectedResponses({200, 304})
+        @ExpectedResponses({ 200, 304 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Process> actionsProcessSaveUserActionValueDocumentSync(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @QueryParam("fileContentType") String fileContentType,
-                @QueryParam("fileName") String fileName,
-                @QueryParam("userActionValueId") UUID userActionValueId,
-                @BodyParam("application/octet-stream") BinaryData file,
-                @HeaderParam("Content-Length") long contentLength,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @QueryParam("fileContentType") String fileContentType,
+            @QueryParam("fileName") String fileName,
+            @QueryParam("userActionValueId") UUID userActionValueId,
+            @BodyParam("application/octet-stream") BinaryData file,
+            @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
     }
 
     /**
@@ -282,12 +300,10 @@ public final class ProcessOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ProcessPage>> findProcessesWithResponseAsync(Integer size, Integer page, List<String> sort) {
         final String accept = "application/json";
-        String sortConverted =
-                (sort == null)
-                        ? null
-                        : sort.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        return FluxUtil.withContext(
-                context -> service.findProcesses(this.client.getHost(), size, page, sortConverted, accept, context));
+        String sortConverted = (sort == null)
+            ? null
+            : sort.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return FluxUtil.withContext(context -> service.findProcesses(this.client.getHost(), size, page, sortConverted, accept, context));
     }
 
     /**
@@ -309,13 +325,11 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ProcessPage>> findProcessesWithResponseAsync(
-            Integer size, Integer page, List<String> sort, Context context) {
+    public Mono<Response<ProcessPage>> findProcessesWithResponseAsync(Integer size, Integer page, List<String> sort, Context context) {
         final String accept = "application/json";
-        String sortConverted =
-                (sort == null)
-                        ? null
-                        : sort.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        String sortConverted = (sort == null)
+            ? null
+            : sort.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return service.findProcesses(this.client.getHost(), size, page, sortConverted, accept, context);
     }
 
@@ -380,8 +394,7 @@ public final class ProcessOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProcessPage> findProcessesAsync(Integer size, Integer page, List<String> sort, Context context) {
-        return findProcessesWithResponseAsync(size, page, sort, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return findProcessesWithResponseAsync(size, page, sort, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -403,13 +416,11 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProcessPage> findProcessesWithResponse(
-            Integer size, Integer page, List<String> sort, Context context) {
+    public Response<ProcessPage> findProcessesWithResponse(Integer size, Integer page, List<String> sort, Context context) {
         final String accept = "application/json";
-        String sortConverted =
-                (sort == null)
-                        ? null
-                        : sort.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        String sortConverted = (sort == null)
+            ? null
+            : sort.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return service.findProcessesSync(this.client.getHost(), size, page, sortConverted, accept, context);
     }
 
@@ -734,11 +745,9 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Process>> actionsProcessChangeInitiatorWithResponseAsync(
-            UUID id, ProcessChangeInitiatorCommand command) {
+    public Mono<Response<Process>> actionsProcessChangeInitiatorWithResponseAsync(UUID id, ProcessChangeInitiatorCommand command) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.actionsProcessChangeInitiator(this.client.getHost(), id, command, accept, context));
+        return FluxUtil.withContext(context -> service.actionsProcessChangeInitiator(this.client.getHost(), id, command, accept, context));
     }
 
     /**
@@ -759,7 +768,10 @@ public final class ProcessOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Process>> actionsProcessChangeInitiatorWithResponseAsync(
-            UUID id, ProcessChangeInitiatorCommand command, Context context) {
+        UUID id,
+        ProcessChangeInitiatorCommand command,
+        Context context
+    ) {
         final String accept = "application/json";
         return service.actionsProcessChangeInitiator(this.client.getHost(), id, command, accept, context);
     }
@@ -781,8 +793,7 @@ public final class ProcessOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Process> actionsProcessChangeInitiatorAsync(UUID id, ProcessChangeInitiatorCommand command) {
-        return actionsProcessChangeInitiatorWithResponseAsync(id, command)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return actionsProcessChangeInitiatorWithResponseAsync(id, command).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -802,10 +813,8 @@ public final class ProcessOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Process> actionsProcessChangeInitiatorAsync(
-            UUID id, ProcessChangeInitiatorCommand command, Context context) {
-        return actionsProcessChangeInitiatorWithResponseAsync(id, command, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<Process> actionsProcessChangeInitiatorAsync(UUID id, ProcessChangeInitiatorCommand command, Context context) {
+        return actionsProcessChangeInitiatorWithResponseAsync(id, command, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -825,8 +834,7 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Process> actionsProcessChangeInitiatorWithResponse(
-            UUID id, ProcessChangeInitiatorCommand command, Context context) {
+    public Response<Process> actionsProcessChangeInitiatorWithResponse(UUID id, ProcessChangeInitiatorCommand command, Context context) {
         final String accept = "application/json";
         return service.actionsProcessChangeInitiatorSync(this.client.getHost(), id, command, accept, context);
     }
@@ -869,11 +877,9 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Process>> actionsProcessSaveElementWithResponseAsync(
-            UUID id, ProcessSaveElementCommand command) {
+    public Mono<Response<Process>> actionsProcessSaveElementWithResponseAsync(UUID id, ProcessSaveElementCommand command) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.actionsProcessSaveElement(this.client.getHost(), id, command, accept, context));
+        return FluxUtil.withContext(context -> service.actionsProcessSaveElement(this.client.getHost(), id, command, accept, context));
     }
 
     /**
@@ -895,8 +901,7 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Process>> actionsProcessSaveElementWithResponseAsync(
-            UUID id, ProcessSaveElementCommand command, Context context) {
+    public Mono<Response<Process>> actionsProcessSaveElementWithResponseAsync(UUID id, ProcessSaveElementCommand command, Context context) {
         final String accept = "application/json";
         return service.actionsProcessSaveElement(this.client.getHost(), id, command, accept, context);
     }
@@ -943,8 +948,7 @@ public final class ProcessOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Process> actionsProcessSaveElementAsync(UUID id, ProcessSaveElementCommand command, Context context) {
-        return actionsProcessSaveElementWithResponseAsync(id, command, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return actionsProcessSaveElementWithResponseAsync(id, command, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -966,8 +970,7 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Process> actionsProcessSaveElementWithResponse(
-            UUID id, ProcessSaveElementCommand command, Context context) {
+    public Response<Process> actionsProcessSaveElementWithResponse(UUID id, ProcessSaveElementCommand command, Context context) {
         final String accept = "application/json";
         return service.actionsProcessSaveElementSync(this.client.getHost(), id, command, accept, context);
     }
@@ -1009,11 +1012,9 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Process>> actionsProcessDeleteElementWithResponseAsync(
-            UUID id, ProcessDeleteElementCommand command) {
+    public Mono<Response<Process>> actionsProcessDeleteElementWithResponseAsync(UUID id, ProcessDeleteElementCommand command) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.actionsProcessDeleteElement(this.client.getHost(), id, command, accept, context));
+        return FluxUtil.withContext(context -> service.actionsProcessDeleteElement(this.client.getHost(), id, command, accept, context));
     }
 
     /**
@@ -1033,7 +1034,10 @@ public final class ProcessOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Process>> actionsProcessDeleteElementWithResponseAsync(
-            UUID id, ProcessDeleteElementCommand command, Context context) {
+        UUID id,
+        ProcessDeleteElementCommand command,
+        Context context
+    ) {
         final String accept = "application/json";
         return service.actionsProcessDeleteElement(this.client.getHost(), id, command, accept, context);
     }
@@ -1054,8 +1058,7 @@ public final class ProcessOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Process> actionsProcessDeleteElementAsync(UUID id, ProcessDeleteElementCommand command) {
-        return actionsProcessDeleteElementWithResponseAsync(id, command)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return actionsProcessDeleteElementWithResponseAsync(id, command).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1074,10 +1077,8 @@ public final class ProcessOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Process> actionsProcessDeleteElementAsync(
-            UUID id, ProcessDeleteElementCommand command, Context context) {
-        return actionsProcessDeleteElementWithResponseAsync(id, command, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<Process> actionsProcessDeleteElementAsync(UUID id, ProcessDeleteElementCommand command, Context context) {
+        return actionsProcessDeleteElementWithResponseAsync(id, command, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1096,8 +1097,7 @@ public final class ProcessOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Process> actionsProcessDeleteElementWithResponse(
-            UUID id, ProcessDeleteElementCommand command, Context context) {
+    public Response<Process> actionsProcessDeleteElementWithResponse(UUID id, ProcessDeleteElementCommand command, Context context) {
         final String accept = "application/json";
         return service.actionsProcessDeleteElementSync(this.client.getHost(), id, command, accept, context);
     }
@@ -1137,8 +1137,7 @@ public final class ProcessOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Process>> actionsProcessCompleteWithResponseAsync(UUID id) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.actionsProcessComplete(this.client.getHost(), id, accept, context));
+        return FluxUtil.withContext(context -> service.actionsProcessComplete(this.client.getHost(), id, accept, context));
     }
 
     /**
@@ -1254,8 +1253,7 @@ public final class ProcessOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Process>> actionsProcessCancelWithResponseAsync(UUID id) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.actionsProcessCancel(this.client.getHost(), id, accept, context));
+        return FluxUtil.withContext(context -> service.actionsProcessCancel(this.client.getHost(), id, accept, context));
     }
 
     /**
@@ -1381,55 +1379,16 @@ public final class ProcessOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Process>> actionsProcessSaveUserActionValueDocumentWithResponseAsync(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            UUID userActionValueId,
-            Flux<ByteBuffer> file,
-            long contentLength) {
+        UUID id,
+        String fileContentType,
+        String fileName,
+        UUID userActionValueId,
+        Flux<ByteBuffer> file,
+        long contentLength
+    ) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.actionsProcessSaveUserActionValueDocument(
-                                this.client.getHost(),
-                                id,
-                                fileContentType,
-                                fileName,
-                                userActionValueId,
-                                file,
-                                contentLength,
-                                accept,
-                                context));
-    }
-
-    /**
-     * Upload and save a document in a user action
-     *
-     * <p>Allow saving a user action document uploading the content.
-     *
-     * @param id The resource ID.
-     * @param fileContentType Document content type.
-     * @param fileName Document name.
-     * @param userActionValueId User action value ID related to de document.
-     * @param file Document to save.
-     * @param contentLength The Content-Length header for the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Process>> actionsProcessSaveUserActionValueDocumentWithResponseAsync(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            UUID userActionValueId,
-            Flux<ByteBuffer> file,
-            long contentLength,
-            Context context) {
-        final String accept = "application/json";
-        return service.actionsProcessSaveUserActionValueDocument(
+        return FluxUtil.withContext(context ->
+            service.actionsProcessSaveUserActionValueDocument(
                 this.client.getHost(),
                 id,
                 fileContentType,
@@ -1438,106 +1397,9 @@ public final class ProcessOperationsImpl {
                 file,
                 contentLength,
                 accept,
-                context);
-    }
-
-    /**
-     * Upload and save a document in a user action
-     *
-     * <p>Allow saving a user action document uploading the content.
-     *
-     * @param id The resource ID.
-     * @param fileContentType Document content type.
-     * @param fileName Document name.
-     * @param userActionValueId User action value ID related to de document.
-     * @param file Document to save.
-     * @param contentLength The Content-Length header for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Process> actionsProcessSaveUserActionValueDocumentAsync(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            UUID userActionValueId,
-            Flux<ByteBuffer> file,
-            long contentLength) {
-        return actionsProcessSaveUserActionValueDocumentWithResponseAsync(
-                        id, fileContentType, fileName, userActionValueId, file, contentLength)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Upload and save a document in a user action
-     *
-     * <p>Allow saving a user action document uploading the content.
-     *
-     * @param id The resource ID.
-     * @param fileContentType Document content type.
-     * @param fileName Document name.
-     * @param userActionValueId User action value ID related to de document.
-     * @param file Document to save.
-     * @param contentLength The Content-Length header for the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Process> actionsProcessSaveUserActionValueDocumentAsync(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            UUID userActionValueId,
-            Flux<ByteBuffer> file,
-            long contentLength,
-            Context context) {
-        return actionsProcessSaveUserActionValueDocumentWithResponseAsync(
-                        id, fileContentType, fileName, userActionValueId, file, contentLength, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Upload and save a document in a user action
-     *
-     * <p>Allow saving a user action document uploading the content.
-     *
-     * @param id The resource ID.
-     * @param fileContentType Document content type.
-     * @param fileName Document name.
-     * @param userActionValueId User action value ID related to de document.
-     * @param file Document to save.
-     * @param contentLength The Content-Length header for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Process>> actionsProcessSaveUserActionValueDocumentWithResponseAsync(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            UUID userActionValueId,
-            BinaryData file,
-            long contentLength) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.actionsProcessSaveUserActionValueDocument(
-                                this.client.getHost(),
-                                id,
-                                fileContentType,
-                                fileName,
-                                userActionValueId,
-                                file,
-                                contentLength,
-                                accept,
-                                context));
+                context
+            )
+        );
     }
 
     /**
@@ -1559,15 +1421,131 @@ public final class ProcessOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Process>> actionsProcessSaveUserActionValueDocumentWithResponseAsync(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            UUID userActionValueId,
-            BinaryData file,
-            long contentLength,
-            Context context) {
+        UUID id,
+        String fileContentType,
+        String fileName,
+        UUID userActionValueId,
+        Flux<ByteBuffer> file,
+        long contentLength,
+        Context context
+    ) {
         final String accept = "application/json";
         return service.actionsProcessSaveUserActionValueDocument(
+            this.client.getHost(),
+            id,
+            fileContentType,
+            fileName,
+            userActionValueId,
+            file,
+            contentLength,
+            accept,
+            context
+        );
+    }
+
+    /**
+     * Upload and save a document in a user action
+     *
+     * <p>Allow saving a user action document uploading the content.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param userActionValueId User action value ID related to de document.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Process> actionsProcessSaveUserActionValueDocumentAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        UUID userActionValueId,
+        Flux<ByteBuffer> file,
+        long contentLength
+    ) {
+        return actionsProcessSaveUserActionValueDocumentWithResponseAsync(
+            id,
+            fileContentType,
+            fileName,
+            userActionValueId,
+            file,
+            contentLength
+        )
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Upload and save a document in a user action
+     *
+     * <p>Allow saving a user action document uploading the content.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param userActionValueId User action value ID related to de document.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Process> actionsProcessSaveUserActionValueDocumentAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        UUID userActionValueId,
+        Flux<ByteBuffer> file,
+        long contentLength,
+        Context context
+    ) {
+        return actionsProcessSaveUserActionValueDocumentWithResponseAsync(
+            id,
+            fileContentType,
+            fileName,
+            userActionValueId,
+            file,
+            contentLength,
+            context
+        )
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Upload and save a document in a user action
+     *
+     * <p>Allow saving a user action document uploading the content.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param userActionValueId User action value ID related to de document.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Process>> actionsProcessSaveUserActionValueDocumentWithResponseAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        UUID userActionValueId,
+        BinaryData file,
+        long contentLength
+    ) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context ->
+            service.actionsProcessSaveUserActionValueDocument(
                 this.client.getHost(),
                 id,
                 fileContentType,
@@ -1576,7 +1554,50 @@ public final class ProcessOperationsImpl {
                 file,
                 contentLength,
                 accept,
-                context);
+                context
+            )
+        );
+    }
+
+    /**
+     * Upload and save a document in a user action
+     *
+     * <p>Allow saving a user action document uploading the content.
+     *
+     * @param id The resource ID.
+     * @param fileContentType Document content type.
+     * @param fileName Document name.
+     * @param userActionValueId User action value ID related to de document.
+     * @param file Document to save.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Process>> actionsProcessSaveUserActionValueDocumentWithResponseAsync(
+        UUID id,
+        String fileContentType,
+        String fileName,
+        UUID userActionValueId,
+        BinaryData file,
+        long contentLength,
+        Context context
+    ) {
+        final String accept = "application/json";
+        return service.actionsProcessSaveUserActionValueDocument(
+            this.client.getHost(),
+            id,
+            fileContentType,
+            fileName,
+            userActionValueId,
+            file,
+            contentLength,
+            accept,
+            context
+        );
     }
 
     /**
@@ -1597,15 +1618,22 @@ public final class ProcessOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Process> actionsProcessSaveUserActionValueDocumentAsync(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            UUID userActionValueId,
-            BinaryData file,
-            long contentLength) {
+        UUID id,
+        String fileContentType,
+        String fileName,
+        UUID userActionValueId,
+        BinaryData file,
+        long contentLength
+    ) {
         return actionsProcessSaveUserActionValueDocumentWithResponseAsync(
-                        id, fileContentType, fileName, userActionValueId, file, contentLength)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            id,
+            fileContentType,
+            fileName,
+            userActionValueId,
+            file,
+            contentLength
+        )
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1627,16 +1655,24 @@ public final class ProcessOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Process> actionsProcessSaveUserActionValueDocumentAsync(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            UUID userActionValueId,
-            BinaryData file,
-            long contentLength,
-            Context context) {
+        UUID id,
+        String fileContentType,
+        String fileName,
+        UUID userActionValueId,
+        BinaryData file,
+        long contentLength,
+        Context context
+    ) {
         return actionsProcessSaveUserActionValueDocumentWithResponseAsync(
-                        id, fileContentType, fileName, userActionValueId, file, contentLength, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            id,
+            fileContentType,
+            fileName,
+            userActionValueId,
+            file,
+            contentLength,
+            context
+        )
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1658,24 +1694,26 @@ public final class ProcessOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Process> actionsProcessSaveUserActionValueDocumentWithResponse(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            UUID userActionValueId,
-            BinaryData file,
-            long contentLength,
-            Context context) {
+        UUID id,
+        String fileContentType,
+        String fileName,
+        UUID userActionValueId,
+        BinaryData file,
+        long contentLength,
+        Context context
+    ) {
         final String accept = "application/json";
         return service.actionsProcessSaveUserActionValueDocumentSync(
-                this.client.getHost(),
-                id,
-                fileContentType,
-                fileName,
-                userActionValueId,
-                file,
-                contentLength,
-                accept,
-                context);
+            this.client.getHost(),
+            id,
+            fileContentType,
+            fileName,
+            userActionValueId,
+            file,
+            contentLength,
+            accept,
+            context
+        );
     }
 
     /**
@@ -1696,14 +1734,22 @@ public final class ProcessOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Process actionsProcessSaveUserActionValueDocument(
-            UUID id,
-            String fileContentType,
-            String fileName,
-            UUID userActionValueId,
-            BinaryData file,
-            long contentLength) {
+        UUID id,
+        String fileContentType,
+        String fileName,
+        UUID userActionValueId,
+        BinaryData file,
+        long contentLength
+    ) {
         return actionsProcessSaveUserActionValueDocumentWithResponse(
-                        id, fileContentType, fileName, userActionValueId, file, contentLength, Context.NONE)
-                .getValue();
+            id,
+            fileContentType,
+            fileName,
+            userActionValueId,
+            file,
+            contentLength,
+            Context.NONE
+        )
+            .getValue();
     }
 }

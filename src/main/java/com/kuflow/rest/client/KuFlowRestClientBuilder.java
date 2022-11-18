@@ -35,30 +35,28 @@ import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.kuflow.rest.client.implementation.KuFlowClientImpl;
 import com.kuflow.rest.client.implementation.KuFlowClientImplBuilder;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import reactor.core.publisher.Mono;
 
 /**
  * KuFlowRestClientBuilder that creates SmsAsyncClient and SmsClient.
  */
-@ServiceClientBuilder(serviceClients = {KuFlowRestClient.class})
-public final class KuFlowRestClientBuilder implements
-    ConfigurationTrait<KuFlowRestClientBuilder>,
-    EndpointTrait<KuFlowRestClientBuilder>,
-    HttpTrait<KuFlowRestClientBuilder> {
+@ServiceClientBuilder(serviceClients = { KuFlowRestClient.class })
+public final class KuFlowRestClientBuilder
+    implements ConfigurationTrait<KuFlowRestClientBuilder>, EndpointTrait<KuFlowRestClientBuilder>, HttpTrait<KuFlowRestClientBuilder> {
+
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
@@ -278,17 +276,17 @@ public final class KuFlowRestClientBuilder implements
         return this;
     }
 
-//    /**
-//     * Create asynchronous client applying default policies.
-//     * Additional HttpPolicies specified by pipelinePolicies will be applied after them
-//     *
-//     * @return KuFlowRestClientAsync instance
-//     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
-//     * and {@link #retryPolicy(RetryPolicy)} have been set.
-//     */
-//    public KuFlowRestClientAsync buildClientAsync() {
-//        return new KuFlowRestClientAsync(createServiceImpl());
-//    }
+    //    /**
+    //     * Create asynchronous client applying default policies.
+    //     * Additional HttpPolicies specified by pipelinePolicies will be applied after them
+    //     *
+    //     * @return KuFlowRestClientAsync instance
+    //     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+    //     * and {@link #retryPolicy(RetryPolicy)} have been set.
+    //     */
+    //    public KuFlowRestClientAsync buildClientAsync() {
+    //        return new KuFlowRestClientAsync(createServiceImpl());
+    //    }
 
     /**
      * Create synchronous  client applying default policies.
@@ -308,9 +306,7 @@ public final class KuFlowRestClientBuilder implements
         HttpPipeline builderPipeline = this.createHttpPipeline();
 
         KuFlowClientImplBuilder clientBuilder = new KuFlowClientImplBuilder();
-        clientBuilder.host(this.endpoint)
-            .serializerAdapter(this.serializerAdapter)
-            .pipeline(builderPipeline);
+        clientBuilder.host(this.endpoint).serializerAdapter(this.serializerAdapter).pipeline(builderPipeline);
 
         return clientBuilder.buildClient();
     }
@@ -340,9 +336,8 @@ public final class KuFlowRestClientBuilder implements
         }
         // Add additional policies
         policies.addAll(
-            this.pipelinePolicies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                .collect(toList()));
+            this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL).collect(toList())
+        );
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(this.retryPolicy, this.retryOptions));
@@ -355,16 +350,14 @@ public final class KuFlowRestClientBuilder implements
         policies.addAll(
             this.pipelinePolicies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList())
+        );
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
-         // Add logging policy
+        // Add logging policy
         policies.add(new HttpLoggingPolicy(buildLogOptions));
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(this.httpClient)
-            .build();
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0])).httpClient(this.httpClient).build();
     }
 
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
@@ -376,9 +369,9 @@ public final class KuFlowRestClientBuilder implements
         return new BearerTokenAuthenticationPolicy(tokenCredential, "https://api.kuflow.com//v2022-10-08/.default") {
             @Override
             public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-//                if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
-//                    return Mono.error(new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
-//                }
+                //                if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
+                //                    return Mono.error(new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
+                //                }
                 HttpPipelineNextPolicy nextPolicy = next.clone();
 
                 return authorizeRequest(context)
@@ -386,21 +379,21 @@ public final class KuFlowRestClientBuilder implements
                     .flatMap(httpResponse -> {
                         String authHeader = httpResponse.getHeaderValue(WWW_AUTHENTICATE);
                         if (httpResponse.getStatusCode() == 401 && authHeader != null) {
-                            return authorizeRequestOnChallenge(context, httpResponse).flatMap(retry -> {
-                                if (retry) {
-                                    // Both Netty and OkHttp expect the requestBody to be closed after the response has been read.
-                                    // Failure to do so results in memory leak.
-                                    // In case of StreamResponse (or other scenarios where we do not eagerly read the response)
-                                    // the response body may not be consumed.
-                                    // This can cause potential leaks in the scenarios like above, where the policy
-                                    // may intercept the response and it may never be read.
-                                    // Forcing the read here - so that the memory can be released.
-                                    return httpResponse.getBody().ignoreElements()
-                                        .then(nextPolicy.process());
-                                } else {
-                                    return Mono.just(httpResponse);
-                                }
-                            });
+                            return authorizeRequestOnChallenge(context, httpResponse)
+                                .flatMap(retry -> {
+                                    if (retry) {
+                                        // Both Netty and OkHttp expect the requestBody to be closed after the response has been read.
+                                        // Failure to do so results in memory leak.
+                                        // In case of StreamResponse (or other scenarios where we do not eagerly read the response)
+                                        // the response body may not be consumed.
+                                        // This can cause potential leaks in the scenarios like above, where the policy
+                                        // may intercept the response and it may never be read.
+                                        // Forcing the read here - so that the memory can be released.
+                                        return httpResponse.getBody().ignoreElements().then(nextPolicy.process());
+                                    } else {
+                                        return Mono.just(httpResponse);
+                                    }
+                                });
                         }
                         return Mono.just(httpResponse);
                     });

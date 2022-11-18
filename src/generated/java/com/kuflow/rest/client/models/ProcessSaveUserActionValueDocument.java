@@ -13,6 +13,7 @@ import reactor.core.publisher.Flux;
 /** The ProcessSaveUserActionValueDocument model. */
 @Fluent
 public final class ProcessSaveUserActionValueDocument {
+
     /*
      * Command info
      */

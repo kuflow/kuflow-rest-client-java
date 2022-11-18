@@ -3,7 +3,6 @@ package com.kuflow.rest.client.model;
 import static java.util.Collections.unmodifiableList;
 
 import com.kuflow.rest.client.models.PrincipalType;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -107,5 +106,4 @@ public class FindPrincipalsOptions {
         Objects.requireNonNull(groupId, "'groupId' is required");
         this.groupIds.remove(groupId);
     }
-
 }

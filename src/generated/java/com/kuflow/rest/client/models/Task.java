@@ -50,6 +50,7 @@ import java.util.UUID;
 @JsonFlatten
 @Fluent
 public class Task extends AbstractAudited {
+
     /*
      * The id property.
      */
@@ -624,8 +625,7 @@ public class Task extends AbstractAudited {
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
      */
-    public Task putElementValueAsDocumentList(
-            String elementDefinitionCode, List<TaskElementValueDocumentItem> elementValues) {
+    public Task putElementValueAsDocumentList(String elementDefinitionCode, List<TaskElementValueDocumentItem> elementValues) {
         putElementValuesOf(of(this, elementDefinitionCode), elementValues);
 
         return this;
@@ -651,8 +651,7 @@ public class Task extends AbstractAudited {
      * @param elementValues Element values
      * @return the Task object itself.
      */
-    public Task addElementValueAsDocumentList(
-            String elementDefinitionCode, List<TaskElementValueDocumentItem> elementValues) {
+    public Task addElementValueAsDocumentList(String elementDefinitionCode, List<TaskElementValueDocumentItem> elementValues) {
         addElementValuesOf(of(this, elementDefinitionCode), elementValues);
 
         return this;
@@ -709,8 +708,7 @@ public class Task extends AbstractAudited {
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
      */
-    public Task putElementValueAsPrincipalList(
-            String elementDefinitionCode, List<TaskElementValuePrincipalItem> elementValues) {
+    public Task putElementValueAsPrincipalList(String elementDefinitionCode, List<TaskElementValuePrincipalItem> elementValues) {
         putElementValuesOf(of(this, elementDefinitionCode), elementValues);
 
         return this;
@@ -736,8 +734,7 @@ public class Task extends AbstractAudited {
      * @param elementValues Element values
      * @return the Task object itself.
      */
-    public Task addElementValueAsPrincipalList(
-            String elementDefinitionCode, List<TaskElementValuePrincipalItem> elementValues) {
+    public Task addElementValueAsPrincipalList(String elementDefinitionCode, List<TaskElementValuePrincipalItem> elementValues) {
         addElementValuesOf(of(this, elementDefinitionCode), elementValues);
 
         return this;

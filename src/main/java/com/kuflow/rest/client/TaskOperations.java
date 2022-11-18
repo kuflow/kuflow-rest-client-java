@@ -43,7 +43,6 @@ import com.kuflow.rest.client.models.TaskSaveElementCommand;
 import com.kuflow.rest.client.models.TaskSaveElementValueDocumentCommand;
 import com.kuflow.rest.client.models.TaskState;
 import com.kuflow.rest.client.util.MultipartHelper;
-
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Objects;
@@ -70,21 +69,22 @@ public final class TaskOperations {
     TaskOperations(KuFlowClientImpl client) {
         this.client = client;
         this.service = client.getTaskOperations();
-        this.serviceWorkaround = RestProxy.create(TaskOperationsServiceWorkaround.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.serviceWorkaround =
+            RestProxy.create(TaskOperationsServiceWorkaround.class, client.getHttpPipeline(), client.getSerializerAdapter());
     }
 
     @Host("{$host}")
     @ServiceInterface(name = "KuFlowClientTaskOperationsServiceWorkaround")
     public interface TaskOperationsServiceWorkaround {
-
         @Post("/tasks/{id}/~actions/save-element-value-document")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Task> actionsTaskSaveElementValueDocumentSync(
             @HostParam("$host") String host,
             @PathParam("id") UUID id,
             RequestOptions requestOptions,
-            Context context);
+            Context context
+        );
     }
 
     /**
@@ -405,10 +405,10 @@ public final class TaskOperations {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Task> actionsTaskSaveElementValueDocumentWithResponse(
-            UUID id,
-            TaskSaveElementValueDocumentCommand command,
-            Document document,
-            Context context
+        UUID id,
+        TaskSaveElementValueDocumentCommand command,
+        Document document,
+        Context context
     ) {
         Objects.requireNonNull(document, "'document' is required");
         Objects.requireNonNull(document.getFileContent(), "'document.fileContent' is required");
@@ -428,16 +428,16 @@ public final class TaskOperations {
         long contentLength = file.getLength();
 
         return this.service.actionsTaskSaveElementValueDocumentWithResponse(
-            id,
-            fileContentType,
-            fileName,
-            elementDefinitionCode,
-            file,
-            contentLength,
-            elementValueId,
-            elementValueValid,
-            context
-        );
+                id,
+                fileContentType,
+                fileName,
+                elementDefinitionCode,
+                file,
+                contentLength,
+                elementValueId,
+                elementValueValid,
+                context
+            );
     }
 
     /**
@@ -458,10 +458,8 @@ public final class TaskOperations {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Task actionsTaskSaveElementValueDocument(
-            UUID id, TaskSaveElementValueDocumentCommand command, Document document) {
-        return this.actionsTaskSaveElementValueDocumentWithResponse(id, command, document, Context.NONE)
-                .getValue();
+    public Task actionsTaskSaveElementValueDocument(UUID id, TaskSaveElementValueDocumentCommand command, Document document) {
+        return this.actionsTaskSaveElementValueDocumentWithResponse(id, command, document, Context.NONE).getValue();
     }
 
     /**
@@ -480,8 +478,7 @@ public final class TaskOperations {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Task> actionsTaskDeleteElementWithResponse(
-            UUID id, TaskDeleteElementCommand command, Context context) {
+    public Response<Task> actionsTaskDeleteElementWithResponse(UUID id, TaskDeleteElementCommand command, Context context) {
         return this.service.actionsTaskDeleteElementWithResponse(id, command, context);
     }
 
@@ -504,7 +501,7 @@ public final class TaskOperations {
         return this.actionsTaskDeleteElementWithResponse(id, command, Context.NONE).getValue();
     }
 
-        /**
+    /**
      * Delete an element document value
      *
      * <p>Allow to delete a specific document from an element of document type using its id.
@@ -522,7 +519,10 @@ public final class TaskOperations {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Task> actionsTaskDeleteElementValueDocumentWithResponse(
-            UUID id, TaskDeleteElementValueDocumentCommand command, Context context) {
+        UUID id,
+        TaskDeleteElementValueDocumentCommand command,
+        Context context
+    ) {
         return this.service.actionsTaskDeleteElementValueDocumentWithResponse(id, command, context);
     }
 
@@ -599,7 +599,10 @@ public final class TaskOperations {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> actionsTaskDownloadElementValueRenderedWithResponse(
-            UUID id, String elementDefinitionCode, Context context) {
+        UUID id,
+        String elementDefinitionCode,
+        Context context
+    ) {
         return this.service.actionsTaskDownloadElementValueRenderedWithResponse(id, elementDefinitionCode, context);
     }
 
@@ -623,7 +626,7 @@ public final class TaskOperations {
         return this.actionsTaskDownloadElementValueRenderedWithResponse(id, elementDefinitionCode, Context.NONE).getValue();
     }
 
-       /**
+    /**
      * Complete a task
      *
      * <p>Allow to complete a claimed task by the principal.

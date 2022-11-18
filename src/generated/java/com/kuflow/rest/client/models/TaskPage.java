@@ -16,6 +16,7 @@ import java.util.List;
 @JsonTypeName("TASK_PAGE")
 @Fluent
 public final class TaskPage extends Page {
+
     /*
      * The content property.
      */

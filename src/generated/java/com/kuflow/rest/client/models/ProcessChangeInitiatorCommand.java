@@ -12,6 +12,7 @@ import java.util.UUID;
 /** Command to change the process initiator, only one option is required. */
 @Fluent
 public final class ProcessChangeInitiatorCommand {
+
     /*
      * The principalId property.
      */

@@ -12,18 +12,17 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** The ProcessElementValue model. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type",
-        defaultImpl = ProcessElementValue.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = ProcessElementValue.class)
 @JsonTypeName("ProcessElementValue")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "STRING", value = ProcessElementValueString.class),
-    @JsonSubTypes.Type(name = "NUMBER", value = ProcessElementValueNumber.class)
-})
+@JsonSubTypes(
+    {
+        @JsonSubTypes.Type(name = "STRING", value = ProcessElementValueString.class),
+        @JsonSubTypes.Type(name = "NUMBER", value = ProcessElementValueNumber.class),
+    }
+)
 @Fluent
 public class ProcessElementValue {
+
     /*
      * The valid property.
      */

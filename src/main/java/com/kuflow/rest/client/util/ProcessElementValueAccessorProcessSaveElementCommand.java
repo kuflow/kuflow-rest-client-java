@@ -2,9 +2,8 @@ package com.kuflow.rest.client.util;
 
 import com.kuflow.rest.client.models.ProcessElementValue;
 import com.kuflow.rest.client.models.ProcessSaveElementCommand;
-
-import javax.annotation.Nullable;
 import java.util.List;
+import javax.annotation.Nullable;
 
 public class ProcessElementValueAccessorProcessSaveElementCommand implements ProcessElementValueAccessor {
 
@@ -28,5 +27,4 @@ public class ProcessElementValueAccessorProcessSaveElementCommand implements Pro
     public void setElementValues(List<ProcessElementValue> elementValues) {
         command.setElementValues(elementValues);
     }
-
 }

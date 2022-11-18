@@ -41,6 +41,7 @@ import java.util.UUID;
 @JsonFlatten
 @Fluent
 public class Process extends AbstractAudited {
+
     /*
      * Process ID.
      */

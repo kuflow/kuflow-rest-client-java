@@ -34,6 +34,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PrincipalOperations. */
 public final class PrincipalOperationsImpl {
+
     /** The proxy service used to perform REST calls. */
     private final PrincipalOperationsService service;
 
@@ -46,9 +47,7 @@ public final class PrincipalOperationsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     PrincipalOperationsImpl(KuFlowClientImpl client) {
-        this.service =
-                RestProxy.create(
-                        PrincipalOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(PrincipalOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -60,48 +59,52 @@ public final class PrincipalOperationsImpl {
     @ServiceInterface(name = "KuFlowClientPrincipa")
     public interface PrincipalOperationsService {
         @Get("/principals")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<PrincipalPage>> findPrincipals(
-                @HostParam("$host") String host,
-                @QueryParam("size") Integer size,
-                @QueryParam("page") Integer page,
-                @QueryParam("sort") String sort,
-                @QueryParam("type") PrincipalType type,
-                @QueryParam("groupId") String groupId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @QueryParam("size") Integer size,
+            @QueryParam("page") Integer page,
+            @QueryParam("sort") String sort,
+            @QueryParam("type") PrincipalType type,
+            @QueryParam("groupId") String groupId,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Get("/principals")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<PrincipalPage> findPrincipalsSync(
-                @HostParam("$host") String host,
-                @QueryParam("size") Integer size,
-                @QueryParam("page") Integer page,
-                @QueryParam("sort") String sort,
-                @QueryParam("type") PrincipalType type,
-                @QueryParam("groupId") String groupId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @QueryParam("size") Integer size,
+            @QueryParam("page") Integer page,
+            @QueryParam("sort") String sort,
+            @QueryParam("type") PrincipalType type,
+            @QueryParam("groupId") String groupId,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Get("/principals/{id}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Principal>> retrievePrincipal(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Get("/principals/{id}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Principal> retrievePrincipalSync(
-                @HostParam("$host") String host,
-                @PathParam("id") UUID id,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("id") UUID id,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
     }
 
     /**
@@ -125,25 +128,20 @@ public final class PrincipalOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrincipalPage>> findPrincipalsWithResponseAsync(
-            Integer size, Integer page, List<String> sort, PrincipalType type, List<UUID> groupId) {
+        Integer size,
+        Integer page,
+        List<String> sort,
+        PrincipalType type,
+        List<UUID> groupId
+    ) {
         final String accept = "application/json";
-        String sortConverted =
-                (sort == null)
-                        ? null
-                        : sort.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        String groupIdConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(groupId, CollectionFormat.CSV);
-        return FluxUtil.withContext(
-                context ->
-                        service.findPrincipals(
-                                this.client.getHost(),
-                                size,
-                                page,
-                                sortConverted,
-                                type,
-                                groupIdConverted,
-                                accept,
-                                context));
+        String sortConverted = (sort == null)
+            ? null
+            : sort.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        String groupIdConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(groupId, CollectionFormat.CSV);
+        return FluxUtil.withContext(context ->
+            service.findPrincipals(this.client.getHost(), size, page, sortConverted, type, groupIdConverted, accept, context)
+        );
     }
 
     /**
@@ -168,16 +166,19 @@ public final class PrincipalOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrincipalPage>> findPrincipalsWithResponseAsync(
-            Integer size, Integer page, List<String> sort, PrincipalType type, List<UUID> groupId, Context context) {
+        Integer size,
+        Integer page,
+        List<String> sort,
+        PrincipalType type,
+        List<UUID> groupId,
+        Context context
+    ) {
         final String accept = "application/json";
-        String sortConverted =
-                (sort == null)
-                        ? null
-                        : sort.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        String groupIdConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(groupId, CollectionFormat.CSV);
-        return service.findPrincipals(
-                this.client.getHost(), size, page, sortConverted, type, groupIdConverted, accept, context);
+        String sortConverted = (sort == null)
+            ? null
+            : sort.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        String groupIdConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(groupId, CollectionFormat.CSV);
+        return service.findPrincipals(this.client.getHost(), size, page, sortConverted, type, groupIdConverted, accept, context);
     }
 
     /**
@@ -200,10 +201,8 @@ public final class PrincipalOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrincipalPage> findPrincipalsAsync(
-            Integer size, Integer page, List<String> sort, PrincipalType type, List<UUID> groupId) {
-        return findPrincipalsWithResponseAsync(size, page, sort, type, groupId)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<PrincipalPage> findPrincipalsAsync(Integer size, Integer page, List<String> sort, PrincipalType type, List<UUID> groupId) {
+        return findPrincipalsWithResponseAsync(size, page, sort, type, groupId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -224,8 +223,7 @@ public final class PrincipalOperationsImpl {
         final List<String> sort = null;
         final PrincipalType type = null;
         final List<UUID> groupId = null;
-        return findPrincipalsWithResponseAsync(size, page, sort, type, groupId)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return findPrincipalsWithResponseAsync(size, page, sort, type, groupId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -250,9 +248,14 @@ public final class PrincipalOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrincipalPage> findPrincipalsAsync(
-            Integer size, Integer page, List<String> sort, PrincipalType type, List<UUID> groupId, Context context) {
-        return findPrincipalsWithResponseAsync(size, page, sort, type, groupId, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        Integer size,
+        Integer page,
+        List<String> sort,
+        PrincipalType type,
+        List<UUID> groupId,
+        Context context
+    ) {
+        return findPrincipalsWithResponseAsync(size, page, sort, type, groupId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -277,16 +280,19 @@ public final class PrincipalOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrincipalPage> findPrincipalsWithResponse(
-            Integer size, Integer page, List<String> sort, PrincipalType type, List<UUID> groupId, Context context) {
+        Integer size,
+        Integer page,
+        List<String> sort,
+        PrincipalType type,
+        List<UUID> groupId,
+        Context context
+    ) {
         final String accept = "application/json";
-        String sortConverted =
-                (sort == null)
-                        ? null
-                        : sort.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        String groupIdConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(groupId, CollectionFormat.CSV);
-        return service.findPrincipalsSync(
-                this.client.getHost(), size, page, sortConverted, type, groupIdConverted, accept, context);
+        String sortConverted = (sort == null)
+            ? null
+            : sort.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        String groupIdConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(groupId, CollectionFormat.CSV);
+        return service.findPrincipalsSync(this.client.getHost(), size, page, sortConverted, type, groupIdConverted, accept, context);
     }
 
     /**
@@ -309,8 +315,7 @@ public final class PrincipalOperationsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrincipalPage findPrincipals(
-            Integer size, Integer page, List<String> sort, PrincipalType type, List<UUID> groupId) {
+    public PrincipalPage findPrincipals(Integer size, Integer page, List<String> sort, PrincipalType type, List<UUID> groupId) {
         return findPrincipalsWithResponse(size, page, sort, type, groupId, Context.NONE).getValue();
     }
 

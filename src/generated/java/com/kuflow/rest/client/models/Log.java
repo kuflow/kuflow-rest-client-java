@@ -13,6 +13,7 @@ import java.util.UUID;
 /** The Log model. */
 @Fluent
 public final class Log {
+
     /*
      * The id property.
      */

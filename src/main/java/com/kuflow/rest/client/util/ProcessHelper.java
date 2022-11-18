@@ -6,8 +6,6 @@ import com.kuflow.rest.client.KuFlowRestClientException;
 import com.kuflow.rest.client.models.ProcessElementValue;
 import com.kuflow.rest.client.models.ProcessElementValueNumber;
 import com.kuflow.rest.client.models.ProcessElementValueString;
-
-import javax.annotation.Nonnull;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -15,6 +13,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import javax.annotation.Nonnull;
 
 public class ProcessHelper {
 
@@ -87,10 +86,7 @@ public class ProcessHelper {
             elementValues = new LinkedList<>();
         }
 
-        List<ProcessElementValue> processElementValues = elementValues
-            .stream()
-            .map(ProcessHelper::toProcessElementValue)
-            .collect(toList());
+        List<ProcessElementValue> processElementValues = elementValues.stream().map(ProcessHelper::toProcessElementValue).collect(toList());
 
         processElementValueAccessor.setElementValues(processElementValues);
     }
@@ -159,7 +155,6 @@ public class ProcessHelper {
         return findElementValueOfAsDouble(processElementValueAccessor)
             .orElseThrow(() -> new KuFlowRestClientException("Element value doesn't exist"));
     }
-
 
     public static List<Double> getElementValueOfAsDoubleList(ProcessElementValueAccessor processElementValueAccessor) {
         List<ProcessElementValue> processElementValues = getElementValuesOf(processElementValueAccessor);

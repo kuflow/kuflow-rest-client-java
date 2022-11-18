@@ -16,6 +16,7 @@ import java.util.List;
 @JsonTypeName("PROCESS_PAGE")
 @Fluent
 public final class ProcessPage extends Page {
+
     /*
      * The content property.
      */

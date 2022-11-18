@@ -19,6 +19,7 @@ import java.util.UUID;
 @JsonFlatten
 @Fluent
 public class Authentication extends AbstractAudited {
+
     /*
      * The id property.
      */

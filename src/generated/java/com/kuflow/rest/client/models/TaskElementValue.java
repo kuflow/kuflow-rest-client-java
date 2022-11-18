@@ -12,21 +12,20 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** The TaskElementValue model. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type",
-        defaultImpl = TaskElementValue.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = TaskElementValue.class)
 @JsonTypeName("TaskElementValue")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "STRING", value = TaskElementValueString.class),
-    @JsonSubTypes.Type(name = "NUMBER", value = TaskElementValueNumber.class),
-    @JsonSubTypes.Type(name = "OBJECT", value = TaskElementValueObject.class),
-    @JsonSubTypes.Type(name = "DOCUMENT", value = TaskElementValueDocument.class),
-    @JsonSubTypes.Type(name = "PRINCIPAL", value = TaskElementValuePrincipal.class)
-})
+@JsonSubTypes(
+    {
+        @JsonSubTypes.Type(name = "STRING", value = TaskElementValueString.class),
+        @JsonSubTypes.Type(name = "NUMBER", value = TaskElementValueNumber.class),
+        @JsonSubTypes.Type(name = "OBJECT", value = TaskElementValueObject.class),
+        @JsonSubTypes.Type(name = "DOCUMENT", value = TaskElementValueDocument.class),
+        @JsonSubTypes.Type(name = "PRINCIPAL", value = TaskElementValuePrincipal.class),
+    }
+)
 @Fluent
 public class TaskElementValue {
+
     /*
      * The valid property.
      */

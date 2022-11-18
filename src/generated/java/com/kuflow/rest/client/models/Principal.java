@@ -12,6 +12,7 @@ import java.util.UUID;
 /** The Principal model. */
 @Fluent
 public final class Principal {
+
     /*
      * The id property.
      */

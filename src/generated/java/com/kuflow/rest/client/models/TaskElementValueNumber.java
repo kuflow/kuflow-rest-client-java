@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("NUMBER")
 @Fluent
 public final class TaskElementValueNumber extends TaskElementValue {
+
     /*
      * The value property.
      */

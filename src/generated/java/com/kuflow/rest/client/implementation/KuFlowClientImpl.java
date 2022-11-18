@@ -15,6 +15,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 
 /** Initializes a new instance of the KuFlowClient type. */
 public final class KuFlowClientImpl {
+
     /** server parameter. */
     private final String host;
 
@@ -118,11 +119,10 @@ public final class KuFlowClientImpl {
      */
     KuFlowClientImpl(String host) {
         this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                host);
+            new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(),
+            host
+        );
     }
 
     /**

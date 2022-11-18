@@ -23,13 +23,13 @@ import com.kuflow.rest.client.models.ProcessDeleteElementCommand;
 import com.kuflow.rest.client.models.ProcessPage;
 import com.kuflow.rest.client.models.ProcessSaveElementCommand;
 import com.kuflow.rest.client.models.ProcessSaveUserActionValueDocumentCommand;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 /** An instance of this class provides access to all the operations defined in ProcessOperations. */
 public final class ProcessOperations {
+
     /** The service. */
     private final ProcessOperationsImpl service;
 
@@ -406,10 +406,10 @@ public final class ProcessOperations {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Process> actionsProcessSaveUserActionValueDocumentWithResponse(
-            UUID id,
-            ProcessSaveUserActionValueDocumentCommand command,
-            Document document,
-            Context context
+        UUID id,
+        ProcessSaveUserActionValueDocumentCommand command,
+        Document document,
+        Context context
     ) {
         Objects.requireNonNull(document, "'document' is required");
         Objects.requireNonNull(document.getFileContent(), "'document.fileContent' is required");
@@ -427,14 +427,14 @@ public final class ProcessOperations {
         long contentLength = file.getLength();
 
         return this.service.actionsProcessSaveUserActionValueDocumentWithResponse(
-            id,
-            fileContentType,
-            fileName,
-            userActionValueId,
-            file,
-            contentLength,
-            context
-        );
+                id,
+                fileContentType,
+                fileName,
+                userActionValueId,
+                file,
+                contentLength,
+                context
+            );
     }
 
     /**
@@ -451,7 +451,11 @@ public final class ProcessOperations {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Process actionsProcessSaveUserActionValueDocument(UUID id, ProcessSaveUserActionValueDocumentCommand command, Document document) {
+    public Process actionsProcessSaveUserActionValueDocument(
+        UUID id,
+        ProcessSaveUserActionValueDocumentCommand command,
+        Document document
+    ) {
         return this.actionsProcessSaveUserActionValueDocumentWithResponse(id, command, document, Context.NONE).getValue();
     }
 }

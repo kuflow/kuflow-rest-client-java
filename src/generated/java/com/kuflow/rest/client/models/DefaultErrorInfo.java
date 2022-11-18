@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The DefaultErrorInfo model. */
 @Fluent
 public final class DefaultErrorInfo {
+
     /*
      * The code property.
      */

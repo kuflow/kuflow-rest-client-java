@@ -16,19 +16,23 @@ import java.util.UUID;
 
 /** The AbstractAudited model. */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "@odata\\.type",
-        defaultImpl = AbstractAudited.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "@odata\\.type",
+    defaultImpl = AbstractAudited.class
+)
 @JsonTypeName("AbstractAudited")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "#KuFlow.Rest.Authentication", value = Authentication.class),
-    @JsonSubTypes.Type(name = "#KuFlow.Rest.Process", value = Process.class),
-    @JsonSubTypes.Type(name = "#KuFlow.Rest.Task", value = Task.class)
-})
+@JsonSubTypes(
+    {
+        @JsonSubTypes.Type(name = "#KuFlow.Rest.Authentication", value = Authentication.class),
+        @JsonSubTypes.Type(name = "#KuFlow.Rest.Process", value = Process.class),
+        @JsonSubTypes.Type(name = "#KuFlow.Rest.Task", value = Task.class),
+    }
+)
 @JsonFlatten
 @Immutable
 public class AbstractAudited {
+
     /*
      * Who create this model.
      */

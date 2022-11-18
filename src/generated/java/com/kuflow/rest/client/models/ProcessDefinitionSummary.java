@@ -12,6 +12,7 @@ import java.util.UUID;
 /** The ProcessDefinitionSummary model. */
 @Fluent
 public final class ProcessDefinitionSummary {
+
     /*
      * The id property.
      */

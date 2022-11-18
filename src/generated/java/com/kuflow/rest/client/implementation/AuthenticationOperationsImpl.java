@@ -25,6 +25,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AuthenticationOperations. */
 public final class AuthenticationOperationsImpl {
+
     /** The proxy service used to perform REST calls. */
     private final AuthenticationOperationsService service;
 
@@ -37,9 +38,7 @@ public final class AuthenticationOperationsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     AuthenticationOperationsImpl(KuFlowClientImpl client) {
-        this.service =
-                RestProxy.create(
-                        AuthenticationOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(AuthenticationOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -51,22 +50,24 @@ public final class AuthenticationOperationsImpl {
     @ServiceInterface(name = "KuFlowClientAuthenti")
     public interface AuthenticationOperationsService {
         @Post("/authentications")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Mono<Response<Authentication>> createAuthentication(
-                @HostParam("$host") String host,
-                @BodyParam("application/json") Authentication authentication,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @BodyParam("application/json") Authentication authentication,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
 
         @Post("/authentications")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorException.class)
         Response<Authentication> createAuthenticationSync(
-                @HostParam("$host") String host,
-                @BodyParam("application/json") Authentication authentication,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("$host") String host,
+            @BodyParam("application/json") Authentication authentication,
+            @HeaderParam("Accept") String accept,
+            Context context
+        );
     }
 
     /**
@@ -81,8 +82,7 @@ public final class AuthenticationOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Authentication>> createAuthenticationWithResponseAsync(Authentication authentication) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.createAuthentication(this.client.getHost(), authentication, accept, context));
+        return FluxUtil.withContext(context -> service.createAuthentication(this.client.getHost(), authentication, accept, context));
     }
 
     /**
@@ -96,8 +96,7 @@ public final class AuthenticationOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Authentication>> createAuthenticationWithResponseAsync(
-            Authentication authentication, Context context) {
+    public Mono<Response<Authentication>> createAuthenticationWithResponseAsync(Authentication authentication, Context context) {
         final String accept = "application/json";
         return service.createAuthentication(this.client.getHost(), authentication, accept, context);
     }
@@ -128,8 +127,7 @@ public final class AuthenticationOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Authentication> createAuthenticationAsync(Authentication authentication, Context context) {
-        return createAuthenticationWithResponseAsync(authentication, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return createAuthenticationWithResponseAsync(authentication, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

@@ -12,6 +12,7 @@ import java.util.UUID;
 /** In creation task, one of 'id, version or code' is mandatory. */
 @Fluent
 public final class TasksDefinitionSummary {
+
     /*
      * The id property.
      */

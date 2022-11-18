@@ -33,5 +33,4 @@ public class KuFlowRestClient {
     public TaskOperations getTaskOperations() {
         return this.taskOperations;
     }
-
 }

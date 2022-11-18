@@ -12,6 +12,7 @@ import java.util.UUID;
 /** The TaskSaveElementValueDocumentCommand model. */
 @Fluent
 public final class TaskSaveElementValueDocumentCommand {
+
     /*
      * The elementDefinitionCode property.
      */

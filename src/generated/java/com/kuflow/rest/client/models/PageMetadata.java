@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The PageMetadata model. */
 @Fluent
 public final class PageMetadata {
+
     /*
      * The size property.
      */

@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("STRING")
 @Fluent
 public final class ProcessElementValueString extends ProcessElementValue {
+
     /*
      * The value property.
      */

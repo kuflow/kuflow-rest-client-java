@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The ProcessDeleteElementCommand model. */
 @Fluent
 public final class ProcessDeleteElementCommand {
+
     /*
      * Code of task element to delete.
      */

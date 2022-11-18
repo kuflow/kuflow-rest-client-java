@@ -8,10 +8,12 @@
   },
   "scripts": {
     "autorest": "autorest",
-    "generate": "npm run generate:autorest && npm run generate:mkdir && npm run generate:cp && npm run generate:rm",
+    "generate": "npm run generate:autorest && npm run generate:move && npm run generate:prettier",
     "generate:autorest": "autorest readme.md",
-    "generate:mkdir": "shx mkdir -p ../../src/generated/",
-    "generate:cp": "shx cp -r ../../target/openapi-generated/src/main/* ../../src/generated/",
-    "generate:rm": "shx rm -rf ../../target/openapi-generated"
+    "generate:move": "npm run generate:move:mkdir && npm run generate:move:cp && npm run generate:move:rm",
+    "generate:move:mkdir": "shx mkdir -p ../../src/generated/",
+    "generate:move:cp": "shx cp -r ../../target/openapi-generated/src/main/* ../../src/generated/",
+    "generate:move:rm": "shx rm -rf ../../target/openapi-generated",
+    "generate:prettier": "cd ../.. && ./mvnw prettier:write"
   }
 }

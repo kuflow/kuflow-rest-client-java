@@ -15,6 +15,7 @@ import com.kuflow.rest.client.models.DefaultErrorException;
 
 /** An instance of this class provides access to all the operations defined in AuthenticationOperations. */
 public final class AuthenticationOperations {
+
     /** The service. */
     private final AuthenticationOperationsImpl service;
 
