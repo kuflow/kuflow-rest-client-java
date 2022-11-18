@@ -10,12 +10,9 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.BinaryData;
 import com.kuflow.rest.client.model.Document;
-import com.kuflow.rest.client.models.Authentication;
-import com.kuflow.rest.client.models.AuthenticationType;
 import com.kuflow.rest.client.models.Process;
 import com.kuflow.rest.client.models.ProcessDefinitionSummary;
 import com.kuflow.rest.client.models.Task;
-import com.kuflow.rest.client.models.TaskElementValueNumber;
 import com.kuflow.rest.client.models.TaskElementValueString;
 import com.kuflow.rest.client.models.TaskSaveElementCommand;
 import com.kuflow.rest.client.models.TaskSaveElementValueDocumentCommand;
@@ -23,44 +20,12 @@ import com.kuflow.rest.client.models.TasksDefinitionSummary;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
-//import static com.github.tomakehurst.wiremock.client.WireMock.aMultipart;
-//import static com.github.tomakehurst.wiremock.client.WireMock.containing;
-//import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
-//import static com.github.tomakehurst.wiremock.client.WireMock.get;
-//import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
-//import static com.github.tomakehurst.wiremock.client.WireMock.matching;
-//import static com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath;
-//import static com.github.tomakehurst.wiremock.client.WireMock.ok;
-//import static com.github.tomakehurst.wiremock.client.WireMock.post;
-//import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
-//import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
-//import static org.assertj.core.api.Assertions.assertThat;
-//
-//import com.github.tomakehurst.wiremock.client.WireMock;
-//import com.github.tomakehurst.wiremock.common.Slf4jNotifier;
-//import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
-//import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
-//import com.kuflow.rest.client.resource.AuthenticationResource;
-//import com.kuflow.rest.client.resource.AuthenticationTypeResource;
-//import com.kuflow.rest.client.resource.SaveElementValueDocumentCommandResource;
-//import com.kuflow.rest.client.resource.TaskResource;
-//import feign.Response;
-//import java.io.File;
-//import java.net.URISyntaxException;
-//import java.time.Instant;
-//import java.util.Objects;
-//import java.util.UUID;
-//import org.junit.jupiter.api.BeforeAll;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.DisplayName;
-//import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.api.extension.RegisterExtension;
-//
 public class KuFlowRestClientTest {
 //
 //    @RegisterExtension
@@ -112,6 +77,8 @@ public class KuFlowRestClientTest {
                 new TasksDefinitionSummary().setCode("TASK_0001")
             );
 
+        List<Map<String, Object>> hashMaps = List.of(new HashMap<>());
+        task.putElementValueAsMapList("", hashMaps);
         Task taskCreated = kuFlowRestClient.getTaskOperations().createTask(task);
 
         System.out.println(taskCreated);
