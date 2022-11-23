@@ -85,6 +85,7 @@ public final class KuFlowRestClientBuilder
     private String endpoint;
     private String username;
     private String password;
+    private boolean allowInsecureConnection = false;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions = new HttpLogOptions();
     private HttpPipeline pipeline;
@@ -128,6 +129,17 @@ public final class KuFlowRestClientBuilder
      */
     public KuFlowRestClientBuilder password(String password) {
         this.password = Objects.requireNonNull(password, "'password' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Enable/disable insecure connections
+     *
+     * @param allowInsecureConnection username credentials
+     * @return KuFlowRestClientBuilder
+     */
+    public KuFlowRestClientBuilder allowInsecureConnection(boolean allowInsecureConnection) {
+        this.allowInsecureConnection = allowInsecureConnection;
         return this;
     }
 
@@ -295,18 +307,6 @@ public final class KuFlowRestClientBuilder
         return this;
     }
 
-    //    /**
-    //     * Create asynchronous client applying default policies.
-    //     * Additional HttpPolicies specified by pipelinePolicies will be applied after them
-    //     *
-    //     * @return KuFlowRestClientAsync instance
-    //     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
-    //     * and {@link #retryPolicy(RetryPolicy)} have been set.
-    //     */
-    //    public KuFlowRestClientAsync buildClientAsync() {
-    //        return new KuFlowRestClientAsync(createServiceImpl());
-    //    }
-
     /**
      * Create synchronous  client applying default policies.
      * Additional HttpPolicies specified by pipelinePolicies will be applied after them
@@ -384,13 +384,16 @@ public final class KuFlowRestClientBuilder
             throw this.logger.logExceptionAsError(new IllegalArgumentException("Both 'username' and 'username' are required."));
         }
 
+        boolean allowInsecureConnection = this.allowInsecureConnection;
+
         BasicAuthenticationCredential tokenCredential = new BasicAuthenticationCredential(this.username, this.password);
         return new BearerTokenAuthenticationPolicy(tokenCredential, "https://api.kuflow.com//v2022-10-08/.default") {
             @Override
             public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-                //                if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
-                //                    return Mono.error(new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
-                //                }
+                if ("http".equals(context.getHttpRequest().getUrl().getProtocol()) && !allowInsecureConnection) {
+                    return Mono.error(new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
+                }
+
                 HttpPipelineNextPolicy nextPolicy = next.clone();
 
                 return authorizeRequest(context)

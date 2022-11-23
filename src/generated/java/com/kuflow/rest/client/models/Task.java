@@ -50,13 +50,12 @@ import static com.kuflow.rest.client.util.TaskHelper.getElementValueOfAsString;
 import static com.kuflow.rest.client.util.TaskHelper.getElementValueOfAsStringList;
 import static com.kuflow.rest.client.util.TaskHelper.getElementValueOfValid;
 import static com.kuflow.rest.client.util.TaskHelper.getElementValueOfValidAt;
-import static com.kuflow.rest.client.util.TaskHelper.putElementValueOf;
-import static com.kuflow.rest.client.util.TaskHelper.putElementValuesOf;
+import static com.kuflow.rest.client.util.TaskHelper.setElementValueOf;
 import static com.kuflow.rest.client.util.TaskHelper.setElementValueOfValid;
 import static com.kuflow.rest.client.util.TaskHelper.setElementValueOfValidAt;
+import static com.kuflow.rest.client.util.TaskHelper.setElementValuesOf;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -67,11 +66,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 /** The Task model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
-@JsonTypeName("#KuFlow.Rest.Task")
-@JsonFlatten
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
+@JsonTypeName("TASK")
 @Fluent
-public class Task extends AbstractAudited {
+public final class Task extends AbstractAudited {
 
     /*
      * The id property.
@@ -302,8 +300,8 @@ public class Task extends AbstractAudited {
      * @param elementValue Element value, if the value is null all current values are removed
      * @return the Task object itself.
      */
-    public Task putElementValueAsString(String elementDefinitionCode, String elementValue) {
-        putElementValueOf(of(this, elementDefinitionCode), elementValue);
+    public Task setElementValueAsString(String elementDefinitionCode, String elementValue) {
+        setElementValueOf(of(this, elementDefinitionCode), elementValue);
 
         return this;
     }
@@ -315,8 +313,8 @@ public class Task extends AbstractAudited {
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
      */
-    public Task putElementValueAsStringList(String elementDefinitionCode, List<String> elementValues) {
-        putElementValuesOf(of(this, elementDefinitionCode), elementValues);
+    public Task setElementValueAsStringList(String elementDefinitionCode, List<String> elementValues) {
+        setElementValuesOf(of(this, elementDefinitionCode), elementValues);
 
         return this;
     }
@@ -385,8 +383,8 @@ public class Task extends AbstractAudited {
      * @param elementValue Element value, if the value is null all current values are removed
      * @return the Task object itself.
      */
-    public Task putElementValueAsDouble(String elementDefinitionCode, Double elementValue) {
-        putElementValueOf(of(this, elementDefinitionCode), elementValue);
+    public Task setElementValueAsDouble(String elementDefinitionCode, Double elementValue) {
+        setElementValueOf(of(this, elementDefinitionCode), elementValue);
 
         return this;
     }
@@ -398,8 +396,8 @@ public class Task extends AbstractAudited {
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
      */
-    public Task putElementValueAsDoubleList(String elementDefinitionCode, List<Double> elementValues) {
-        putElementValuesOf(of(this, elementDefinitionCode), elementValues);
+    public Task setElementValueAsDoubleList(String elementDefinitionCode, List<Double> elementValues) {
+        setElementValuesOf(of(this, elementDefinitionCode), elementValues);
 
         return this;
     }
@@ -468,8 +466,8 @@ public class Task extends AbstractAudited {
      * @param elementValue Element value, if the value is null all current values are removed
      * @return the Task object itself.
      */
-    public Task putElementValueAsLocalDate(String elementDefinitionCode, LocalDate elementValue) {
-        putElementValueOf(of(this, elementDefinitionCode), elementValue);
+    public Task setElementValueAsLocalDate(String elementDefinitionCode, LocalDate elementValue) {
+        setElementValueOf(of(this, elementDefinitionCode), elementValue);
 
         return this;
     }
@@ -481,8 +479,8 @@ public class Task extends AbstractAudited {
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
      */
-    public Task putElementValueAsLocalDateList(String elementDefinitionCode, List<LocalDate> elementValues) {
-        putElementValuesOf(of(this, elementDefinitionCode), elementValues);
+    public Task setElementValueAsLocalDateList(String elementDefinitionCode, List<LocalDate> elementValues) {
+        setElementValuesOf(of(this, elementDefinitionCode), elementValues);
 
         return this;
     }
@@ -551,8 +549,8 @@ public class Task extends AbstractAudited {
      * @param elementValue Element value, if the value is null all current values are removed
      * @return the Task object itself.
      */
-    public Task putElementValueAsMap(String elementDefinitionCode, Map<String, Object> elementValue) {
-        putElementValueOf(of(this, elementDefinitionCode), elementValue);
+    public Task setElementValueAsMap(String elementDefinitionCode, Map<String, Object> elementValue) {
+        setElementValueOf(of(this, elementDefinitionCode), elementValue);
 
         return this;
     }
@@ -564,8 +562,8 @@ public class Task extends AbstractAudited {
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
      */
-    public Task putElementValueAsMapList(String elementDefinitionCode, List<Map<String, Object>> elementValues) {
-        putElementValuesOf(of(this, elementDefinitionCode), elementValues);
+    public Task setElementValueAsMapList(String elementDefinitionCode, List<Map<String, Object>> elementValues) {
+        setElementValuesOf(of(this, elementDefinitionCode), elementValues);
 
         return this;
     }
@@ -634,8 +632,8 @@ public class Task extends AbstractAudited {
      * @param elementValue Element value, if the value is null all current values are removed
      * @return the Task object itself.
      */
-    public Task putElementValueAsDocument(String elementDefinitionCode, TaskElementValueDocumentItem elementValue) {
-        putElementValueOf(of(this, elementDefinitionCode), elementValue);
+    public Task setElementValueAsDocument(String elementDefinitionCode, TaskElementValueDocumentItem elementValue) {
+        setElementValueOf(of(this, elementDefinitionCode), elementValue);
 
         return this;
     }
@@ -647,8 +645,8 @@ public class Task extends AbstractAudited {
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
      */
-    public Task putElementValueAsDocumentList(String elementDefinitionCode, List<TaskElementValueDocumentItem> elementValues) {
-        putElementValuesOf(of(this, elementDefinitionCode), elementValues);
+    public Task setElementValueAsDocumentList(String elementDefinitionCode, List<TaskElementValueDocumentItem> elementValues) {
+        setElementValuesOf(of(this, elementDefinitionCode), elementValues);
 
         return this;
     }
@@ -717,8 +715,8 @@ public class Task extends AbstractAudited {
      * @param elementValue Element value, if the value is null all current values are removed
      * @return the Task object itself.
      */
-    public Task putElementValueAsPrincipal(String elementDefinitionCode, TaskElementValuePrincipalItem elementValue) {
-        putElementValueOf(of(this, elementDefinitionCode), elementValue);
+    public Task setElementValueAsPrincipal(String elementDefinitionCode, TaskElementValuePrincipalItem elementValue) {
+        setElementValueOf(of(this, elementDefinitionCode), elementValue);
 
         return this;
     }
@@ -730,8 +728,8 @@ public class Task extends AbstractAudited {
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
      */
-    public Task putElementValueAsPrincipalList(String elementDefinitionCode, List<TaskElementValuePrincipalItem> elementValues) {
-        putElementValuesOf(of(this, elementDefinitionCode), elementValues);
+    public Task setElementValueAsPrincipalList(String elementDefinitionCode, List<TaskElementValuePrincipalItem> elementValues) {
+        setElementValuesOf(of(this, elementDefinitionCode), elementValues);
 
         return this;
     }

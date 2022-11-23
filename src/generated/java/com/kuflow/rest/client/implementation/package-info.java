@@ -57,6 +57,6 @@
  * <p># OpenAPI Specification
  *
  * <p>This API is documented in OpenAPI format. This file allows you to create REST clients with the technology of your
- * choice automatically. In our code repositories you can find an example of this automation using Feign for JAVA.
+ * choice automatically.
  */
 package com.kuflow.rest.client.implementation;

@@ -29,13 +29,11 @@ import com.kuflow.rest.client.models.Document;
 import com.kuflow.rest.client.models.Process;
 import com.kuflow.rest.client.models.ProcessDefinitionSummary;
 import com.kuflow.rest.client.models.Task;
-import com.kuflow.rest.client.models.TaskElementValueString;
 import com.kuflow.rest.client.models.TaskSaveElementCommand;
 import com.kuflow.rest.client.models.TaskSaveElementValueDocumentCommand;
 import com.kuflow.rest.client.models.TasksDefinitionSummary;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
@@ -72,6 +70,7 @@ public class KuFlowRestClientTest {
             .username("1e96158f-3dfd-4c4c-8aa2-4c61a7127bcf")
             .password("*pn8BMkt-KI0/08")
             .endpoint("http://localhost:8080/apis/external/v2022-10-08")
+            .allowInsecureConnection(true)
             .httpLogOptions(logOptions)
             .buildClient();
 
@@ -103,12 +102,8 @@ public class KuFlowRestClientTest {
 
         TaskSaveElementCommand command2 = new TaskSaveElementCommand()
             .setElementDefinitionCode("TEXT_002")
-            .setElementValues(
-                List.of(
-                    new TaskElementValueString().setValue("Valor del bueno uno"),
-                    new TaskElementValueString().setValue("Valor del bueno dos")
-                )
-            );
+            .addElementValueAsString("Valor del bueno uno")
+            .addElementValueAsString("Valor del bueno dos");
         kuFlowRestClient.getTaskOperations().actionsTaskSaveElement(taskCreated.getId(), command2);
 
         //        TaskSaveElementCommand command3 = new TaskSaveElementCommand()

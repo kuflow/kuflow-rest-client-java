@@ -27,51 +27,56 @@
 
 package com.kuflow.rest.client.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.UUID;
 
-/** Audited Open Data Types. */
-public enum AuditedODataType {
-    /** Enum value #KuFlow.Rest.Process. */
-    KU_FLOW_REST_PROCESS("#KuFlow.Rest.Process"),
+/** The TaskSaveElementCommand model. */
+public final class TaskSaveElementValueDocumentCommand {
 
-    /** Enum value #KuFlow.Rest.Task. */
-    KU_FLOW_REST_TASK("#KuFlow.Rest.Task"),
-
-    /** Enum value #KuFlow.Rest.Authentication. */
-    KU_FLOW_REST_AUTHENTICATION("#KuFlow.Rest.Authentication");
-
-    /** The actual serialized value for a AuditedODataType instance. */
-    private final String value;
-
-    AuditedODataType(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a AuditedODataType instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed AuditedODataType object, or null if unable to parse.
+    /*
+     * The elementDefinitionCode property.
      */
-    @JsonCreator
-    public static AuditedODataType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        AuditedODataType[] items = AuditedODataType.values();
-        for (AuditedODataType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    private String elementDefinitionCode;
+
+    /*
+     * The elementValueId property.
+     */
+    private UUID elementValueId;
+
+    /*
+     * The elementValueId property.
+     */
+    private boolean elementValueValid = true;
+
+    /** Creates an instance of TaskSaveElementValueDocumentCommand class. */
+    public TaskSaveElementValueDocumentCommand() {}
+
+    public String getElementDefinitionCode() {
+        return this.elementDefinitionCode;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public TaskSaveElementValueDocumentCommand setElementDefinitionCode(String elementDefinitionCode) {
+        this.elementDefinitionCode = elementDefinitionCode;
+
+        return this;
+    }
+
+    public UUID getElementValueId() {
+        return this.elementValueId;
+    }
+
+    public TaskSaveElementValueDocumentCommand setElementValueId(UUID elementValueId) {
+        this.elementValueId = elementValueId;
+
+        return this;
+    }
+
+    public boolean isElementValueValid() {
+        return this.elementValueValid;
+    }
+
+    public TaskSaveElementValueDocumentCommand setElementValueValid(boolean elementValueValid) {
+        this.elementValueValid = elementValueValid;
+
+        return this;
     }
 }

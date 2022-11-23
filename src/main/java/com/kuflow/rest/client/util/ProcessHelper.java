@@ -93,16 +93,16 @@ public class ProcessHelper {
         processElementValueAccessor.setElementValues(taskElementValueList);
     }
 
-    public static void putElementValueOf(ProcessElementValueAccessor processElementValueAccessor, Object elementValue) {
+    public static void setElementValueOf(ProcessElementValueAccessor processElementValueAccessor, Object elementValue) {
         List<Object> valueList = new LinkedList<>();
         if (elementValue != null) {
             valueList.add(elementValue);
         }
 
-        putElementValuesOf(processElementValueAccessor, valueList);
+        setElementValuesOf(processElementValueAccessor, valueList);
     }
 
-    public static void putElementValuesOf(ProcessElementValueAccessor processElementValueAccessor, List<?> elementValues) {
+    public static void setElementValuesOf(ProcessElementValueAccessor processElementValueAccessor, List<?> elementValues) {
         if (elementValues == null) {
             elementValues = new LinkedList<>();
         }

@@ -9,7 +9,7 @@
   "scripts": {
     "autorest": "autorest",
     "generate": "npm run generate:autorest && npm run generate:move && npm run generate:prettier && npm run generate:license",
-    "generate:autorest": "autorest readme.md",
+    "generate:autorest": "autorest --version=3.9.3 readme.md",
     "generate:move": "npm run generate:move:mkdir && npm run generate:move:cp && npm run generate:move:rm",
     "generate:move:mkdir": "shx mkdir -p ../../src/generated/",
     "generate:move:cp": "shx cp -r ../../target/openapi-generated/src/main/* ../../src/generated/",

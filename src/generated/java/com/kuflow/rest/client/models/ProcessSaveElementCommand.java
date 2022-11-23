@@ -41,10 +41,10 @@ import static com.kuflow.rest.client.util.ProcessHelper.getElementValueOfAsStrin
 import static com.kuflow.rest.client.util.ProcessHelper.getElementValueOfAsStringList;
 import static com.kuflow.rest.client.util.ProcessHelper.getElementValueOfValid;
 import static com.kuflow.rest.client.util.ProcessHelper.getElementValueOfValidAt;
-import static com.kuflow.rest.client.util.ProcessHelper.putElementValueOf;
-import static com.kuflow.rest.client.util.ProcessHelper.putElementValuesOf;
+import static com.kuflow.rest.client.util.ProcessHelper.setElementValueOf;
 import static com.kuflow.rest.client.util.ProcessHelper.setElementValueOfValid;
 import static com.kuflow.rest.client.util.ProcessHelper.setElementValueOfValidAt;
+import static com.kuflow.rest.client.util.ProcessHelper.setElementValuesOf;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -161,8 +161,8 @@ public final class ProcessSaveElementCommand {
      * @param elementValue Element value, if the value is null all current values are removed
      * @return the Task object itself.
      */
-    public ProcessSaveElementCommand putElementValueAsString(String elementValue) {
-        putElementValueOf(of(this), elementValue);
+    public ProcessSaveElementCommand setElementValueAsString(String elementValue) {
+        setElementValueOf(of(this), elementValue);
 
         return this;
     }
@@ -173,8 +173,8 @@ public final class ProcessSaveElementCommand {
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
      */
-    public ProcessSaveElementCommand putElementValueAsStringList(List<String> elementValues) {
-        putElementValuesOf(of(this), elementValues);
+    public ProcessSaveElementCommand setElementValueAsStringList(List<String> elementValues) {
+        setElementValuesOf(of(this), elementValues);
 
         return this;
     }
@@ -237,8 +237,8 @@ public final class ProcessSaveElementCommand {
      * @param elementValue Element value, if the value is null all current values are removed
      * @return the Task object itself.
      */
-    public ProcessSaveElementCommand putElementValueAsDouble(Double elementValue) {
-        putElementValueOf(of(this), elementValue);
+    public ProcessSaveElementCommand setElementValueAsDouble(Double elementValue) {
+        setElementValueOf(of(this), elementValue);
 
         return this;
     }
@@ -249,8 +249,8 @@ public final class ProcessSaveElementCommand {
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
      */
-    public ProcessSaveElementCommand putElementValueAsDoubleList(List<Double> elementValues) {
-        putElementValuesOf(of(this), elementValues);
+    public ProcessSaveElementCommand setElementValueAsDoubleList(List<Double> elementValues) {
+        setElementValuesOf(of(this), elementValues);
 
         return this;
     }
@@ -313,8 +313,8 @@ public final class ProcessSaveElementCommand {
      * @param elementValue Element value, if the value is null all current values are removed
      * @return the Task object itself.
      */
-    public ProcessSaveElementCommand putElementValueAsLocalDate(LocalDate elementValue) {
-        putElementValueOf(of(this), elementValue);
+    public ProcessSaveElementCommand setElementValueAsLocalDate(LocalDate elementValue) {
+        setElementValueOf(of(this), elementValue);
 
         return this;
     }
@@ -325,8 +325,8 @@ public final class ProcessSaveElementCommand {
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
      */
-    public ProcessSaveElementCommand putElementValueAsLocalDateList(List<LocalDate> elementValues) {
-        putElementValuesOf(of(this), elementValues);
+    public ProcessSaveElementCommand setElementValueAsLocalDateList(List<LocalDate> elementValues) {
+        setElementValuesOf(of(this), elementValues);
 
         return this;
     }

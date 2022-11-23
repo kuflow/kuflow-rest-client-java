@@ -31,7 +31,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /** Paged Model types. */
-public enum PagedModelType {
+public enum PagedObjectType {
     /** Enum value PRINCIPAL_PAGE. */
     PRINCIPAL_PAGE("PRINCIPAL_PAGE"),
 
@@ -41,26 +41,26 @@ public enum PagedModelType {
     /** Enum value TASK_PAGE. */
     TASK_PAGE("TASK_PAGE");
 
-    /** The actual serialized value for a PagedModelType instance. */
+    /** The actual serialized value for a PagedObjectType instance. */
     private final String value;
 
-    PagedModelType(String value) {
+    PagedObjectType(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a PagedModelType instance.
+     * Parses a serialized value to a PagedObjectType instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed PagedModelType object, or null if unable to parse.
+     * @return the parsed PagedObjectType object, or null if unable to parse.
      */
     @JsonCreator
-    public static PagedModelType fromString(String value) {
+    public static PagedObjectType fromString(String value) {
         if (value == null) {
             return null;
         }
-        PagedModelType[] items = PagedModelType.values();
-        for (PagedModelType item : items) {
+        PagedObjectType[] items = PagedObjectType.values();
+        for (PagedObjectType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

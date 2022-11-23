@@ -50,10 +50,10 @@ import static com.kuflow.rest.client.util.TaskHelper.getElementValueOfAsString;
 import static com.kuflow.rest.client.util.TaskHelper.getElementValueOfAsStringList;
 import static com.kuflow.rest.client.util.TaskHelper.getElementValueOfValid;
 import static com.kuflow.rest.client.util.TaskHelper.getElementValueOfValidAt;
-import static com.kuflow.rest.client.util.TaskHelper.putElementValueOf;
-import static com.kuflow.rest.client.util.TaskHelper.putElementValuesOf;
+import static com.kuflow.rest.client.util.TaskHelper.setElementValueOf;
 import static com.kuflow.rest.client.util.TaskHelper.setElementValueOfValid;
 import static com.kuflow.rest.client.util.TaskHelper.setElementValueOfValidAt;
+import static com.kuflow.rest.client.util.TaskHelper.setElementValuesOf;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -171,8 +171,8 @@ public final class TaskSaveElementCommand {
      * @param elementValue Element value, if the value is null all current values are removed
      * @return the Task object itself.
      */
-    public TaskSaveElementCommand putElementValueAsString(String elementValue) {
-        putElementValueOf(of(this), elementValue);
+    public TaskSaveElementCommand setElementValueAsString(String elementValue) {
+        setElementValueOf(of(this), elementValue);
 
         return this;
     }
@@ -183,8 +183,8 @@ public final class TaskSaveElementCommand {
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
      */
-    public TaskSaveElementCommand putElementValueAsStringList(List<String> elementValues) {
-        putElementValuesOf(of(this), elementValues);
+    public TaskSaveElementCommand setElementValueAsStringList(List<String> elementValues) {
+        setElementValuesOf(of(this), elementValues);
 
         return this;
     }
@@ -247,8 +247,8 @@ public final class TaskSaveElementCommand {
      * @param elementValue Element value, if the value is null all current values are removed
      * @return the Task object itself.
      */
-    public TaskSaveElementCommand putElementValueAsDouble(Double elementValue) {
-        putElementValueOf(of(this), elementValue);
+    public TaskSaveElementCommand setElementValueAsDouble(Double elementValue) {
+        setElementValueOf(of(this), elementValue);
 
         return this;
     }
@@ -259,8 +259,8 @@ public final class TaskSaveElementCommand {
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
      */
-    public TaskSaveElementCommand putElementValueAsDoubleList(List<Double> elementValues) {
-        putElementValuesOf(of(this), elementValues);
+    public TaskSaveElementCommand setElementValueAsDoubleList(List<Double> elementValues) {
+        setElementValuesOf(of(this), elementValues);
 
         return this;
     }
@@ -323,8 +323,8 @@ public final class TaskSaveElementCommand {
      * @param elementValue Element value, if the value is null all current values are removed
      * @return the Task object itself.
      */
-    public TaskSaveElementCommand putElementValueAsLocalDate(LocalDate elementValue) {
-        putElementValueOf(of(this), elementValue);
+    public TaskSaveElementCommand setElementValueAsLocalDate(LocalDate elementValue) {
+        setElementValueOf(of(this), elementValue);
 
         return this;
     }
@@ -335,8 +335,8 @@ public final class TaskSaveElementCommand {
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
      */
-    public TaskSaveElementCommand putElementValueAsLocalDateList(List<LocalDate> elementValues) {
-        putElementValuesOf(of(this), elementValues);
+    public TaskSaveElementCommand setElementValueAsLocalDateList(List<LocalDate> elementValues) {
+        setElementValuesOf(of(this), elementValues);
 
         return this;
     }
@@ -399,8 +399,8 @@ public final class TaskSaveElementCommand {
      * @param elementValue Element value, if the value is null all current values are removed
      * @return the Task object itself.
      */
-    public TaskSaveElementCommand putElementValueAsMap(Map<String, Object> elementValue) {
-        putElementValueOf(of(this), elementValue);
+    public TaskSaveElementCommand setElementValueAsMap(Map<String, Object> elementValue) {
+        setElementValueOf(of(this), elementValue);
 
         return this;
     }
@@ -411,8 +411,8 @@ public final class TaskSaveElementCommand {
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
      */
-    public TaskSaveElementCommand putElementValueAsMapList(List<Map<String, Object>> elementValues) {
-        putElementValuesOf(of(this), elementValues);
+    public TaskSaveElementCommand setElementValueAsMapList(List<Map<String, Object>> elementValues) {
+        setElementValuesOf(of(this), elementValues);
 
         return this;
     }
@@ -475,8 +475,8 @@ public final class TaskSaveElementCommand {
      * @param elementValue Element value, if the value is null all current values are removed
      * @return the Task object itself.
      */
-    public TaskSaveElementCommand putElementValueAsDocument(TaskElementValueDocumentItem elementValue) {
-        putElementValueOf(of(this), elementValue);
+    public TaskSaveElementCommand setElementValueAsDocument(TaskElementValueDocumentItem elementValue) {
+        setElementValueOf(of(this), elementValue);
 
         return this;
     }
@@ -487,8 +487,8 @@ public final class TaskSaveElementCommand {
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
      */
-    public TaskSaveElementCommand putElementValueAsDocumentList(List<TaskElementValueDocumentItem> elementValues) {
-        putElementValuesOf(of(this), elementValues);
+    public TaskSaveElementCommand setElementValueAsDocumentList(List<TaskElementValueDocumentItem> elementValues) {
+        setElementValuesOf(of(this), elementValues);
 
         return this;
     }
@@ -551,8 +551,8 @@ public final class TaskSaveElementCommand {
      * @param elementValue Element value, if the value is null all current values are removed
      * @return the Task object itself.
      */
-    public TaskSaveElementCommand putElementValueAsPrincipal(TaskElementValuePrincipalItem elementValue) {
-        putElementValueOf(of(this), elementValue);
+    public TaskSaveElementCommand setElementValueAsPrincipal(TaskElementValuePrincipalItem elementValue) {
+        setElementValueOf(of(this), elementValue);
 
         return this;
     }
@@ -563,8 +563,8 @@ public final class TaskSaveElementCommand {
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
      */
-    public TaskSaveElementCommand putElementValueAsPrincipalList(List<TaskElementValuePrincipalItem> elementValues) {
-        putElementValuesOf(of(this), elementValues);
+    public TaskSaveElementCommand setElementValueAsPrincipalList(List<TaskElementValuePrincipalItem> elementValues) {
+        setElementValuesOf(of(this), elementValues);
 
         return this;
     }

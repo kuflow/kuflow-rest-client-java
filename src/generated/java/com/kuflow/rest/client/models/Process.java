@@ -41,13 +41,12 @@ import static com.kuflow.rest.client.util.ProcessHelper.getElementValueOfAsStrin
 import static com.kuflow.rest.client.util.ProcessHelper.getElementValueOfAsStringList;
 import static com.kuflow.rest.client.util.ProcessHelper.getElementValueOfValid;
 import static com.kuflow.rest.client.util.ProcessHelper.getElementValueOfValidAt;
-import static com.kuflow.rest.client.util.ProcessHelper.putElementValueOf;
-import static com.kuflow.rest.client.util.ProcessHelper.putElementValuesOf;
+import static com.kuflow.rest.client.util.ProcessHelper.setElementValueOf;
 import static com.kuflow.rest.client.util.ProcessHelper.setElementValueOfValid;
 import static com.kuflow.rest.client.util.ProcessHelper.setElementValueOfValidAt;
+import static com.kuflow.rest.client.util.ProcessHelper.setElementValuesOf;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -58,11 +57,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 /** The Process model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
-@JsonTypeName("#KuFlow.Rest.Process")
-@JsonFlatten
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
+@JsonTypeName("PROCESS")
 @Fluent
-public class Process extends AbstractAudited {
+public final class Process extends AbstractAudited {
 
     /*
      * Process ID.
@@ -89,7 +87,7 @@ public class Process extends AbstractAudited {
     private ProcessDefinitionSummary processDefinition;
 
     /*
-     * Process element values, en ElementValueDocument is not allowed.
+     * Process element values, an ElementValueDocument is not allowed.
      */
     @JsonProperty(value = "elementValues")
     private Map<String, List<ProcessElementValue>> elementValues;
@@ -184,7 +182,7 @@ public class Process extends AbstractAudited {
     }
 
     /**
-     * Get the elementValues property: Process element values, en ElementValueDocument is not allowed.
+     * Get the elementValues property: Process element values, an ElementValueDocument is not allowed.
      *
      * @return the elementValues value.
      */
@@ -193,7 +191,7 @@ public class Process extends AbstractAudited {
     }
 
     /**
-     * Set the elementValues property: Process element values, en ElementValueDocument is not allowed.
+     * Set the elementValues property: Process element values, an ElementValueDocument is not allowed.
      *
      * @param elementValues the elementValues value to set.
      * @return the Process object itself.
@@ -278,8 +276,8 @@ public class Process extends AbstractAudited {
      * @param elementValue Element value, if the value is null all current values are removed
      * @return the Task object itself.
      */
-    public Process putElementValueAsString(String elementDefinitionCode, String elementValue) {
-        putElementValueOf(of(this, elementDefinitionCode), elementValue);
+    public Process setElementValueAsString(String elementDefinitionCode, String elementValue) {
+        setElementValueOf(of(this, elementDefinitionCode), elementValue);
 
         return this;
     }
@@ -291,8 +289,8 @@ public class Process extends AbstractAudited {
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
      */
-    public Process putElementValueAsStringList(String elementDefinitionCode, List<String> elementValues) {
-        putElementValuesOf(of(this, elementDefinitionCode), elementValues);
+    public Process setElementValueAsStringList(String elementDefinitionCode, List<String> elementValues) {
+        setElementValuesOf(of(this, elementDefinitionCode), elementValues);
 
         return this;
     }
@@ -361,8 +359,8 @@ public class Process extends AbstractAudited {
      * @param elementValue Element value, if the value is null all current values are removed
      * @return the Task object itself.
      */
-    public Process putElementValueAsDouble(String elementDefinitionCode, Double elementValue) {
-        putElementValueOf(of(this, elementDefinitionCode), elementValue);
+    public Process setElementValueAsDouble(String elementDefinitionCode, Double elementValue) {
+        setElementValueOf(of(this, elementDefinitionCode), elementValue);
 
         return this;
     }
@@ -374,8 +372,8 @@ public class Process extends AbstractAudited {
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
      */
-    public Process putElementValueAsDoubleList(String elementDefinitionCode, List<Double> elementValues) {
-        putElementValuesOf(of(this, elementDefinitionCode), elementValues);
+    public Process setElementValueAsDoubleList(String elementDefinitionCode, List<Double> elementValues) {
+        setElementValuesOf(of(this, elementDefinitionCode), elementValues);
 
         return this;
     }
@@ -444,8 +442,8 @@ public class Process extends AbstractAudited {
      * @param elementValue Element value, if the value is null all current values are removed
      * @return the Task object itself.
      */
-    public Process putElementValueAsLocalDate(String elementDefinitionCode, LocalDate elementValue) {
-        putElementValueOf(of(this, elementDefinitionCode), elementValue);
+    public Process setElementValueAsLocalDate(String elementDefinitionCode, LocalDate elementValue) {
+        setElementValueOf(of(this, elementDefinitionCode), elementValue);
 
         return this;
     }
@@ -457,8 +455,8 @@ public class Process extends AbstractAudited {
      * @param elementValues Element values, if the values are null all current values are removed
      * @return the Task object itself.
      */
-    public Process putElementValueAsLocalDateList(String elementDefinitionCode, List<LocalDate> elementValues) {
-        putElementValuesOf(of(this, elementDefinitionCode), elementValues);
+    public Process setElementValueAsLocalDateList(String elementDefinitionCode, List<LocalDate> elementValues) {
+        setElementValuesOf(of(this, elementDefinitionCode), elementValues);
 
         return this;
     }

@@ -96,16 +96,16 @@ public class TaskHelper {
         taskElementValueAccessor.setElementValues(taskElementValueList);
     }
 
-    public static void putElementValueOf(TaskElementValueAccessor taskElementValueAccessor, Object elementValue) {
+    public static void setElementValueOf(TaskElementValueAccessor taskElementValueAccessor, Object elementValue) {
         List<Object> valueList = new LinkedList<>();
         if (elementValue != null) {
             valueList.add(elementValue);
         }
 
-        putElementValuesOf(taskElementValueAccessor, valueList);
+        setElementValuesOf(taskElementValueAccessor, valueList);
     }
 
-    public static void putElementValuesOf(TaskElementValueAccessor taskElementValueAccessor, List<?> elementValues) {
+    public static void setElementValuesOf(TaskElementValueAccessor taskElementValueAccessor, List<?> elementValues) {
         if (elementValues == null) {
             elementValues = new LinkedList<>();
         }

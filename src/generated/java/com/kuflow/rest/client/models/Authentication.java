@@ -28,7 +28,6 @@
 package com.kuflow.rest.client.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -36,11 +35,10 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 /** The Authentication model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
-@JsonTypeName("#KuFlow.Rest.Authentication")
-@JsonFlatten
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
+@JsonTypeName("AUTHENTICATION")
 @Fluent
-public class Authentication extends AbstractAudited {
+public final class Authentication extends AbstractAudited {
 
     /*
      * The id property.
