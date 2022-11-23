@@ -34,7 +34,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /** The ProcessPage model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "modelType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("PROCESS_PAGE")
 @Fluent
 public final class ProcessPage extends Page {

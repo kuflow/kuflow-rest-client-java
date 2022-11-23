@@ -34,7 +34,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /** The PrincipalPage model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "modelType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("PRINCIPAL_PAGE")
 @Fluent
 public final class PrincipalPage extends Page {
