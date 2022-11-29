@@ -23,24 +23,32 @@
 package com.kuflow.rest.client;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.kuflow.rest.client.implementation.KuFlowClientImpl;
+import com.kuflow.rest.client.models.WebhookEvent;
 import com.kuflow.rest.client.operations.AuthenticationOperations;
 import com.kuflow.rest.client.operations.PrincipalOperations;
 import com.kuflow.rest.client.operations.ProcessOperations;
 import com.kuflow.rest.client.operations.TaskOperations;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 @ServiceClient(builder = KuFlowRestClientBuilder.class)
 public class KuFlowRestClient {
 
+    private final KuFlowClientImpl client;
     private final PrincipalOperations principalOperations;
     private final AuthenticationOperations authenticationOperations;
     private final ProcessOperations processOperations;
     private final TaskOperations taskOperations;
 
     public KuFlowRestClient(KuFlowClientImpl client) {
-        this.principalOperations = new PrincipalOperations(client.getPrincipalOperations());
-        this.authenticationOperations = new AuthenticationOperations(client.getAuthenticationOperations());
-        this.processOperations = new ProcessOperations(client.getProcessOperations());
+        this.client = client;
+        this.principalOperations = new PrincipalOperations(client);
+        this.authenticationOperations = new AuthenticationOperations(client);
+        this.processOperations = new ProcessOperations(client);
         this.taskOperations = new TaskOperations(client);
     }
 
@@ -58,5 +66,15 @@ public class KuFlowRestClient {
 
     public TaskOperations getTaskOperations() {
         return this.taskOperations;
+    }
+
+    public WebhookEvent parseWebhookEvent(String payload) {
+        try {
+            InputStream is = new ByteArrayInputStream(payload.getBytes(StandardCharsets.UTF_8));
+
+            return this.client.getSerializerAdapter().deserialize(is, WebhookEvent.class, SerializerEncoding.JSON);
+        } catch (IOException e) {
+            throw new KuFlowRestClientException("Error, parsing webhook event", e);
+        }
     }
 }

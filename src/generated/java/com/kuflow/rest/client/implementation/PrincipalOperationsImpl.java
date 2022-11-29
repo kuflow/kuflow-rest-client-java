@@ -42,12 +42,11 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.serializer.CollectionFormat;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.kuflow.rest.client.models.DefaultErrorException;
 import com.kuflow.rest.client.models.Principal;
 import com.kuflow.rest.client.models.PrincipalPage;
 import com.kuflow.rest.client.models.PrincipalType;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -87,9 +86,9 @@ public final class PrincipalOperationsImpl {
             @HostParam("$host") String host,
             @QueryParam("size") Integer size,
             @QueryParam("page") Integer page,
-            @QueryParam("sort") String sort,
+            @QueryParam(value = "sort", multipleQueryParams = true) List<String> sort,
             @QueryParam("type") PrincipalType type,
-            @QueryParam("groupId") String groupId,
+            @QueryParam(value = "groupId", multipleQueryParams = true) List<String> groupId,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -101,9 +100,9 @@ public final class PrincipalOperationsImpl {
             @HostParam("$host") String host,
             @QueryParam("size") Integer size,
             @QueryParam("page") Integer page,
-            @QueryParam("sort") String sort,
+            @QueryParam(value = "sort", multipleQueryParams = true) List<String> sort,
             @QueryParam("type") PrincipalType type,
-            @QueryParam("groupId") String groupId,
+            @QueryParam(value = "groupId", multipleQueryParams = true) List<String> groupId,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -157,10 +156,12 @@ public final class PrincipalOperationsImpl {
         List<UUID> groupId
     ) {
         final String accept = "application/json";
-        String sortConverted = (sort == null)
-            ? null
-            : sort.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        String groupIdConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(groupId, CollectionFormat.CSV);
+        List<String> sortConverted = (sort == null)
+            ? new ArrayList<>()
+            : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> groupIdConverted = (groupId == null)
+            ? new ArrayList<>()
+            : groupId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil.withContext(context ->
             service.findPrincipals(this.client.getHost(), size, page, sortConverted, type, groupIdConverted, accept, context)
         );
@@ -196,10 +197,12 @@ public final class PrincipalOperationsImpl {
         Context context
     ) {
         final String accept = "application/json";
-        String sortConverted = (sort == null)
-            ? null
-            : sort.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        String groupIdConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(groupId, CollectionFormat.CSV);
+        List<String> sortConverted = (sort == null)
+            ? new ArrayList<>()
+            : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> groupIdConverted = (groupId == null)
+            ? new ArrayList<>()
+            : groupId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return service.findPrincipals(this.client.getHost(), size, page, sortConverted, type, groupIdConverted, accept, context);
     }
 
@@ -310,10 +313,12 @@ public final class PrincipalOperationsImpl {
         Context context
     ) {
         final String accept = "application/json";
-        String sortConverted = (sort == null)
-            ? null
-            : sort.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        String groupIdConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(groupId, CollectionFormat.CSV);
+        List<String> sortConverted = (sort == null)
+            ? new ArrayList<>()
+            : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> groupIdConverted = (groupId == null)
+            ? new ArrayList<>()
+            : groupId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return service.findPrincipalsSync(this.client.getHost(), size, page, sortConverted, type, groupIdConverted, accept, context);
     }
 

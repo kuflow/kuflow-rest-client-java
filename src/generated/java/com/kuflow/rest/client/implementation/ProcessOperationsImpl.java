@@ -53,6 +53,7 @@ import com.kuflow.rest.client.models.ProcessDeleteElementCommand;
 import com.kuflow.rest.client.models.ProcessPage;
 import com.kuflow.rest.client.models.ProcessSaveElementCommand;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -93,7 +94,7 @@ public final class ProcessOperationsImpl {
             @HostParam("$host") String host,
             @QueryParam("size") Integer size,
             @QueryParam("page") Integer page,
-            @QueryParam("sort") String sort,
+            @QueryParam(value = "sort", multipleQueryParams = true) List<String> sort,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -105,7 +106,7 @@ public final class ProcessOperationsImpl {
             @HostParam("$host") String host,
             @QueryParam("size") Integer size,
             @QueryParam("page") Integer page,
-            @QueryParam("sort") String sort,
+            @QueryParam(value = "sort", multipleQueryParams = true) List<String> sort,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -322,9 +323,9 @@ public final class ProcessOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ProcessPage>> findProcessesWithResponseAsync(Integer size, Integer page, List<String> sort) {
         final String accept = "application/json";
-        String sortConverted = (sort == null)
-            ? null
-            : sort.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        List<String> sortConverted = (sort == null)
+            ? new ArrayList<>()
+            : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil.withContext(context -> service.findProcesses(this.client.getHost(), size, page, sortConverted, accept, context));
     }
 
@@ -349,9 +350,9 @@ public final class ProcessOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ProcessPage>> findProcessesWithResponseAsync(Integer size, Integer page, List<String> sort, Context context) {
         final String accept = "application/json";
-        String sortConverted = (sort == null)
-            ? null
-            : sort.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        List<String> sortConverted = (sort == null)
+            ? new ArrayList<>()
+            : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return service.findProcesses(this.client.getHost(), size, page, sortConverted, accept, context);
     }
 
@@ -440,9 +441,9 @@ public final class ProcessOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProcessPage> findProcessesWithResponse(Integer size, Integer page, List<String> sort, Context context) {
         final String accept = "application/json";
-        String sortConverted = (sort == null)
-            ? null
-            : sort.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        List<String> sortConverted = (sort == null)
+            ? new ArrayList<>()
+            : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return service.findProcessesSync(this.client.getHost(), size, page, sortConverted, accept, context);
     }
 

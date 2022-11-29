@@ -62,69 +62,98 @@ public class FindPrincipalsOptions {
         return this.size;
     }
 
-    public void setSize(Integer size) {
+    public FindPrincipalsOptions setSize(Integer size) {
         this.size = size;
+
+        return this;
     }
 
     public Integer getPage() {
         return this.page;
     }
 
-    public void setPage(Integer page) {
+    public FindPrincipalsOptions setPage(Integer page) {
         this.page = page;
+
+        return this;
     }
 
     public List<String> getSorts() {
         return unmodifiableList(this.sorts);
     }
 
-    public void setSorts(List<String> sorts) {
+    public FindPrincipalsOptions setSorts(List<String> sorts) {
         this.sorts.clear();
         if (sorts != null) {
             this.sorts.addAll(sorts);
         }
+
+        return this;
     }
 
-    public void addSort(String sort) {
+    public FindPrincipalsOptions setSort(String sort) {
+        Objects.requireNonNull(sort, "'sort' is required");
+
+        return this.setSorts(List.of(sort));
+    }
+
+    public FindPrincipalsOptions addSort(String sort) {
         Objects.requireNonNull(sort, "'sort' is required");
         if (!this.sorts.contains(sort)) {
             this.sorts.add(sort);
         }
+
+        return this;
     }
 
-    public void removeSort(String sort) {
+    public FindPrincipalsOptions removeSort(String sort) {
         Objects.requireNonNull(sort, "'sort' is required");
         this.sorts.remove(sort);
+
+        return this;
     }
 
     public PrincipalType getType() {
         return this.type;
     }
 
-    public void setType(PrincipalType type) {
+    public FindPrincipalsOptions setType(PrincipalType type) {
         this.type = type;
+
+        return this;
     }
 
     public List<UUID> getGroupIds() {
         return unmodifiableList(this.groupIds);
     }
 
-    public void setGroupIds(List<UUID> groupIds) {
+    public FindPrincipalsOptions setGroupIds(List<UUID> groupIds) {
         this.groupIds.clear();
         if (groupIds != null) {
             this.groupIds.addAll(groupIds);
         }
+
+        return this;
     }
 
-    public void addGroupId(UUID groupId) {
+    public FindPrincipalsOptions setGroupId(UUID groupId) {
+        Objects.requireNonNull(groupId, "'groupId' is required");
+
+        return this.setGroupIds(List.of(groupId));
+    }
+
+    public FindPrincipalsOptions addGroupId(UUID groupId) {
         Objects.requireNonNull(groupId, "'groupId' is required");
         if (!this.groupIds.contains(groupId)) {
             this.groupIds.add(groupId);
         }
+        return this;
     }
 
-    public void removeGroupId(UUID groupId) {
+    public FindPrincipalsOptions removeGroupId(UUID groupId) {
         Objects.requireNonNull(groupId, "'groupId' is required");
         this.groupIds.remove(groupId);
+
+        return this;
     }
 }

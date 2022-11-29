@@ -1,0 +1,9 @@
+{
+  "id": "80d8c9a1-e3d2-4c35-a0a9-77ec21d28950",
+  "type": "USER",
+  "name": "Hommer",
+  "user": {
+    "id": "0edf54c6-c1c9-4426-a7ec-26dd4fa5c98e",
+    "email": "user@test.com"
+  }
+}

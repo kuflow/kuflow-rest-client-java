@@ -33,6 +33,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.kuflow.rest.client.implementation.KuFlowClientImpl;
 import com.kuflow.rest.client.implementation.ProcessOperationsImpl;
 import com.kuflow.rest.client.models.DefaultErrorException;
 import com.kuflow.rest.client.models.Document;
@@ -56,10 +57,10 @@ public final class ProcessOperations {
     /**
      * Initializes an instance of ProcessOperationsImpl.
      *
-     * @param service the instance of the service client containing this operation class.
+     * @param client the instance of the service client containing this operation class.
      */
-    public ProcessOperations(ProcessOperationsImpl service) {
-        this.service = service;
+    public ProcessOperations(KuFlowClientImpl client) {
+        this.service = client.getProcessOperations();
     }
 
     /**

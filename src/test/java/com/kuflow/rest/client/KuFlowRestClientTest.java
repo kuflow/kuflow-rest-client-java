@@ -32,43 +32,21 @@ import com.kuflow.rest.client.models.Task;
 import com.kuflow.rest.client.models.TaskSaveElementCommand;
 import com.kuflow.rest.client.models.TaskSaveElementValueDocumentCommand;
 import com.kuflow.rest.client.models.TasksDefinitionSummary;
-import java.io.IOException;
-import java.nio.file.Path;
 import java.util.UUID;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class KuFlowRestClientTest {
 
-    //
-    //    @RegisterExtension
-    //    private static final WireMockExtension wireMockExtension = WireMockExtension
-    //        .newInstance()
-    //        .options(wireMockConfig().dynamicPort().notifier(new Slf4jNotifier(true)).usingFilesUnderDirectory("src/test/resources/wiremock/"))
-    //        .build();
-    //
-    //    @BeforeAll
-    //    public static void setupTestSuite() {
-    //        WireMockRuntimeInfo wmRuntimeInfo = wireMockExtension.getRuntimeInfo();
-    //        WireMock.configureFor(wmRuntimeInfo.getHttpPort());
-    //    }
-    //
-    //    private KuFlowRestClient kuFlowRestClient;
-    //
-    //    @BeforeEach
-    //    public void setupTest() {
-    //        WireMock.resetToDefault();
-    //
-    //        this.kuFlowRestClient = this.getKuFlowClient();
-    //    }
-
     @Test
-    public void dummy() throws IOException {
+    @Disabled
+    public void dummy() {
         HttpLogOptions logOptions = new HttpLogOptions();
         logOptions.setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS);
 
         KuFlowRestClient kuFlowRestClient = new KuFlowRestClientBuilder()
-            .username("1e96158f-3dfd-4c4c-8aa2-4c61a7127bcf")
-            .password("*pn8BMkt-KI0/08")
+            .clientId("CLIENT_ID")
+            .clientSecret("CLIENT_SECRET")
             .endpoint("http://localhost:8080/apis/external/v2022-10-08")
             .allowInsecureConnection(true)
             .httpLogOptions(logOptions)
@@ -92,14 +70,6 @@ public class KuFlowRestClientTest {
 
         //        kuFlowRestClient.getTaskOperations().actionsTaskClaim(taskCreated.getId());
 
-        // TODO IMPORVE HOW VALUES IS ADDED VALUES
-        //        TaskSaveElementCommand command1 = new TaskSaveElementCommand()
-        //            .setElementDefinitionCode("TEXT_001")
-        //            .setValues(
-        //                List.of(new TaskElementValueString().setValue("Valor del bueno"))
-        //            );
-        //        kuFlowRestClient.getTaskOperations().actionsTaskSaveElement(taskCreated.getId(), command1);
-
         TaskSaveElementCommand command2 = new TaskSaveElementCommand()
             .setElementDefinitionCode("TEXT_002")
             .addElementValueAsString("Valor del bueno uno")
@@ -117,7 +87,7 @@ public class KuFlowRestClientTest {
 
         TaskSaveElementValueDocumentCommand command4 = new TaskSaveElementValueDocumentCommand().setElementDefinitionCode("DOC_001");
 
-        BinaryData file = BinaryData.fromFile(Path.of("/Users/kuflow/Downloads/bugs-bunny.png"));
+        BinaryData file = BinaryData.fromStream(this.getClass().getResourceAsStream("bugs-bunny.png"));
         Document document = new Document().setFileContent(file).setFileName("bugs-bunny.png").setContentType("image/png");
         kuFlowRestClient.getTaskOperations().actionsTaskSaveElementValueDocument(taskCreated.getId(), command4, document);
     }
@@ -190,18 +160,5 @@ public class KuFlowRestClientTest {
     //        } catch (URISyntaxException e) {
     //            throw new RuntimeException(e);
     //        }
-    //    }
-    //
-    //    private KuFlowRestClient getKuFlowClient() {
-    //        WireMockRuntimeInfo wmRuntimeInfo = wireMockExtension.getRuntimeInfo();
-    //        String endpoint = String.format("http://localhost:%d", wmRuntimeInfo.getHttpPort());
-    //
-    //        KuFlowRestClientProperties clientProperties = new KuFlowRestClientProperties();
-    //        clientProperties.setEndpoint(endpoint);
-    //        clientProperties.setApplicationId(UUID.randomUUID().toString());
-    //        clientProperties.setToken(UUID.randomUUID().toString());
-    //        clientProperties.setLoggerLevel(Level.FULL);
-    //
-    //        return new KuFlowRestClient(clientProperties);
     //    }
 }

@@ -41,10 +41,10 @@ public final class PageMetadata {
     private int size;
 
     /*
-     * The number property.
+     * The page property.
      */
-    @JsonProperty(value = "number", required = true)
-    private int number;
+    @JsonProperty(value = "page", required = true)
+    private int page;
 
     /*
      * The totalElements property.
@@ -82,22 +82,22 @@ public final class PageMetadata {
     }
 
     /**
-     * Get the number property: The number property.
+     * Get the page property: The page property.
      *
-     * @return the number value.
+     * @return the page value.
      */
-    public int getNumber() {
-        return this.number;
+    public int getPage() {
+        return this.page;
     }
 
     /**
-     * Set the number property: The number property.
+     * Set the page property: The page property.
      *
-     * @param number the number value to set.
+     * @param page the page value to set.
      * @return the PageMetadata object itself.
      */
-    public PageMetadata setNumber(int number) {
-        this.number = number;
+    public PageMetadata setPage(int page) {
+        this.page = page;
         return this;
     }
 

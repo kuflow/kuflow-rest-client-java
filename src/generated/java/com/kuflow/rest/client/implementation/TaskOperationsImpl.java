@@ -46,8 +46,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.serializer.CollectionFormat;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.kuflow.rest.client.models.DefaultErrorException;
 import com.kuflow.rest.client.models.Log;
 import com.kuflow.rest.client.models.Task;
@@ -58,6 +56,7 @@ import com.kuflow.rest.client.models.TaskPage;
 import com.kuflow.rest.client.models.TaskSaveElementCommand;
 import com.kuflow.rest.client.models.TaskState;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -98,10 +97,10 @@ public final class TaskOperationsImpl {
             @HostParam("$host") String host,
             @QueryParam("size") Integer size,
             @QueryParam("page") Integer page,
-            @QueryParam("sort") String sort,
-            @QueryParam("processId") String processId,
-            @QueryParam("state") String state,
-            @QueryParam("taskDefinitionCode") String taskDefinitionCode,
+            @QueryParam(value = "sort", multipleQueryParams = true) List<String> sort,
+            @QueryParam(value = "processId", multipleQueryParams = true) List<String> processId,
+            @QueryParam(value = "state", multipleQueryParams = true) List<String> state,
+            @QueryParam(value = "taskDefinitionCode", multipleQueryParams = true) List<String> taskDefinitionCode,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -113,10 +112,10 @@ public final class TaskOperationsImpl {
             @HostParam("$host") String host,
             @QueryParam("size") Integer size,
             @QueryParam("page") Integer page,
-            @QueryParam("sort") String sort,
-            @QueryParam("processId") String processId,
-            @QueryParam("state") String state,
-            @QueryParam("taskDefinitionCode") String taskDefinitionCode,
+            @QueryParam(value = "sort", multipleQueryParams = true) List<String> sort,
+            @QueryParam(value = "processId", multipleQueryParams = true) List<String> processId,
+            @QueryParam(value = "state", multipleQueryParams = true) List<String> state,
+            @QueryParam(value = "taskDefinitionCode", multipleQueryParams = true) List<String> taskDefinitionCode,
             @HeaderParam("Accept") String accept,
             Context context
         );
@@ -439,16 +438,18 @@ public final class TaskOperationsImpl {
         List<String> taskDefinitionCode
     ) {
         final String accept = "application/json";
-        String sortConverted = (sort == null)
-            ? null
-            : sort.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        String processIdConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(processId, CollectionFormat.CSV);
-        String stateConverted = (state == null)
-            ? null
-            : state.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        String taskDefinitionCodeConverted = (taskDefinitionCode == null)
-            ? null
-            : taskDefinitionCode.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        List<String> sortConverted = (sort == null)
+            ? new ArrayList<>()
+            : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> processIdConverted = (processId == null)
+            ? new ArrayList<>()
+            : processId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> stateConverted = (state == null)
+            ? new ArrayList<>()
+            : state.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> taskDefinitionCodeConverted = (taskDefinitionCode == null)
+            ? new ArrayList<>()
+            : taskDefinitionCode.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil.withContext(context ->
             service.findTasks(
                 this.client.getHost(),
@@ -496,16 +497,18 @@ public final class TaskOperationsImpl {
         Context context
     ) {
         final String accept = "application/json";
-        String sortConverted = (sort == null)
-            ? null
-            : sort.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        String processIdConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(processId, CollectionFormat.CSV);
-        String stateConverted = (state == null)
-            ? null
-            : state.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        String taskDefinitionCodeConverted = (taskDefinitionCode == null)
-            ? null
-            : taskDefinitionCode.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        List<String> sortConverted = (sort == null)
+            ? new ArrayList<>()
+            : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> processIdConverted = (processId == null)
+            ? new ArrayList<>()
+            : processId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> stateConverted = (state == null)
+            ? new ArrayList<>()
+            : state.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> taskDefinitionCodeConverted = (taskDefinitionCode == null)
+            ? new ArrayList<>()
+            : taskDefinitionCode.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return service.findTasks(
             this.client.getHost(),
             size,
@@ -642,16 +645,18 @@ public final class TaskOperationsImpl {
         Context context
     ) {
         final String accept = "application/json";
-        String sortConverted = (sort == null)
-            ? null
-            : sort.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        String processIdConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(processId, CollectionFormat.CSV);
-        String stateConverted = (state == null)
-            ? null
-            : state.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        String taskDefinitionCodeConverted = (taskDefinitionCode == null)
-            ? null
-            : taskDefinitionCode.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        List<String> sortConverted = (sort == null)
+            ? new ArrayList<>()
+            : sort.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> processIdConverted = (processId == null)
+            ? new ArrayList<>()
+            : processId.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> stateConverted = (state == null)
+            ? new ArrayList<>()
+            : state.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> taskDefinitionCodeConverted = (taskDefinitionCode == null)
+            ? new ArrayList<>()
+            : taskDefinitionCode.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return service.findTasksSync(
             this.client.getHost(),
             size,

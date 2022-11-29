@@ -51,38 +51,54 @@ public class FindProcessesOptions {
         return this.size;
     }
 
-    public void setSize(Integer size) {
+    public FindProcessesOptions setSize(Integer size) {
         this.size = size;
+
+        return this;
     }
 
     public Integer getPage() {
         return this.page;
     }
 
-    public void setPage(Integer page) {
+    public FindProcessesOptions setPage(Integer page) {
         this.page = page;
+
+        return this;
     }
 
     public List<String> getSorts() {
         return unmodifiableList(this.sorts);
     }
 
-    public void setSorts(List<String> sorts) {
+    public FindProcessesOptions setSorts(List<String> sorts) {
         this.sorts.clear();
         if (sorts != null) {
             this.sorts.addAll(sorts);
         }
+
+        return this;
     }
 
-    public void addSort(String sort) {
+    public FindProcessesOptions setSort(String sort) {
+        Objects.requireNonNull(sort, "'sort' is required");
+
+        return this.setSorts(List.of(sort));
+    }
+
+    public FindProcessesOptions addSort(String sort) {
         Objects.requireNonNull(sort, "'sort' is required");
         if (!this.sorts.contains(sort)) {
             this.sorts.add(sort);
         }
+
+        return this;
     }
 
-    public void removeSort(String sort) {
+    public FindProcessesOptions removeSort(String sort) {
         Objects.requireNonNull(sort, "'sort' is required");
         this.sorts.remove(sort);
+
+        return this;
     }
 }

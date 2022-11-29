@@ -27,6 +27,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.kuflow.rest.client.implementation.AuthenticationOperationsImpl;
+import com.kuflow.rest.client.implementation.KuFlowClientImpl;
 import com.kuflow.rest.client.models.Authentication;
 import com.kuflow.rest.client.models.DefaultErrorException;
 
@@ -39,10 +40,10 @@ public final class AuthenticationOperations {
     /**
      * Initializes an instance of AuthenticationOperationsImpl.
      *
-     * @param service the instance of the service client containing this operation class.
+     * @param client the instance of the service client containing this operation class.
      */
-    public AuthenticationOperations(AuthenticationOperationsImpl service) {
-        this.service = service;
+    public AuthenticationOperations(KuFlowClientImpl client) {
+        this.service = client.getAuthenticationOperations();
     }
 
     /**

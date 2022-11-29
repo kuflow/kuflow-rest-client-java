@@ -31,6 +31,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.kuflow.rest.client.implementation.KuFlowClientImpl;
 import com.kuflow.rest.client.implementation.PrincipalOperationsImpl;
 import com.kuflow.rest.client.models.DefaultErrorException;
 import com.kuflow.rest.client.models.FindPrincipalsOptions;
@@ -49,10 +50,10 @@ public final class PrincipalOperations {
     /**
      * Initializes an instance of PrincipalOperationsImpl.
      *
-     * @param service the instance of the service client containing this operation class.
+     * @param client the instance of the service client containing this operation class.
      */
-    public PrincipalOperations(PrincipalOperationsImpl service) {
-        this.service = service;
+    public PrincipalOperations(KuFlowClientImpl client) {
+        this.service = client.getPrincipalOperations();
     }
 
     /**

@@ -83,8 +83,8 @@ public final class KuFlowRestClientBuilder
 
     private final ClientLogger logger = new ClientLogger(KuFlowRestClientBuilder.class);
     private String endpoint;
-    private String username;
-    private String password;
+    private String clientId;
+    private String clientSecret;
     private boolean allowInsecureConnection = false;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions = new HttpLogOptions();
@@ -111,24 +111,24 @@ public final class KuFlowRestClientBuilder
     }
 
     /**
-     * Set endpoint of the service
+     * Set clientId of the service
      *
-     * @param username username credentials
+     * @param clientId clientId credentials
      * @return KuFlowRestClientBuilder
      */
-    public KuFlowRestClientBuilder username(String username) {
-        this.username = Objects.requireNonNull(username, "'username' cannot be null.");
+    public KuFlowRestClientBuilder clientId(String clientId) {
+        this.clientId = Objects.requireNonNull(clientId, "'clientId' cannot be null.");
         return this;
     }
 
     /**
-     * Set endpoint of the service
+     * Set clientSecret of the service
      *
-     * @param password username credentials
+     * @param clientSecret username credentials
      * @return KuFlowRestClientBuilder
      */
-    public KuFlowRestClientBuilder password(String password) {
-        this.password = Objects.requireNonNull(password, "'password' cannot be null.");
+    public KuFlowRestClientBuilder clientSecret(String clientSecret) {
+        this.clientSecret = Objects.requireNonNull(clientSecret, "'clientSecret' cannot be null.");
         return this;
     }
 
@@ -380,13 +380,13 @@ public final class KuFlowRestClientBuilder
     }
 
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
-        if (this.username == null || this.password == null) {
-            throw this.logger.logExceptionAsError(new IllegalArgumentException("Both 'username' and 'username' are required."));
+        if (this.clientId == null || this.clientSecret == null) {
+            throw this.logger.logExceptionAsError(new IllegalArgumentException("Both 'clientId' and 'clientSecret' are required."));
         }
 
         boolean allowInsecureConnection = this.allowInsecureConnection;
 
-        BasicAuthenticationCredential tokenCredential = new BasicAuthenticationCredential(this.username, this.password);
+        BasicAuthenticationCredential tokenCredential = new BasicAuthenticationCredential(this.clientId, this.clientSecret);
         return new BearerTokenAuthenticationPolicy(tokenCredential, "https://api.kuflow.com//v2022-10-08/.default") {
             @Override
             public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
